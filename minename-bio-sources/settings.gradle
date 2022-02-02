@@ -1,0 +1,4 @@
+rootProject.name = 'bio-sources'
+include ':bio-source-fasta-assembly'
+project(':bio-source-fasta-assembly').projectDir = new File(settingsDir, './fasta-assembly')
+// Add other sources using above format
