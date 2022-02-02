@@ -1,6 +1,5 @@
 <?xml version="1.0"?>
 <classes>
-  <!--New in AquaMine v1.1:-->
   <class name="Cluster" is-interface="true">
     <attribute name="primaryIdentifier" type="java.lang.String"/>
     <attribute name="lastCommonAncestor" type="java.lang.String"/>

@@ -189,7 +189,7 @@ public class OrthodbClustersConverter extends BioFileConverter
             return;
         }
 
-        // New in AquaMine: Add cluster to Cluster table
+        // Add cluster
         Item cluster = createItem("Cluster");
         cluster.setAttribute("primaryIdentifier", clusterId);
         cluster.setAttribute("lastCommonAncestor", lastCommonAncestor);
