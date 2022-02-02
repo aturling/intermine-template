@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+
+<classes>
+  <class name="BioEntity" extends="Annotatable" is-interface="true">
+    <attribute name="source" type="java.lang.String"/>
+  </class>
+  <class name="Chromosome" extends="SequenceFeature" is-interface="true">
+    <attribute name="assembly" type="java.lang.String"/>
+  </class>
+  <class name="CrossReference" is-interface="true">
+    <reference name="target" referenced-type="BioEntity"/>
+  </class>
+  <class name="SequenceFeature" extends="BioEntity" is-interface="true">
+    <attribute name="biotype" type="java.lang.String"/>
+    <attribute name="description" type="java.lang.String"/>
+    <attribute name="status" type="java.lang.String"/>
+  </class>
+</classes>
