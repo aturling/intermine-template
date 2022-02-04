@@ -110,7 +110,10 @@ public class OrthodbClustersConverter extends BioFileConverter
      */
     @Override
     public void process(Reader reader) throws Exception {
+        // Need to keep track of previous cluster ID and last common ancestor since a cluster isn't processed
+        // until we get to the next cluster
         String previousClusterId = null;
+        String previousLCA = null;
         Set<GeneHolder> genesInCluster = new HashSet<GeneHolder>();
 
         if (taxonIds.isEmpty()) {
@@ -128,14 +131,16 @@ public class OrthodbClustersConverter extends BioFileConverter
                 continue;
             }
             clusterId = bits[1];
-	    lastCommonAncestor = bits[6];
 
             // at a different cluster id, process previous homologue cluster
             if (previousClusterId != null && !clusterId.equals(previousClusterId)) {
-                processHomologueCluster(clusterId, lastCommonAncestor, genesInCluster);
+                // Use previous cluster ID since clusterId now contains cluster ID of next cluster
+                // Note lastCommonAncestor hasn't been updated yet so still has previous cluster's value
+                processHomologueCluster(previousClusterId, lastCommonAncestor, genesInCluster);
                 genesInCluster = new HashSet<GeneHolder>();
             }
 
+            lastCommonAncestor = bits[6]; 
             String taxonId = bits[5];
             if (taxonId != null && isValid(taxonId)) {
                 String proteinId = bits[2];
@@ -189,8 +194,8 @@ public class OrthodbClustersConverter extends BioFileConverter
             return;
         }
 
-        // Add cluster
-        Item cluster = createItem("Cluster");
+        // New in AquaMine: Add cluster to Cluster table
+        Item cluster = createItem("OrthologueCluster");
         cluster.setAttribute("primaryIdentifier", clusterId);
         cluster.setAttribute("lastCommonAncestor", lastCommonAncestor);
         cluster.addToCollection("dataSets", getDataSet());    
@@ -233,10 +238,10 @@ public class OrthodbClustersConverter extends BioFileConverter
         homologue.setReference("homologue", gene2);
         homologue.addToCollection("evidence", getEvidence());
         homologue.setAttribute("type", type);
-        homologue.setAttribute("clusterIdentifier", clusterId);
+        homologue.setAttribute("clusterId", clusterId);
         homologue.setAttribute("lastCommonAncestor", lastCommonAncestor);
         homologue.addToCollection("dataSets", getDataSet());
-        homologue.setReference("cluster", cluster);
+        homologue.setReference("orthologueCluster", cluster);
         store(homologue);
     }
 

@@ -1,25 +1,25 @@
 <?xml version="1.0"?>
 <classes>
-  <class name="Cluster" is-interface="true">
-    <attribute name="primaryIdentifier" type="java.lang.String"/>
-    <attribute name="lastCommonAncestor" type="java.lang.String"/>
-    <collection name="dataSets" referenced-type="DataSet"/>
-    <collection name="genes" referenced-type="Gene" reverse-reference="clusters"/>
-  </class>
   <class name="Gene" is-interface="true">
-    <collection name="clusters" referenced-type="Cluster" reverse-reference="genes"/>
+    <collection name="orthologueClusters" referenced-type="OrthologueCluster" reverse-reference="genes"/>
     <collection name="homologues" referenced-type="Homologue" reverse-reference="gene"/>
   </class>
   <class name="Homologue" is-interface="true">
     <attribute name="type" type="java.lang.String"/>
-    <attribute name="clusterIdentifier" type="java.lang.String"/>
+    <attribute name="clusterId" type="java.lang.String"/>
     <attribute name="lastCommonAncestor" type="java.lang.String"/>
-    <reference name="cluster" referenced-type="Cluster"/>
+    <reference name="orthologueCluster" referenced-type="OrthologueCluster"/>
     <reference name="gene" referenced-type="Gene" reverse-reference="homologues"/>
     <reference name="homologue" referenced-type="Gene"/>
     <collection name="dataSets" referenced-type="DataSet"/>
     <collection name="evidence" referenced-type="OrthologueEvidence"/>
     <collection name="crossReferences" referenced-type="CrossReference"/>
+  </class>
+  <class name="OrthologueCluster" is-interface="true">
+    <attribute name="primaryIdentifier" type="java.lang.String"/>
+    <attribute name="lastCommonAncestor" type="java.lang.String"/>
+    <collection name="dataSets" referenced-type="DataSet"/>
+    <collection name="genes" referenced-type="Gene" reverse-reference="orthologueClusters"/>
   </class>
   <class name="OrthologueEvidence" is-interface="true">
     <reference name="evidenceCode" referenced-type="OrthologueEvidenceCode"/>

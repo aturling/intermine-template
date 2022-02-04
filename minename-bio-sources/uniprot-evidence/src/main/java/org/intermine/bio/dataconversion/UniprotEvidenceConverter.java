@@ -316,7 +316,7 @@ public class UniprotEvidenceConverter extends BioDirectoryConverter
      */
     public void setUniprotOrganisms(String taxonIds) {
         this.taxonIds = new HashSet<String>(Arrays.asList(StringUtil.split(taxonIds, " ")));
-        LOG.info("Setting list of organisms to " + this.taxonIds);
+        System.out.println("Setting list of organisms to " + this.taxonIds);
         // Wait until config file read to do this
         //addSubspecies();
     }
