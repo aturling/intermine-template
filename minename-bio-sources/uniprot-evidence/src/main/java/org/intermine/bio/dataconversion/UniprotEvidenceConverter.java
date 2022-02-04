@@ -451,7 +451,7 @@ public class UniprotEvidenceConverter extends BioDirectoryConverter
                 entry.addDbref(getAttrValue(attrs, "type"), getAttrValue(attrs, "id"));
             } else if ("property".equals(qName) && "dbReference".equals(previousQName)) {
                 String type = getAttrValue(attrs, "type");
-                String geneDesignation = CONFIG.getGeneDesignation(entry.getTaxonId());
+                String geneDesignation = getGeneDesignation(entry.getTaxonId());
                 if (type.equals(geneDesignation)) {
                     entry.addGeneDesignation(getAttrValue(attrs, "value"));
                 } else if ("evidence".equals(type)) {
@@ -1216,6 +1216,15 @@ public class UniprotEvidenceConverter extends BioDirectoryConverter
                 geneFields = CONFIG.getGeneIdentifierFields("default");
             }
             return geneFields;
+        }
+
+        // which gene-designation for this organism, if applicable
+        private String getGeneDesignation(String taxId) {
+            String geneDesignation = CONFIG.getGeneDesignation(taxId);
+            if (geneDesignation == null) {
+                geneDesignation = CONFIG.getGeneDesignation("default");
+            }
+            return geneDesignation;
         }
 
         private String resolveGene(String taxId, String identifier) {
