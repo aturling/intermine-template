@@ -6,6 +6,7 @@
     <attribute name="tertiaryIdentifier" type="java.lang.String"/>
   </class>
   <class name="CodingSequence" extends="SequenceFeature" is-interface="true">
+    <attribute name="isRepresentative" type="java.lang.Boolean"/>
     <attribute name="proteinIdentifier" type="java.lang.String"/>
     <reference name="gene" referenced-type="Gene" reverse-reference="codingSequences"/>
     <reference name="transcript" referenced-type="Transcript" reverse-reference="codingSequences"/>
@@ -23,6 +24,7 @@
     <collection name="codingSequences" referenced-type="CodingSequence" reverse-reference="transcript"/>
   </class>
   <class name="Polypeptide" extends="SequenceFeature" is-interface="true">
+    <attribute name="isRepresentative" type="java.lang.Boolean"/>
     <attribute name="geneIdentifier" type="java.lang.String"/>
     <attribute name="mrnaIdentifier" type="java.lang.String"/>
     <reference name="gene" referenced-type="Gene" reverse-reference="polypeptides"/>

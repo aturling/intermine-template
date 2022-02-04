@@ -20,6 +20,7 @@ import org.intermine.model.InterMineObject;
 import org.intermine.model.bio.BioEntity;
 import org.intermine.model.bio.DataSet;
 import org.intermine.model.bio.Gene;
+import org.intermine.model.bio.MRNA;
 import org.intermine.model.bio.Organism;
 import org.intermine.objectstore.ObjectStore;
 import org.intermine.objectstore.ObjectStoreException;
@@ -39,8 +40,10 @@ public class ProteinFastaAssemblyLoaderTask extends FeatureFastaAssemblyLoaderTa
     @Override
     protected void extraProcessing(Sequence bioJavaSequence, org.intermine.model.bio.Sequence flymineSequence, 
         BioEntity bioEntity, Organism organism, DataSet dataSet) throws ObjectStoreException {
+        // Expected header format: Polypeptide.primaryIdentifier Gene.primaryIdentifier MRNA.primaryIdentifier Polypeptide.isRepresentative
         String geneIdentifier = getFeatureFastaHeaderAttribute(bioJavaSequence, 2);
         String mrnaIdentifier = getFeatureFastaHeaderAttribute(bioJavaSequence, 3);
+        String isRepresentative = getFeatureFastaHeaderAttribute(bioJavaSequence, 4); 
         String geneSource = getGeneSource();
 
         ObjectStore os = getIntegrationWriter().getObjectStore();
@@ -55,18 +58,17 @@ public class ProteinFastaAssemblyLoaderTask extends FeatureFastaAssemblyLoaderTa
             }
             bioEntity.setFieldValue("source", geneSource);
             if (geneIdentifier != null) {
-                Gene gene = getGene(geneIdentifier, geneSource, organism);
-                // Setting the 'geneIdentifier' attribute for class 'Polypeptide'
+                Gene gene = getGene(geneIdentifier, geneSource, organism, dataSet);
                 bioEntity.setFieldValue("geneIdentifier", geneIdentifier);
-                // Setting the 'gene' reference for class 'Polypeptide'
                 bioEntity.setFieldValue("gene", gene);
             }
             if (mrnaIdentifier != null) {
-                InterMineObject mrna = getMRNA(mrnaIdentifier, getGeneSource(), organism, model);
-                // Setting the 'mrnaIdentifier' attribute for class 'Polypeptide'
+                MRNA mrna = getMRNA(mrnaIdentifier, geneSource, organism, dataSet);
                 bioEntity.setFieldValue("mrnaIdentifier", mrnaIdentifier);
-                // Setting the 'mrna' reference for class 'Polypeptide'
                 bioEntity.setFieldValue("mrna", mrna);
+            }
+            if (isRepresentative != null) {
+                bioEntity.setFieldValue("isRepresentative", parseIsRepresentativeStr(isRepresentative));
             }
         } else {
             throw new RuntimeException("Trying to load Polypeptide sequence but Polypeptide does not exist in the data model");

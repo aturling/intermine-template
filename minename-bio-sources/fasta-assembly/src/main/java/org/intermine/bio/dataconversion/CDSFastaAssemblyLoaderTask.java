@@ -19,6 +19,7 @@ import org.intermine.model.bio.BioEntity;
 import org.intermine.model.bio.DataSet;
 import org.intermine.model.FastPathObject;
 import org.intermine.model.bio.Gene;
+import org.intermine.model.bio.MRNA;
 import org.intermine.model.bio.Organism;
 import org.biojava.nbio.core.sequence.template.Sequence;
 import org.intermine.objectstore.ObjectStore;
@@ -39,12 +40,18 @@ public class CDSFastaAssemblyLoaderTask extends FeatureFastaAssemblyLoaderTask
     @Override
     protected void extraProcessing(Sequence bioJavaSequence, org.intermine.model.bio.Sequence flymineSequence, 
         BioEntity bioEntity, Organism organism, DataSet dataSet) throws ObjectStoreException {
+        // Expected header format: MRNA.primaryIdentifier Gene.primaryIdentifier CodingSequence.proteinIdentifier CodingSequence.isRepresentative
         String mrnaIdentifier = getFeatureFastaHeaderAttribute(bioJavaSequence, 1);
         String geneIdentifier = getFeatureFastaHeaderAttribute(bioJavaSequence, 2);
         String proteinIdentifier = getFeatureFastaHeaderAttribute(bioJavaSequence, 3);
+        String isRepresentative = getFeatureFastaHeaderAttribute(bioJavaSequence, 4);
+        String geneSource = getGeneSource();
 
         if (proteinIdentifier != null) {
             bioEntity.setFieldValue("proteinIdentifier", proteinIdentifier);
+        }
+        if (isRepresentative != null) {
+            bioEntity.setFieldValue("isRepresentative", parseIsRepresentativeStr(isRepresentative));
         }
 
         ObjectStore os = getIntegrationWriter().getObjectStore();
@@ -58,16 +65,14 @@ public class CDSFastaAssemblyLoaderTask extends FeatureFastaAssemblyLoaderTask
                 + "CodingSequence: " + bioEntity);
             }
             if (mrnaIdentifier != null) {
-                // Casting to BioEntity to access addDataSets() function
-                BioEntity mrna = (BioEntity) getMRNA(mrnaIdentifier, getGeneSource(), organism, model);
+                MRNA mrna = getMRNA(mrnaIdentifier, geneSource, organism, dataSet);
                 if (mrna != null) {
                     bioEntity.setFieldValue("transcript", mrna);
                     mrna.setFieldValue("proteinIdentifier",proteinIdentifier);
-                    mrna.addDataSets(dataSet);
                 }
             }
             if (geneIdentifier != null) {
-                Gene gene = getGene(geneIdentifier, getGeneSource(), organism);
+                Gene gene = getGene(geneIdentifier, geneSource, organism, dataSet);
                 bioEntity.setFieldValue("gene", gene);
             }
             //Location loc = getLocationFromHeader(header, (SequenceFeature) bioEntity, organism);

@@ -16,7 +16,9 @@ import java.util.Map;
 import org.biojava.nbio.core.sequence.template.Sequence;
 import org.intermine.metadata.Model;
 import org.intermine.model.InterMineObject;
+import org.intermine.model.bio.DataSet;
 import org.intermine.model.bio.Gene;
+import org.intermine.model.bio.MRNA;
 import org.intermine.model.bio.Organism;
 import org.intermine.objectstore.ObjectStoreException;
 
@@ -29,7 +31,7 @@ public class FeatureFastaAssemblyLoaderTask extends BaseFastaAssemblyLoaderTask
 {
     private String geneSource = null;
     private Map<String, Gene> geneMap = new HashMap<String, Gene>();
-    private Map<String, InterMineObject> mrnaMap = new HashMap<String, InterMineObject>();
+    private Map<String, MRNA> mrnaMap = new HashMap<String, MRNA>();
 
     /**
      * Gene source for any bioentities created
@@ -49,30 +51,26 @@ public class FeatureFastaAssemblyLoaderTask extends BaseFastaAssemblyLoaderTask
     }
 
     /**
-     * Return an MRNA for the given item or return null if MRNA is not in the data model.
+     * Return an MRNA for the given item.
      * @param mrnaIdentifier primaryIdentifier of MRNA to create
      * @param source gene source
      * @param organism orgnism of MRNA to create
-     * @param model the data model
-     * @return an InterMineObject representing an MRNA or null if MRNA not in the data model
+     * @return the MRNA
      * @throws ObjectStoreException if problem fetching mrna
      */
-    protected InterMineObject getMRNA(String mrnaIdentifier, String source, Organism organism, Model model) 
+    protected MRNA getMRNA(String mrnaIdentifier, String source, Organism organism, DataSet dataSet) 
         throws ObjectStoreException {
-        InterMineObject mrna = null;
-        if (model.hasClassDescriptor(model.getPackageName() + ".MRNA")) {
-            @SuppressWarnings("unchecked") Class<? extends InterMineObject> mrnaCls =
-                (Class<? extends InterMineObject>) model.getClassDescriptorByName("MRNA").getType();
-            if (mrnaMap.containsKey(mrnaIdentifier)) {
-                return mrnaMap.get(mrnaIdentifier);
-            }
-            mrna = getDirectDataLoader().createObject(mrnaCls);
-            mrna.setFieldValue("primaryIdentifier", mrnaIdentifier);
-            mrna.setFieldValue("source", source);
-            mrna.setFieldValue("organism", organism);
-            getDirectDataLoader().store(mrna);
-            mrnaMap.put(mrnaIdentifier, mrna);
+        if (mrnaMap.containsKey(mrnaIdentifier)) {
+            return mrnaMap.get(mrnaIdentifier);
         }
+        MRNA mrna = null;
+        mrna = getDirectDataLoader().createObject(MRNA.class);
+        mrna.setPrimaryIdentifier(mrnaIdentifier);
+        mrna.setSource(source);
+        mrna.setOrganism(organism);
+        mrna.addDataSets(dataSet);
+        getDirectDataLoader().store(mrna);
+        mrnaMap.put(mrnaIdentifier, mrna);
         return mrna;
     }
 
@@ -84,7 +82,7 @@ public class FeatureFastaAssemblyLoaderTask extends BaseFastaAssemblyLoaderTask
      * @return the Gene
      * @throws ObjectStoreException if problem fetching gene
      */
-    protected Gene getGene(String identifier, String source, Organism organism)
+    protected Gene getGene(String identifier, String source, Organism organism, DataSet dataSet)
         throws ObjectStoreException {
         if (geneMap.containsKey(identifier)) {
             return geneMap.get(identifier);
@@ -93,6 +91,7 @@ public class FeatureFastaAssemblyLoaderTask extends BaseFastaAssemblyLoaderTask
         gene.setPrimaryIdentifier(identifier);
         gene.setSource(source);
         gene.setOrganism(organism);
+        gene.addDataSets(dataSet);
         getDirectDataLoader().store(gene);
         geneMap.put(identifier, gene);
         return gene;
@@ -137,6 +136,22 @@ public class FeatureFastaAssemblyLoaderTask extends BaseFastaAssemblyLoaderTask
             throw new RuntimeException("Sequence header '" + header + "' is not in expected format.");
         }
         return attribute; 
+    }
+
+    /**
+     * Return whether sequence is representative
+     * @param isRepresentative string value of isRepresentative loaded from file ('T' or 'F')
+     * @return boolean isRepresentative field value
+     */
+    protected boolean parseIsRepresentativeStr(String isRepresentative) {
+        // Accept T/F, otherwise report formatting error
+        if ("T".equalsIgnoreCase(isRepresentative)) {
+            return true;
+        } else if ("F".equalsIgnoreCase(isRepresentative)) {
+            return false;
+        } else {
+            throw new RuntimeException("Sequence header field '" + isRepresentative + "' is not in expected format. Expected 'T' or 'F'.");
+        }
     }
 
     // Functions no longer used:
