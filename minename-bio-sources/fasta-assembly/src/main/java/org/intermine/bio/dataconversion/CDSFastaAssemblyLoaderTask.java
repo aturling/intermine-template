@@ -64,6 +64,7 @@ public class CDSFastaAssemblyLoaderTask extends FeatureFastaAssemblyLoaderTask
                 + "CDSFastaAssemblyLoaderTask.extraProcessing() is not a "
                 + "CodingSequence: " + bioEntity);
             }
+            bioEntity.setFieldValue("source", geneSource);
             if (mrnaIdentifier != null) {
                 MRNA mrna = getMRNA(mrnaIdentifier, geneSource, organism, dataSet);
                 if (mrna != null) {
