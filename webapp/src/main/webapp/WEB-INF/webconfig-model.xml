@@ -38,22 +38,6 @@
     </fields>
   </class>
 
-  <class className="org.intermine.model.bio.Cluster">
-    <inlinelist>
-      <table path="dataSets.name"/>
-    </inlinelist>
-    <headerconfig>
-      <titles>
-        <title mainTitles="primaryIdentifier"/>
-      </titles>
-    </headerconfig>
-    <fields>
-      <fieldconfig fieldExpr="primaryIdentifier" label="Cluster ID"/>
-      <fieldconfig fieldExpr="lastCommonAncestor" label="Last Common Ancestor"/>
-      <fieldconfig fieldExpr="genes.primaryIdentifier" label="Genes in Cluster" showInResults="false" showInInlineCollection="false" showInSummary="false"/>
-    </fields>
-  </class>
-
   <class className="org.intermine.model.bio.Comment">
     <fields>
       <fieldconfig fieldExpr="type"/>
@@ -229,6 +213,29 @@
     <fields>
       <fieldconfig fieldExpr="name"/>
       <fieldconfig fieldExpr="taxonId" />
+    </fields>
+  </class>
+
+  <class className="org.intermine.model.bio.OrthologueCluster">
+    <inlinelist>
+      <table path="dataSets.name"/>
+    </inlinelist>
+    <headerconfig>
+      <titles>
+        <title mainTitles="primaryIdentifier"/>
+      </titles>
+    </headerconfig>
+    <fields>
+      <fieldconfig fieldExpr="primaryIdentifier" label="Cluster ID"/>
+      <fieldconfig fieldExpr="lastCommonAncestor" label="Last Common Ancestor"/>
+      <fieldconfig fieldExpr="genes.primaryIdentifier" label="Genes in Cluster" showInResults="false" showInInlineCollection="false" showInSummary="false"/>
+    </fields>
+  </class>
+
+  <class className="org.intermine.model.bio.OrthologueEvidence">
+    <fields>
+      <fieldconfig fieldExpr="evidenceCode.abbreviation"/>
+      <fieldconfig fieldExpr="evidenceCode.name"/>
     </fields>
   </class>
 
