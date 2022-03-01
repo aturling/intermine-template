@@ -56,7 +56,6 @@
    //}
 
    function appendFeatureTypes(org) {
-        console.log("Calling appendFeatureTypes");
 
         var featureTypes = jQuery("#featureTypes").empty(),
             row = "<tr></tr>",
@@ -80,9 +79,7 @@
                             var current_loc = j + k*rows;
                             if (!(current_loc >= feature_size)) {
                                 var current = webDataJSON.featureTypes[i].features[current_loc].featureType;
-                                console.log("current = " + current);
                                 var displayName = $MODEL_TRANSLATION_TABLE[current].displayName ? $MODEL_TRANSLATION_TABLE[current].displayName : current;
-                                console.log("displayName = " + displayName);
                                 var description = webDataJSON.featureTypes[i].features[current_loc].description;
                                 var desBox = "<a onclick=\"document.getElementById('ctxHelpTxt').innerHTML='" + displayName + ": " + description.replace(/&apos;/g, "\\'")
                                              + "';document.getElementById('ctxHelpDiv').style.display=''; window.scrollTo(0, 0);return false\" title=\"" + description
