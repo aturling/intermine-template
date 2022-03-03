@@ -228,7 +228,7 @@
     <fields>
       <fieldconfig fieldExpr="primaryIdentifier" label="Cluster ID"/>
       <fieldconfig fieldExpr="lastCommonAncestor" label="Last Common Ancestor"/>
-      <fieldconfig fieldExpr="genes.primaryIdentifier" label="Genes in Cluster" showInResults="false" showInInlineCollection="false" showInSummary="false"/>
+      <fieldconfig fieldExpr="genes.primaryIdentifier" showInResults="false" showInInlineCollection="false" showInSummary="false"/>
     </fields>
   </class>
 

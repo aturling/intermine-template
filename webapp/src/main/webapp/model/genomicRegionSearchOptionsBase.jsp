@@ -37,11 +37,14 @@
             // webData must be defined in base jsp first, and customized page can make use of it.
             var webDataJSON = jQuery.parseJSON('${webData}');
 
-            // genomic region examples read from web.properties
+            // genomic region properties and examples read from web.properties
+            var useAssemblyFilter = ("${WEB_PROPERTIES['genomicRegionSearch.useAssemblyFilter']}" === 'true');
+            var useFullOrgNames = ("${WEB_PROPERTIES['genomicRegionSearch.useFullOrgNames']}" === 'true');
             var exampleSpansFormat1 = "${WEB_PROPERTIES['genomicRegionSearch.exampleSpansFormat1']}";
             var exampleSpansFormat2 = "${WEB_PROPERTIES['genomicRegionSearch.exampleSpansFormat2']}";
             var exampleSpansFormat3 = "${WEB_PROPERTIES['genomicRegionSearch.exampleSpansFormat3']}";
             var exampleOrganism = "${WEB_PROPERTIES['genomicRegionSearch.exampleOrganism']}";
+            var exampleAssembly = "${WEB_PROPERTIES['genomicRegionSearch.exampleAssembly']}"; // ignore if not using assembly dropdown
 
             // Set value to textarea#pasteInput
             jQuery(document).ready(function () {

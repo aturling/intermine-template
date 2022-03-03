@@ -6,14 +6,35 @@
                            '<span>Select Organism:&nbsp;</span>' +
                            '<select id="organisms" name="organism">';
 
-        // iterate through the object
-        jQuery.each(webDataJSON.organisms, function() {
-            htmlToInsert += '<option value="'+this+'">'+this+'</option>';
-        });
+        // create organism dropdown
+        if (useFullOrgNames) {
+            // display organism full names
+            // iterate through this one instead of 'fullnames' because order matters,
+            jQuery.each(webDataJSON.organisms, function() {
+                for (i in webDataJSON.fullnames) {
+                    if (webDataJSON.fullnames[i].organism == this) {
+                        htmlToInsert += '<option value="'+this+'">'+webDataJSON.fullnames[i].fullname+'</option>';
+                        break;
+                    }
+                }
+            });
+        } else {
+            // display organism short names
+            jQuery.each(webDataJSON.organisms, function() {
+                htmlToInsert += '<option value="'+this+'">'+this+'</option>';
+            });
+        }
 
         //htmlToInsert += '</select>' + '<span id="genomeBuild" style="padding:10px;"></span>'
         //                '</li><br>';
         htmlToInsert += '</select></li><br>';
+
+        // create assembly dropdown, if using
+        if (useAssemblyFilter) {
+            htmlToInsert += '<br/><li><span>Assembly:&nbsp;</span>' +
+                            '<select id="assembly" name="assembly">';
+            htmlToInsert += '</select></li><br/>';
+        }
 
         htmlToInsert += '<li>' +
                         '<p id="selectFeatureTypes" style="padding-bottom:8px;"></p>' +
@@ -42,8 +63,15 @@
 
         jQuery("#organisms option:selected").each(function () {
             // Not used: Update genome build dropdown
-            //appendGenomeBuild(jQuery(this).text());
-            appendFeatureTypes(jQuery(this).text());
+            //appendGenomeBuild(jQuery(this).val());
+
+            // Update feature types checkboxes
+            appendFeatureTypes(jQuery(this).val());
+
+            // Update assembly dropdown, if using
+            if (useAssemblyFilter) {
+                appendAssemblyVersions(jQuery(this).val());
+            }
         });
    }
 
@@ -101,6 +129,18 @@
          else {
              jQuery("#selectFeatureTypes").html("Select Feature Types:<br><i>"+org+" does not have any features</i>");
          }
+   }
+
+   function appendAssemblyVersions(org) {
+       jQuery("#assembly").empty();
+       for(var i = 0; i < webDataJSON.assemblies.size(); i++) {
+           if(webDataJSON.assemblies[i].organism == org) {
+               var assemblies = webDataJSON.assemblies[i].assembly.sort();
+               for(var j = 0; j < assemblies.size(); j++) {
+                   jQuery("#assembly").append("<option value='" + assemblies[j] + "'>" + assemblies[j] + "</option>");
+               }
+           }
+       }
    }
 
    // (un)Check all featureType checkboxes
@@ -206,9 +246,17 @@
        jQuery("#organisms").val(exampleOrganism).change();
    }
 
+   // Switch assembly to the one that matches the examples
+   function loadAssembly() {
+       jQuery("#assembly").val(exampleAssembly).change();
+   }
+
    // Load example from web.properties file
    function loadExample(exampleSpans) {
        loadOrganism();
+       if (useAssemblyFilter) {
+           loadAssembly();
+       }
        switchInputs('paste','file');
        jQuery('#pasteInput').focus();
        jQuery('#pasteInput').val(exampleSpans);
