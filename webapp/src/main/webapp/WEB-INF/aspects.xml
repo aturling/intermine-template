@@ -1,15 +1,4 @@
 <aspects>
-  <aspect name="Alias and DBxref">
-    <subtitle>Alias and DBxref</subtitle>
-    <icon-image>model/images/</icon-image>
-    <large-image>model/images/</large-image>
-    <intro-text>
-      Alias and DBxref
-    </intro-text>
-    <tile-name>model/alias.jsp</tile-name>
-    <aspect-source name="Alias and DBxref"/>
-  </aspect>
-
   <aspect name="Genes">
     <subtitle>Genome annotation</subtitle>
     <icon-image>model/images/genomics.gif</icon-image>
@@ -22,6 +11,17 @@
     <tile-name>model/genomics.jsp</tile-name>
     <aspect-source name="NCBI" url="http://www.ncbi.nlm.nih.gov"/>
     <aspect-source name="Ensembl" url="http://www.ensembl.org/index.html"/>
+  </aspect>
+
+  <aspect name="Alias and DBxref">
+    <subtitle>Alias and DBxref</subtitle>
+    <icon-image>model/images/</icon-image>
+    <large-image>model/images/</large-image>
+    <intro-text>
+      Alias and DBxref
+    </intro-text>
+    <tile-name>model/alias.jsp</tile-name>
+    <aspect-source name="Alias and DBxref"/>
   </aspect>
 
   <aspect name="Transcripts">
