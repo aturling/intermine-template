@@ -95,7 +95,7 @@ public class UniprotEvidenceConfig
         Properties props = new Properties();
         try {
             props.load(getClass().getClassLoader().getResourceAsStream(propFile));
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new RuntimeException("Problem loading properties '" + propFile + "'", e);
         }
 
