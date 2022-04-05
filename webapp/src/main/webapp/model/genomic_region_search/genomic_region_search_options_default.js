@@ -31,9 +31,9 @@
 
         // create assembly dropdown, if using
         if (useAssemblyFilter) {
-            htmlToInsert += '<br/><li><span>Assembly:&nbsp;</span>' +
+            htmlToInsert += '<li><span>Assembly:&nbsp;</span>' +
                             '<select id="assembly" name="assembly">';
-            htmlToInsert += '</select></li><br/>';
+            htmlToInsert += '</select></li><br>';
         }
 
         htmlToInsert += '<li>' +
