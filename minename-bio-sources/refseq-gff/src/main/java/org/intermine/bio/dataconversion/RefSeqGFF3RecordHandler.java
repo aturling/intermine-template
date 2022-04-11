@@ -86,7 +86,6 @@ public class RefSeqGFF3RecordHandler extends BaseGFF3RecordHandler
 
             // Handle duplicate entities, if applicable
             if (converter.getLoadDuplicateEntities()) {
-                System.out.println("Creating duplicate entities!");
                 createDuplicateEntities(record);
             }
 
