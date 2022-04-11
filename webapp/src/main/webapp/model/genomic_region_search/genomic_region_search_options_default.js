@@ -253,10 +253,11 @@
 
    // Load example from web.properties file
    function loadExample(exampleSpans) {
-       loadOrganism();
-       if (useAssemblyFilter) {
-           loadAssembly();
-       }
+       // Changing back to original behavior (don't reset org dropdown)
+       //loadOrganism();
+       //if (useAssemblyFilter) {
+       //    loadAssembly();
+       //}
        switchInputs('paste','file');
        jQuery('#pasteInput').focus();
        jQuery('#pasteInput').val(exampleSpans);
