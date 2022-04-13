@@ -31,7 +31,7 @@
 
         // create assembly dropdown, if using
         if (useAssemblyFilter) {
-            htmlToInsert += '<li><span>Assembly:&nbsp;</span>' +
+            htmlToInsert += '<li><span>Select Assembly:&nbsp;</span>' +
                             '<select id="assembly" name="assembly">';
             htmlToInsert += '</select></li><br>';
         }
@@ -73,18 +73,17 @@
                 appendAssemblyVersions(jQuery(this).val());
             }
         });
-   }
+    }
 
-   //function appendGenomeBuild(org) {
-   //    for(i in webDataJSON.genomeBuilds){
-   //        if (webDataJSON.genomeBuilds[i].organism == org) {
-   //            jQuery("#genomeBuild").html("<i>genome build: <span id='current-genome-version'>" + webDataJSON.genomeBuilds[i].genomeBuild + "</span></i>");
-   //        }
-   //    }
-   //}
+    //function appendGenomeBuild(org) {
+    //    for(i in webDataJSON.genomeBuilds){
+    //        if (webDataJSON.genomeBuilds[i].organism == org) {
+    //            jQuery("#genomeBuild").html("<i>genome build: <span id='current-genome-version'>" + webDataJSON.genomeBuilds[i].genomeBuild + "</span></i>");
+    //        }
+    //    }
+    //}
 
-   function appendFeatureTypes(org) {
-
+    function appendFeatureTypes(org) {
         var featureTypes = jQuery("#featureTypes").empty(),
             row = "<tr></tr>",
             input = "<input type='checkbox' class='featureType' name='featureTypes'>",
@@ -94,16 +93,14 @@
             onClick = function() {uncheck(this.checked, 'featureTypes')},
             columns = 3;
 
-         for(var i in webDataJSON.featureTypes){
+         for (var i in webDataJSON.featureTypes){
                if (webDataJSON.featureTypes[i].organism == org) {
                      var feature_size = webDataJSON.featureTypes[i].features.length,
                          rows = Math.ceil(feature_size/columns);
 
-                     for (j = 0; j < rows; j++)
-                     {
+                     for (j = 0; j < rows; j++) {
                         var rowElem = jQuery(row);
-                        for (k = 0; k < columns; k++)
-                        {
+                        for (k = 0; k < columns; k++) {
                             var current_loc = j + k*rows;
                             if (!(current_loc >= feature_size)) {
                                 var current = webDataJSON.featureTypes[i].features[current_loc].featureType;
@@ -125,34 +122,32 @@
 
          if (featureTypes.children.length) {
              jQuery("#selectFeatureTypes").html("<input id=\"check\" type=\"checkbox\" onclick=\"checkAll(this.id)\"/>&nbsp;Select Feature Types:");
-         }
-         else {
+         } else {
              jQuery("#selectFeatureTypes").html("Select Feature Types:<br><i>"+org+" does not have any features</i>");
          }
-   }
+    }
 
-   function appendAssemblyVersions(org) {
-       jQuery("#assembly").empty();
-       for(var i = 0; i < webDataJSON.assemblies.size(); i++) {
-           if(webDataJSON.assemblies[i].organism == org) {
-               var assemblies = webDataJSON.assemblies[i].assembly.sort();
-               for(var j = 0; j < assemblies.size(); j++) {
-                   jQuery("#assembly").append("<option value='" + assemblies[j] + "'>" + assemblies[j] + "</option>");
-               }
-           }
-       }
-   }
+    function appendAssemblyVersions(org) {
+        jQuery("#assembly").empty();
+        for (var i = 0; i < webDataJSON.assemblies.size(); i++) {
+            if (webDataJSON.assemblies[i].organism == org) {
+                var assemblies = webDataJSON.assemblies[i].assembly.sort();
+                for (var j = 0; j < assemblies.size(); j++) {
+                    jQuery("#assembly").append("<option value='" + assemblies[j] + "'>" + assemblies[j] + "</option>");
+                }
+            }
+        }
+    }
 
-   // (un)Check all featureType checkboxes
-   function checkAll(id)
-   {
-     jQuery(".featureType").prop('checked', jQuery('#' + id).is(':checked'));
-     jQuery("#check").css("opacity", 1);
-   }
+    // (un)Check all featureType checkboxes
+    function checkAll(id) {
+        jQuery(".featureType").prop('checked', jQuery('#' + id).is(':checked'));
+        jQuery("#check").css("opacity", 1);
+    }
 
-   // check/uncheck any featureType checkbox
-   function uncheck(status, name)
-   {
+    // check/uncheck any featureType checkbox
+    function uncheck(status, name)
+    {
          var statTag;
          if (!status) { //unchecked
            jQuery(".featureType").each(function() {
@@ -178,9 +173,9 @@
            jQuery("#check").prop('checked', true);
            jQuery("#check").css("opacity", 1);}
          }
-   }
+    }
 
-   function validateBeforeSubmit() {
+    function validateBeforeSubmit() {
        var checkedFeatureTypes = [];
        jQuery(".featureType").each(function() {
            if (this.checked) { checkedFeatureTypes.push(this.value); }
@@ -239,41 +234,41 @@
          }
        }
        return true;
-   }
+    }
 
-   // Switch organism to the one that matches the examples
-   function loadOrganism() {
-       jQuery("#organisms").val(exampleOrganism).change();
-   }
+    // Switch organism to the one that matches the examples
+    function loadOrganism() {
+        jQuery("#organisms").val(exampleOrganism).change();
+    }
 
-   // Switch assembly to the one that matches the examples
-   function loadAssembly() {
-       jQuery("#assembly").val(exampleAssembly).change();
-   }
+    // Switch assembly to the one that matches the examples
+    function loadAssembly() {
+        jQuery("#assembly").val(exampleAssembly).change();
+    }
 
-   // Load example from web.properties file
-   function loadExample(exampleSpans) {
-       // Changing back to original behavior (don't reset org dropdown)
-       //loadOrganism();
-       //if (useAssemblyFilter) {
-       //    loadAssembly();
-       //}
-       switchInputs('paste','file');
-       jQuery('#pasteInput').focus();
-       jQuery('#pasteInput').val(exampleSpans);
-   }
+    // Load example from web.properties file
+    function loadExample(exampleSpans) {
+        // Changing back to original behavior (don't reset org dropdown)
+        //loadOrganism();
+        //if (useAssemblyFilter) {
+        //    loadAssembly();
+        //}
+        switchInputs('paste','file');
+        jQuery('#pasteInput').focus();
+        jQuery('#pasteInput').val(exampleSpans);
+    }
 
-   function loadExample1() {
-       loadExample(exampleSpansFormat1);
-       return false;
-   }
+    function loadExample1() {
+        loadExample(exampleSpansFormat1);
+        return false;
+    }
 
-   function loadExample2() {
-       loadExample(exampleSpansFormat2);
-       return false;
-   }
+    function loadExample2() {
+        loadExample(exampleSpansFormat2);
+        return false;
+    }
 
-   function loadExample3() {
-       loadExample(exampleSpansFormat3);
-       return false;
-   }
+    function loadExample3() {
+        loadExample(exampleSpansFormat3);
+        return false;
+    }
