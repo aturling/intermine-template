@@ -65,6 +65,8 @@ public class EnsemblGFF3RecordHandler extends BaseGFF3RecordHandler
      */
     @Override
     public void process(GFF3Record record) {
+        super.process(record);
+
         Item feature = getFeature();
         String clsName = feature.getClassName();
 
