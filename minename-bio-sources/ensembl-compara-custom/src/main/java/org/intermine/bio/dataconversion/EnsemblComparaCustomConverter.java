@@ -153,6 +153,11 @@ public class EnsemblComparaCustomConverter extends BioFileConverter
                 continue;
             }
 
+            if (gene1.startsWith("Gene stable")) {
+                // a different header format, also skip
+                continue;
+            }
+
             if (gene1.equals(lastGene1) && gene2.equals(lastGene2)) {
                 // file isn't unique
                 continue;
