@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<!-- This file details any extensions needed to the data model to store data from this source, everything else is automatically generated from the model description so this is all we need to do to add to the model. -->
+
+<classes>
+    <class name="AliasName" is-interface="true">
+        <attribute name="identifier" type="java.lang.String"/>
+        <attribute name="name" type="java.lang.String"/>
+        <attribute name="source" type="java.lang.String"/>
+        <reference name="organism" referenced-type="Organism"/>
+        <collection name="dataSets" referenced-type="DataSet"/>
+        <collection name="features" referenced-type="SequenceFeature" reverse-reference="aliases"/>
+    </class>
+    <class name="Consequence" is-interface="true">
+        <attribute name="alternateAllele" type="java.lang.String"/>
+        <attribute name="alternateResidue" type="java.lang.String"/>
+        <attribute name="aminoAcidPosition" type="java.lang.String"/>
+        <attribute name="cdnaPosition" type="java.lang.String"/>
+        <attribute name="cdsPosition" type="java.lang.String"/>
+        <attribute name="proteinIdentifier" type="java.lang.String"/>
+        <attribute name="referenceResidue" type="java.lang.String"/>
+        <attribute name="siftQualitativePrediction" type="java.lang.String"/>
+        <attribute name="siftNumericalValue" type="java.lang.String"/>
+        <attribute name="snpId" type="java.lang.String"/>
+        <attribute name="transcriptIdentifier" type="java.lang.String"/>
+        <reference name="transcript" referenced-type="Transcript"/>
+        <reference name="variant" referenced-type="SequenceAlteration" reverse-reference="consequences"/>
+        <collection name="consequenceTypes" referenced-type="ConsequenceType"/>
+    </class>
+    <class name="ConsequenceType" is-interface="true">
+        <attribute name="name" type="java.lang.String"/>
+    </class>
+    <class name="Location" is-interface="true">
+        <attribute name="doNotComputeOverlaps" type="java.lang.String"/>
+    </class>
+    <class name="SequenceAlteration" extends="SequenceFeature" is-interface="true">
+        <attribute name="referenceAllele" type="java.lang.String"/>
+        <attribute name="alternateAllele" type="java.lang.String"/>
+        <attribute name="heterozygosity" type="java.lang.Float"/>
+        <attribute name="variationType" type="java.lang.String"/>
+        <attribute name="validationStatus" type="java.lang.String"/>
+        <attribute name="orientation" type="java.lang.String"/>
+        <collection name="aliases" referenced-type="AliasName" reverse-reference="features"/>
+        <collection name="consequences" referenced-type="Consequence" reverse-reference="variant"/>
+        <collection name="transcripts" referenced-type="Transcript" reverse-reference="sequenceAlterations"/>
+    </class>
+    <class name="Indel" extends="SequenceAlteration" is-interface="true"/>
+    <class name="SNV" extends="SequenceAlteration" is-interface="true"/>
+    <class name="Substitution" extends="SequenceAlteration" is-interface="true"/>
+    <class name="TandemRepeat" extends="SequenceAlteration" is-interface="true"/>
+    <class name="SequenceFeature" extends="BioEntity" is-interface="true">
+        <collection name="aliases" referenced-type="AliasName" reverse-reference="features"/>
+    </class>
+    <class name="Transcript" extends="SequenceFeature" is-interface="true">
+        <collection name="sequenceAlterations" referenced-type="SequenceAlteration" reverse-reference="transcripts"/>
+    </class>
+</classes>
