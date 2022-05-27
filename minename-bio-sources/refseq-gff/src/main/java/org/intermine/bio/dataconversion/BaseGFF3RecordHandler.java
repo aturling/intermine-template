@@ -52,7 +52,11 @@ public class BaseGFF3RecordHandler extends GFF3RecordHandler
      */
     @Override
     public void process(GFF3Record record) {
+        Item feature = getFeature();
+        String clsName = feature.getClassName();
 
+        // Always set feature source
+        setFeatureSource(record);
     }
 
     /**

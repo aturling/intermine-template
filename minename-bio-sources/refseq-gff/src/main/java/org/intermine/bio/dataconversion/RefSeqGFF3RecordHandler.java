@@ -60,9 +60,8 @@ public class RefSeqGFF3RecordHandler extends BaseGFF3RecordHandler
         Item feature = getFeature();
         String clsName = feature.getClassName();
 
-        // Set source, symbol, description, transcript biotype for all features (if present)
+        // Set symbol, description, transcript biotype for all features (if present)
         // (CDS, Exon won't have symbol or description, Gene won't have transcript biotype)
-        setFeatureSource(record);
         setFeatureSymbol(record, "symbol_ncbi");
         setFeatureDescription(record);
         setFeatureBiotype(record, "transcript_biotype");

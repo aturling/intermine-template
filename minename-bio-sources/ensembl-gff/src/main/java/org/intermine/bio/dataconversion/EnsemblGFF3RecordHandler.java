@@ -75,9 +75,8 @@ public class EnsemblGFF3RecordHandler extends BaseGFF3RecordHandler
         // Remove secondary identifier (is it even set?)
         feature.removeAttribute("secondaryIdentifier");
 
-        // Set source, symbol, and biotype (if applicable) for all features
+        // Set symbol, and biotype (if applicable) for all features
         // (Gene won't have transcript biotype)
-        setFeatureSource(record);
         setFeatureSymbol(record, "symbol_ensembl");
         setFeatureBiotype(record, "transcript_biotype");
 
