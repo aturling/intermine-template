@@ -38,7 +38,7 @@
     <a href="${WEB_PROPERTIES['project.sitePrefix']}" alt="Home" rel="NOFOLLOW"><img id="logo" src="model/images/logo.png" width="45px" height="45px" alt="Logo" /></a>
     <h1><html:link href="${WEB_PROPERTIES['project.sitePrefix']}/"><c:out value="${WEB_PROPERTIES['project.titlefancy']}" escapeXml="false"/></html:link></h1>
     <p id="version"><fmt:message key="header.version"/> <c:out value="${WEB_PROPERTIES['project.releaseVersion']}" escapeXml="false"/></span>
-    <p><c:out value="${WEB_PROPERTIES['project.subTitle']}" escapeXml="false"/></p>
+    <p>&nbsp;&nbsp;&nbsp;<c:out value="${WEB_PROPERTIES['project.subTitle']}" escapeXml="false"/></p>
   </div>
 
     <!-- Tab Menu -->
