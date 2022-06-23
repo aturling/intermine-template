@@ -76,7 +76,7 @@
 
                   <br/>
 
-                  <a id="region-help-link" href="#">Genome coordinates help</a>
+                  <a id="region-help-link" href="#">More genome coordinates help</a>
                   <script type="text/javascript">
                     jQuery('#region-help-link').click(function(e) {
                         jQuery('#region-help').slideToggle('slow');
