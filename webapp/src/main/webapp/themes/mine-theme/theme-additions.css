@@ -1,0 +1,20 @@
+/* In "RESULTS TABLES" section:
+-------------------------------*/
+
+/* add horizontal scrollbar to large tables */
+div.results.collection-table {
+  overflow-x: scroll;
+}
+
+/* force wrapping of sequence table cells */
+table.im-results-table td.residues {
+  overflow-wrap: break-word;
+  max-width: 500px;
+}
+
+/* sequences in pop-ups are too long */
+.popover table td.residues {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 300px;
+}
