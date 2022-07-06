@@ -10,6 +10,9 @@
   <class name="CrossReference" is-interface="true">
     <reference name="target" referenced-type="BioEntity"/>
   </class>
+  <class name="Location" is-interface="true">
+    <attribute name="doNotComputeOverlaps" type="java.lang.String"/>
+  </class>
   <class name="SequenceFeature" extends="BioEntity" is-interface="true">
     <attribute name="biotype" type="java.lang.String"/>
     <attribute name="description" type="java.lang.String"/>

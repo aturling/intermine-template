@@ -29,9 +29,6 @@
     <class name="ConsequenceType" is-interface="true">
         <attribute name="name" type="java.lang.String"/>
     </class>
-    <class name="Location" is-interface="true">
-        <attribute name="doNotComputeOverlaps" type="java.lang.String"/>
-    </class>
     <class name="SequenceAlteration" extends="SequenceFeature" is-interface="true">
         <attribute name="referenceAllele" type="java.lang.String"/>
         <attribute name="alternateAllele" type="java.lang.String"/>
