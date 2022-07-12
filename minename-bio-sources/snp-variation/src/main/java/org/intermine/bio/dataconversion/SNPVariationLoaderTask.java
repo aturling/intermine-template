@@ -35,9 +35,13 @@ import org.intermine.model.bio.Consequence;
 import org.intermine.model.bio.ConsequenceType;
 import org.intermine.model.bio.DataSet;
 import org.intermine.model.bio.DataSource;
+import org.intermine.model.bio.Deletion;
+import org.intermine.model.bio.Delins;
 import org.intermine.model.bio.Indel;
+import org.intermine.model.bio.Insertion;
 import org.intermine.model.bio.Gene;
 import org.intermine.model.bio.Location;
+import org.intermine.model.bio.MNV;
 import org.intermine.model.bio.Ontology;
 import org.intermine.model.bio.Organism;
 import org.intermine.model.bio.SequenceAlteration;
@@ -280,7 +284,7 @@ public class SNPVariationLoaderTask extends FileDirectDataLoaderTask
         String ref = fields[3];
         String alt = fields[4];
         String info = fields[7];
-        ArrayList<String> infoElements = splitInfoField(info);
+        ArrayList<String> infoElements = new ArrayList<String>(Arrays.asList(StringUtil.split(info, ";")));
 
         Chromosome chromosome = getChromosome(chromosomeIdentifier);
         chromosome.setAssembly(assemblyVersion);
@@ -299,10 +303,26 @@ public class SNPVariationLoaderTask extends FileDirectDataLoaderTask
             saClassName = "SNV";
             soTerm = "SNV";
             saName = "SNV";
-        } else if (type.toUpperCase().equals("INSERTION") || type.toUpperCase().equals("DELETION") || type.toUpperCase().equals("INDEL")) {
+        } else if (type.toUpperCase().equals("INDEL")) {
             saClassName = "Indel";
             soTerm = "indel";
             saName = "INDEL";
+        } else if (type.toUpperCase().equals("INSERTION")) {
+            saClassName = "Insertion";
+            soTerm = "insertion";
+            saName = "INSERTION";
+        } else if (type.toUpperCase().equals("DELETION")) {
+            saClassName = "Deletion";
+            soTerm = "deletion";
+            saName = "DELETION";
+        } else if (type.toUpperCase().equals("MNV")) {
+            saClassName = "MNV";
+            soTerm = "MNV";
+            saName = "MNV";
+        } else if (type.toUpperCase().equals("DELINS")) {
+            saClassName = "Delins";
+            soTerm = "delins";
+            saName = "DELINS";
         } else if (type.toUpperCase().equals("SEQUENCE_ALTERATION")) {
             saClassName = "SequenceAlteration";
             soTerm = "sequence_alteration";
@@ -605,15 +625,6 @@ public class SNPVariationLoaderTask extends FileDirectDataLoaderTask
     }
 
     /**
-     * Splits INFO fields of a VCF entry
-     * @param infoField
-     * @return
-     */
-    private ArrayList<String> splitInfoField(String infoField) {
-        return new ArrayList<String>(Arrays.asList(StringUtil.split(infoField, ";")));
-    }
-
-    /**
      * For a given tag, returns its corresponding value
      * @param elements
      * @param tag
@@ -700,29 +711,6 @@ public class SNPVariationLoaderTask extends FileDirectDataLoaderTask
             consequenceTypeMap.put(consequenceTypeString, consequenceType);
         }
         return consequenceType;
-    }
-
-    /**
-     * For a given identifier, returns a Gene entity
-     * @param identifier
-     * @return
-     * @throws ObjectStoreException
-     */
-    private Gene getGene(String identifier) throws ObjectStoreException {
-        Gene gene;
-        if (createdGeneMap.containsKey(identifier)) {
-            gene = createdGeneMap.get(identifier);
-        } else {
-            gene = getDirectDataLoader().createObject(Gene.class);
-            gene.setSequenceOntologyTerm(getSoTerm("gene"));
-            imoTracker.put(gene.getId(), gene);
-            gene.setOrganism(getOrganism());
-            gene.setSource(geneSource);
-            gene.addDataSets(getDataSet());
-            createdGeneMap.put(identifier, gene);
-            //getDirectDataLoader().store(gene);
-        }
-        return gene;
     }
 
     /**
@@ -820,46 +808,5 @@ public class SNPVariationLoaderTask extends FileDirectDataLoaderTask
             System.out.print(line[i] + "\t");
         }
         System.out.print("\n");
-    }
-
-    /**
-     * Queries the production database and returns a Map of proxy references for a entities of a given class
-     * @param map
-     * @param objectClass
-     */
-    private void preFill(Map<String, ProxyReference> map, Class<? extends InterMineObject> objectClass) {
-        Query q = new Query();
-        QueryClass qC = new QueryClass(objectClass);
-        q.addFrom(qC);
-        QueryField qFName = new QueryField(qC, "primaryIdentifier");
-        QueryField qFId = new QueryField(qC, "id");
-        q.addToSelect(qFName);
-        q.addToSelect(qFId);
-        QueryClass qcOrg = new QueryClass(Organism.class);
-        q.addFrom(qcOrg);
-        QueryObjectReference orgRef = new QueryObjectReference(qC, "organism");
-        QueryField qFTaxonId = new QueryField(qcOrg, "taxonId");
-
-        ConstraintSet cs = new ConstraintSet(ConstraintOp.AND);
-        cs.addConstraint(new ContainsConstraint(orgRef, ConstraintOp.CONTAINS, qcOrg));
-        cs.addConstraint(new SimpleConstraint(qFTaxonId, ConstraintOp.EQUALS, new QueryValue(taxonId)));
-        q.setConstraint(cs);
-
-        LOG.info("Prefilling ProxyReferences with query: " + q);
-
-        try {
-            Results res = getIntegrationWriter().getObjectStore().execute(q, 5000, false, false, false);
-            Iterator<Object> resIter = res.iterator();
-            while (resIter.hasNext()) {
-                ResultsRow<Object> rr = (ResultsRow<Object>) resIter.next();
-                String name = (String) rr.get(0);
-                Integer id = (Integer) rr.get(1);
-                map.put(name, new ProxyReference(getIntegrationWriter().getObjectStore(), id, objectClass));
-            }
-        } catch (Exception e) {
-            throw new BuildException("Problem in prefilling ProxyReferences: " + e);
-        }
-        LOG.info("Prefill complete with map containing " + map.size() + " ProxyReferences");
-        System.out.println("Prefill complete with map containing " + map.size() + " ProxyReferences");
     }
 }

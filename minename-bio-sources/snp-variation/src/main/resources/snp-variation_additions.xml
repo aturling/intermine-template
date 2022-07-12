@@ -40,7 +40,11 @@
         <collection name="consequences" referenced-type="Consequence" reverse-reference="variant"/>
         <collection name="transcripts" referenced-type="Transcript" reverse-reference="sequenceAlterations"/>
     </class>
+    <class name="Deletion" extends="SequenceAlteration" is-interface="true"/>
     <class name="Indel" extends="SequenceAlteration" is-interface="true"/>
+    <class name="Insertion" extends="SequenceAlteration" is-interface="true"/>
+    <class name="Delins" extends="SequenceAlteration" is-interface="true"/>
+    <class name="MNV" extends="SequenceAlteration" is-interface="true"/>
     <class name="SNV" extends="SequenceAlteration" is-interface="true"/>
     <class name="Substitution" extends="SequenceAlteration" is-interface="true"/>
     <class name="TandemRepeat" extends="SequenceAlteration" is-interface="true"/>
