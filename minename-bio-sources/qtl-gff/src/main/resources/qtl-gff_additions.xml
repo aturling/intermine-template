@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!-- This file details any extensions needed to the data model to store data from this source, everything else is automatically generated from the model description so this is all we need to do to add to the model. -->
+
+<classes>
+  <!--Comment out term names if not loaded-->
+  <class name="CMOTerm" extends="OntologyTerm" is-interface="true"/>
+  <class name="LPTTerm" extends="OntologyTerm" is-interface="true"/>
+  <class name="VTTerm" extends="OntologyTerm" is-interface="true"/>
+  <class name="QTL" extends="SequenceFeature" is-interface="true">
+    <attribute name="qtlId" type="java.lang.String"/>
+    <attribute name="traitId" type="java.lang.String"/>
+    <attribute name="trait" type="java.lang.String"/>
+    <attribute name="type" type="java.lang.String"/>
+    <attribute name="abbreviation" type="java.lang.String"/>
+    <attribute name="additiveEffect" type="java.lang.String"/>
+    <attribute name="bayesValue" type="java.lang.String"/>
+    <attribute name="breed" type="java.lang.String"/>
+    <attribute name="coordSource" type="java.lang.String"/>
+    <attribute name="dominanceEffect" type="java.lang.String"/>
+    <attribute name="fStat" type="java.lang.String"/>
+    <attribute name="lodScore" type="java.lang.String"/>
+    <attribute name="lsMeans" type="java.lang.String"/>
+    <attribute name="likelihoodRatio" type="java.lang.String"/>
+    <attribute name="mapType" type="java.lang.String"/>
+    <attribute name="model" type="java.lang.String"/>
+    <attribute name="peakCentimorgan" type="java.lang.String"/>
+    <attribute name="pValue" type="java.lang.String"/>
+    <attribute name="significance" type="java.lang.String"/>
+    <attribute name="testBase" type="java.lang.String"/>
+    <attribute name="flankMarkers" type="java.lang.String"/>
+    <reference name="publication" referenced-type="Publication"/>
+    <!--Comment these out if these ontologies are not loaded-->
+    <reference name="cmoName" referenced-type="CMOTerm"/>
+    <reference name="ptoName" referenced-type="LPTTerm"/>
+    <reference name="vtoName" referenced-type="VTTerm"/>
+    <collection name="snpsAsFlankMarkers" referenced-type="SequenceAlteration"/>
+  </class>
+</classes>
