@@ -2,6 +2,7 @@
 <!-- This file details any extensions needed to the data model to store data from this source, everything else is automatically generated from the model description so this is all we need to do to add to the model. -->
 
 <classes>
+  <!--Comment out classes that don't apply to this mine release-->
   <class name="CGeneSegment" extends="MRNA" is-interface="true"/>
   <class name="DuplicateEntity" is-interface="true">
     <attribute name="geneIdentifier" type="java.lang.String"/>
@@ -16,12 +17,16 @@
   <class name="Gene" extends="SequenceFeature" is-interface="true">
     <collection name="duplicateEntities" referenced-type="DuplicateEntity"/>
   </class>
+  <class name="MiRNA" extends="NcRNA" is-interface="true">
+    <reference name="transcript" referenced-type="PrimaryTranscript" reverse-reference="miRNAs"/>
+  </class>
   <class name="MRNA" extends="Transcript" is-interface="true"/>
   <class name="NcRNA" extends="Transcript" is-interface="true">
     <attribute name="mirbaseIdentifier" type="java.lang.String"/>
   </class>
   <class name="PrimaryTranscript" extends="Transcript" is-interface="true">
     <attribute name="mirbaseIdentifier" type="java.lang.String"/>
+    <collection name="miRNAs" referenced-type="MiRNA" reverse-reference="transcript"/>
   </class>
   <class name="SequenceFeature" extends="BioEntity" is-interface="true">
     <!--"exception" is a reserved word in database-->

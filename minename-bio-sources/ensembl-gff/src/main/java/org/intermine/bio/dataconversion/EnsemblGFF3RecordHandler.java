@@ -36,18 +36,19 @@ public class EnsemblGFF3RecordHandler extends BaseGFF3RecordHandler
     public EnsemblGFF3RecordHandler (Model model) {
         super(model);
 
-        // Note: these may change with each release depending on the feature classes in the GFF files.
         refsAndCollections.put("Transcript", "gene");
         refsAndCollections.put("CDS", "transcript");
         refsAndCollections.put("Exon", "transcripts");
-        refsAndCollections.put("NcRNA", "gene");
 
+        // Note: these may change with each release depending on the feature classes in the GFF files.
+        // Comment out lines that don't apply to this mine release.
         refsAndCollections.put("CGeneSegment", "gene");
         refsAndCollections.put("DGeneSegment", "gene");
-        //refsAndCollections.put("JGeneSegment", "gene");
+        refsAndCollections.put("JGeneSegment", "gene");
         refsAndCollections.put("LncRNA", "gene");
         refsAndCollections.put("MiRNA", "gene");
         refsAndCollections.put("MRNA", "gene");
+        refsAndCollections.put("NcRNA", "gene");
         refsAndCollections.put("RRNA", "gene");
         refsAndCollections.put("Ribozyme", "gene");
         refsAndCollections.put("ScaRNA", "gene");

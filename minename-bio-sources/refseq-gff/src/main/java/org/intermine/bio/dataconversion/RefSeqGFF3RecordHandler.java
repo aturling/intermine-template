@@ -32,20 +32,29 @@ public class RefSeqGFF3RecordHandler extends BaseGFF3RecordHandler
     public RefSeqGFF3RecordHandler (Model model) {
         super(model);
 
-        // Note: these may change with each release depending on the feature classes in the GFF files.
-        // Class names not in model for this mine will be ignored.
         refsAndCollections.put("Transcript", "gene");
         refsAndCollections.put("CDS", "transcript");
         refsAndCollections.put("Exon", "transcripts");
-        refsAndCollections.put("NcRNA", "gene");
 
+        // Note: these may change with each release depending on the feature classes in the GFF files.
+        // Comment out lines that don't apply to this mine release.
+        refsAndCollections.put("AntisenseRNA", "gene");
         refsAndCollections.put("CGeneSegment", "gene");
+        // DLoop has no parent
         refsAndCollections.put("GuideRNA", "gene");
         refsAndCollections.put("LncRNA", "gene");
+        refsAndCollections.put("MiRNA", "transcript");
         refsAndCollections.put("MRNA", "gene");
+        refsAndCollections.put("NcRNA", "gene");
+        // OriginOfReplication has no parent
+        refsAndCollections.put("PrimaryTranscript", "gene");
+        refsAndCollections.put("RNaseMRPRNA", "gene");
+        refsAndCollections.put("RNasePRNA", "gene");
         refsAndCollections.put("RRNA", "gene");
         refsAndCollections.put("SnoRNA", "gene");
         refsAndCollections.put("SnRNA", "gene");
+        refsAndCollections.put("SRPRNA", "gene");
+        refsAndCollections.put("TelomeraseRNA", "gene");
         refsAndCollections.put("TRNA", "gene");
         refsAndCollections.put("VGeneSegment", "gene");
     }

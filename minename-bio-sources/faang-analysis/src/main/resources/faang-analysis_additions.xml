@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!-- This file details any extensions needed to the data model to store data from this source, everything else is automatically generated from the model description so this is all we need to do to add to the model. -->
+
+<classes>
+  <class name="Analysis" is-interface="true">
+    <attribute name="analysisTag" type="java.lang.String"/>
+    <attribute name="analysisAccession" type="java.lang.String"/>
+    <attribute name="source" type="java.lang.String"/>
+    <attribute name="project" type="java.lang.String"/>
+    <attribute name="analysisType" type="java.lang.String"/>
+    <attribute name="annotationType" type="java.lang.String"/>
+    <attribute name="name" type="java.lang.String"/>
+    <attribute name="projectId" type="java.lang.String"/>
+    <attribute name="experimentAccession" type="java.lang.String"/>
+    <attribute name="experimentType" type="java.lang.String"/>
+    <attribute name="chipAntibody" type="java.lang.String"/>
+    <attribute name="tissue" type="java.lang.String"/>
+    <attribute name="software" type="java.lang.String"/>
+    <attribute name="peakWidth" type="java.lang.String"/>
+    <attribute name="specimenTag" type="java.lang.String"/>
+    <reference name="bioProject" referenced-type="BioProject" reverse-reference="analyses"/>
+    <reference name="bioSample" referenced-type="BioSample"/>
+    <reference name="organism" referenced-type="Organism"/>
+    <collection name="dataSets" referenced-type="DataSet"/>
+  </class>
+  <class name="BioProject" is-interface="true">
+    <attribute name="bioProjectUniqueId" type="java.lang.String"/>
+    <collection name="analyses" referenced-type="Analysis" reverse-reference="bioProject"/>
+    <collection name="dataSets" referenced-type="DataSet"/>
+  </class>
+  <class name="BioSample" is-interface="true">
+    <attribute name="bioSampleId" type="java.lang.String"/>
+    <collection name="analyses" referenced-type="Analysis" reverse-reference="bioSample"/>
+    <collection name="dataSets" referenced-type="DataSet"/>
+  </class>
+</classes>
