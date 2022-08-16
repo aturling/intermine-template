@@ -52,6 +52,7 @@ public class EnsemblGFF3RecordHandler extends BaseGFF3RecordHandler
         refsAndCollections.put("RRNA", "gene");
         refsAndCollections.put("Ribozyme", "gene");
         refsAndCollections.put("ScaRNA", "gene");
+        refsAndCollections.put("ScRNA", "gene");
         refsAndCollections.put("SnoRNA", "gene");
         refsAndCollections.put("SnRNA", "gene");
         refsAndCollections.put("SRNA", "gene");
