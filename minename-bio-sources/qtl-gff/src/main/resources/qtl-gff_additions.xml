@@ -28,11 +28,11 @@
     <attribute name="significance" type="java.lang.String"/>
     <attribute name="testBase" type="java.lang.String"/>
     <attribute name="flankMarkers" type="java.lang.String"/>
-    <reference name="publication" referenced-type="Publication"/>
     <!--Comment these out if these ontologies are not loaded-->
     <reference name="cmoName" referenced-type="CMOTerm"/>
     <reference name="ptoName" referenced-type="LPTTerm"/>
     <reference name="vtoName" referenced-type="VTTerm"/>
     <collection name="snpsAsFlankMarkers" referenced-type="SequenceAlteration"/>
   </class>
+  <class name="SequenceAlteration" extends="SequenceFeature" is-interface="true"/>
 </classes>

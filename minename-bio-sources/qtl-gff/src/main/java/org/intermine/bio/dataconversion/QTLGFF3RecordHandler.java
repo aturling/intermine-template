@@ -210,6 +210,7 @@ public class QTLGFF3RecordHandler extends GFF3RecordHandler
         } else {
             sequenceAlteration = converter.createItem("SequenceAlteration");
             sequenceAlteration.setAttribute("primaryIdentifier", identifier);
+            sequenceAlteration.setReference("organism", getOrganism());
             addItem(sequenceAlteration);
             sequenceAlterationItems.put(identifier, sequenceAlteration);
         }
