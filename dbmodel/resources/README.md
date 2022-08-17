@@ -1,7 +1,11 @@
-class_keys.properties: Remove the classes not in the model
+# Mine-specific config files
 
-keyword_search.properties: Update solr URL
+```class_keys.properties```: Remove the classes not in the model
 
-objectstoresummary.config.properties: Update solr URL 
+```keyword_search.properties```: Update solr URL
 
-so_terms: Remove terms not in mine model
+```objectstoresummary.config.properties```: Update solr URL 
+
+```organism_config.properties```: Add species not in default organism list
+
+```so_terms```: Remove terms not in mine model
