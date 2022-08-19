@@ -55,9 +55,61 @@
     <attribute name="submitterId" type="java.lang.String"/>
     <attribute name="synonym" type="java.lang.String"/>
     <attribute name="updateDate" type="java.util.Date"/>
+    <reference name="animalTraitOntologyForLivestock" referenced-type="ATOLTerm" reverse-reference="samples"/>
+    <reference name="brendaTissueOntology" referenced-type="BTOTerm" reverse-reference="samples"/>
+    <reference name="cellOntology" referenced-type="CLTerm" reverse-reference="samples"/>
+    <reference name="environmentOntologyForLivestock" referenced-type="EOLTerm" reverse-reference="samples"/>
+    <reference name="experimentalFactorOntology" referenced-type="EFOTerm" reverse-reference="samples"/>
+    <reference name="humanDevelopmentalStagesOntology" referenced-type="HsapDvTerm" reverse-reference="samples"/>
+    <reference name="humanPhenotypeOntology" referenced-type="HPTerm" reverse-reference="samples"/>
+    <reference name="livestockBreedOntology" referenced-type="LBOTerm" reverse-reference="samples"/>
+    <reference name="mondoDiseaseOntology" referenced-type="MONDOTerm" reverse-reference="samples"/>
+    <reference name="ontologyForBiomedicalInvestigations" referenced-type="OBITerm" reverse-reference="samples"/>
+    <reference name="phenotypeAndTraitOntology" referenced-type="PATOTerm" reverse-reference="samples"/>
     <reference name="organism" referenced-type="Organism"/>
     <collection name="bioSamplePools" referenced-type="BioSample" reverse-reference="componentSampleIds"/>
     <collection name="componentSampleIds" referenced-type="BioSample" reverse-reference="bioSamplePools"/>
     <collection name="dataSets" referenced-type="DataSet"/>
+    <collection name="orphanetRareDiseaseOntology" referenced-type="OrphanetTerm" reverse-reference="samples"/>
+    <collection name="uberAnatomyOntology" referenced-type="UBERONTerm" reverse-reference="samples"/>
+  </class>
+  <class name="ATOLTerm" extends="OntologyTerm" is-interface="true">
+    <collection name="samples" referenced-type="BioSample" reverse-reference="animalTraitOntologyForLivestock"/>
+  </class>
+  <class name="BTOTerm" extends="OntologyTerm" is-interface="true">
+    <collection name="samples" referenced-type="BioSample" reverse-reference="brendaTissueOntology"/>
+  </class>
+  <class name="CLTerm" extends="OntologyTerm" is-interface="true">
+    <collection name="samples" referenced-type="BioSample" reverse-reference="cellOntology"/>
+  </class>
+  <class name="EFOTerm" extends="OntologyTerm" is-interface="true">
+    <collection name="samples" referenced-type="BioSample" reverse-reference="experimentalFactorOntology"/>
+  </class>
+  <class name="EOLTerm" extends="OntologyTerm" is-interface="true">
+    <collection name="samples" referenced-type="BioSample" reverse-reference="environmentOntologyForLivestock"/>
+  </class>
+  <class name="HPTerm" extends="OntologyTerm" is-interface="true">
+    <collection name="samples" referenced-type="BioSample" reverse-reference="humanPhenotypeOntology"/>
+  </class>
+  <class name="HsapDvTerm" extends="OntologyTerm" is-interface="true">
+    <collection name="samples" referenced-type="BioSample" reverse-reference="humanDevelopmentalStagesOntology"/>
+  </class>
+  <class name="LBOTerm" extends="OntologyTerm" is-interface="true">
+    <collection name="samples" referenced-type="BioSample" reverse-reference="livestockBreedOntology"/>
+  </class>
+  <class name="MONDOTerm" extends="OntologyTerm" is-interface="true">
+    <collection name="samples" referenced-type="BioSample" reverse-reference="mondoDiseaseOntology"/>
+  </class>
+  <class name="OBITerm" extends="OntologyTerm" is-interface="true">
+    <collection name="samples" referenced-type="BioSample" reverse-reference="ontologyForBiomedicalInvestigations"/>
+  </class>
+  <class name="OrphanetTerm" extends="OntologyTerm" is-interface="true">
+    <collection name="samples" referenced-type="BioSample" reverse-reference="orphanetRareDiseaseOntology"/>
+  </class>
+  <class name="PATOTerm" extends="OntologyTerm" is-interface="true">
+    <collection name="samples" referenced-type="BioSample" reverse-reference="phenotypeAndTraitOntology"/>
+  </class>
+  <class name="UBERONTerm" extends="OntologyTerm" is-interface="true">
+    <collection name="samples" referenced-type="BioSample" reverse-reference="uberAnatomyOntology"/>
   </class>
 </classes>

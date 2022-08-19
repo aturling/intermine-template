@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!-- This file details any extensions needed to the data model to store data from this source, everything else is automatically generated from the model description so this is all we need to do to add to the model. -->
+
+<classes>
+  <class name="BTOTerm" extends="OntologyTerm" is-interface="true">
+    <collection name="experiments" referenced-type="Experiment" reverse-reference="brendaTissueOntology"/>
+  </class>
+  <class name="UBERONTerm" extends="OntologyTerm" is-interface="true">
+    <collection name="experiments" referenced-type="Experiment" reverse-reference="uberAnatomyOntology"/>
+  </class>
+  <class name="Experiment" is-interface="true">
+    <attribute name="experimentId" type="java.lang.String"/>
+    <attribute name="btoId" type="java.lang.String"/>
+    <attribute name="btoName" type="java.lang.String"/>
+    <attribute name="chipAntibody" type="java.lang.String"/>
+    <attribute name="libraryName" type="java.lang.String"/>
+    <attribute name="libraryStrategy" type="java.lang.String"/>
+    <attribute name="librarySelection" type="java.lang.String"/>
+    <attribute name="librarySource" type="java.lang.String"/>
+    <attribute name="libraryLayout" type="java.lang.String"/>
+    <attribute name="platform" type="java.lang.String"/>
+    <attribute name="platformModel" type="java.lang.String"/>
+    <attribute name="project" type="java.lang.String"/>
+    <attribute name="projectId" type="java.lang.String"/>
+    <attribute name="organismName" type="java.lang.String"/>
+    <attribute name="specimenTag" type="java.lang.String"/>
+    <attribute name="run" type="java.lang.String"/>
+    <attribute name="tissue" type="java.lang.String"/>
+    <attribute name="uberonId" type="java.lang.String"/>
+    <attribute name="uberonName" type="java.lang.String"/>
+    <reference name="organism" referenced-type="Organism"/>
+    <reference name="bioProject" referenced-type="BioProject"/>
+    <reference name="bioSample" referenced-type="BioSample"/>
+    <reference name="brendaTissueOntology" referenced-type="BTOTerm" reverse-reference="experiments"/>
+    <reference name="uberAnatomyOntology" referenced-type="UBERONTerm" reverse-reference="experiments"/>
+    <collection name="dataSets" referenced-type="DataSet"/>
+  </class>
+  <class name="BioSample" is-interface="true">
+    <attribute name="bioSampleId" type="java.lang.String"/>
+    <collection name="dataSets" referenced-type="DataSet"/>
+    <collection name="experiments" referenced-type="Experiment" reverse-reference="bioSample"/>
+  </class>
+  <class name="BioProject" is-interface="true">
+    <attribute name="bioProjectUniqueId" type="java.lang.String"/>
+    <collection name="dataSets" referenced-type="DataSet"/>
+    <collection name="experiments" referenced-type="Experiment" reverse-reference="bioProject"/>
+  </class>
+</classes>

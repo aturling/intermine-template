@@ -14,4 +14,8 @@
     <collection name="dataSets" referenced-type="DataSet"/>
     <collection name="publications" referenced-type="Publication"/>
   </class>
+  <class name="BioSample" is-interface="true">
+    <attribute name="bioSampleId" type="java.lang.String"/>
+    <collection name="dataSets" referenced-type="DataSet"/>
+  </class>
 </classes>
