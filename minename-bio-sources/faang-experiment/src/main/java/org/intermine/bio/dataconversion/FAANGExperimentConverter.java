@@ -41,7 +41,7 @@ public class FAANGExperimentConverter extends FAANGBioFileConverter
     static {
         // Attribute names that can be directly stored from input file,
         // no further processing needed:
-        attributeNames.add("btoID");
+        attributeNames.add("btoId");
         attributeNames.add("btoName");
         attributeNames.add("chipAntibody");
         attributeNames.add("libraryName");
