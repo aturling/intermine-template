@@ -37,7 +37,6 @@ public class FAANGExperimentConverter extends FAANGBioFileConverter
     private static final String DATASET_TITLE = "SRA Experiment Metadata data set";
     private static final String DATA_SOURCE_NAME = "NCBI SRA";
     private static final int NUM_COLS = 22; // expected number of columns in tsv input file
-    private String taxonId;
 
     static {
         // Attribute names that can be directly stored from input file,
@@ -67,14 +66,6 @@ public class FAANGExperimentConverter extends FAANGBioFileConverter
      */
     public FAANGExperimentConverter(ItemWriter writer, Model model) {
         super(writer, model, DATA_SOURCE_NAME, DATASET_TITLE);
-    }
-
-    /**
-     * Set the taxon id.
-     * @param taxonId taxon id
-     */
-    public void setTaxonId(String taxonId) {
-        this.taxonId = taxonId;
     }
 
     /**

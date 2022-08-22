@@ -102,6 +102,7 @@ public abstract class FAANGBioFileConverter extends BioFileConverter
         } else {
             bioProject = createItem("BioProject");
             bioProject.setAttribute("bioProjectUniqueId", projId);
+            setOrganismRef(bioProject);
             bioProjects.put(projId, bioProject);
         }
         return bioProject;
@@ -119,6 +120,7 @@ public abstract class FAANGBioFileConverter extends BioFileConverter
         } else {
             bioSample = createItem("BioSample");
             bioSample.setAttribute("bioSampleId", sampleId);
+            setOrganismRef(bioSample);
             bioSamples.put(sampleId, bioSample);
         }
         return bioSample;
