@@ -321,8 +321,9 @@ public abstract class FAANGBioFileConverter extends BioFileConverter
      */
     protected String getValue(String unformattedStr) {
         String value = unformattedStr.trim();
-        // If column value is empty (designated by - or . in column), set to empty string
-        if (".".equals(value) || "-".equals(value)) {
+        // If column value is empty, set to empty string
+        // Empty columns include: . - NA N/A
+        if (".".equals(value) || "-".equals(value) || "NA".equals(value) | "N/A".equals(value)) {
             value = "";
         }
         return value;

@@ -159,7 +159,7 @@ public class FAANGBioSampleConverter extends FAANGBioFileConverter
             setOntologyTermRef(bioSample, "Cell Ontology", "cellOntology", "CellTypeClID", "CLTerm");
             setOntologyTermRef(bioSample, "Environment Ontology for Livestock", "environmentOntologyForLivestock", "EnvironmentalConditionsOwleolID", "EOLTerm");
             setOntologyTermRef(bioSample, "Experimental Factor Ontology", "experimentalFactorOntology", "DevelopmentalStageEfoID", "EFOTerm");
-            setOntologyTermRef(bioSample, "Human Developmental Stages Ontology", "humanDevelopmentalStageOntology", "DevelopmentalStageHsapdvID", "HsapDvTerm");
+            setOntologyTermRef(bioSample, "Human Developmental Stages Ontology", "humanDevelopmentalStagesOntology", "DevelopmentalStageHsapdvID", "HsapDvTerm");
             setOntologyTermRef(bioSample, "Human Phenotype Ontology", "humanPhenotypeOntology", "HealthStatusAtCollectionHpID", "HPTerm");
             setOntologyTermRef(bioSample, "Livestock Breed Ontology", "livestockBreedOntology", "BreedLboID", "LBOTerm");
             setOntologyTermRef(bioSample, "Mondo Disease Ontology", "mondoDiseaseOntology", "HealthStatusAtCollectionMondoID", "MONDOTerm");
