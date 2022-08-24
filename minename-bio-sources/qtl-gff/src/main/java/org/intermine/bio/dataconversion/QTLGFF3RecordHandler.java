@@ -108,7 +108,7 @@ public class QTLGFF3RecordHandler extends GFF3RecordHandler
                 String ontologyName = e.getValue();
                 String attrName = ontologyAbbr + "_name";
                 if (record.getAttributes().get(attrName) != null) {
-                    String fieldName = ontologyAbbr.toLowerCase() + "Name";
+                    String fieldName = ontologyName.toLowerCase().replaceAll("\\s+", "");  // Ontology Name -> ontologyName
                     String termName = record.getAttributes().get(attrName).iterator().next();
                     Item ontologyTerm = getOntologyTerm(termName, ontologyName, ontologyAbbr);
                     feature.setReference(fieldName, ontologyTerm.getIdentifier());

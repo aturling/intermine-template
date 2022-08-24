@@ -29,9 +29,9 @@
     <attribute name="testBase" type="java.lang.String"/>
     <attribute name="flankMarkers" type="java.lang.String"/>
     <!--Comment these out if these ontologies are not loaded-->
-    <reference name="cmoName" referenced-type="CMOTerm"/>
-    <reference name="ptoName" referenced-type="LPTTerm"/>
-    <reference name="vtoName" referenced-type="VTTerm"/>
+    <reference name="clinicalMeasurementOntology" referenced-type="CMOTerm"/>
+    <reference name="livestockProductTraitOntology" referenced-type="LPTTerm"/>
+    <reference name="vertebrateTraitOntology" referenced-type="VTTerm"/>
     <collection name="snpsAsFlankMarkers" referenced-type="SequenceAlteration"/>
   </class>
   <class name="SequenceAlteration" extends="SequenceFeature" is-interface="true"/>
