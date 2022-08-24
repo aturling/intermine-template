@@ -16,6 +16,12 @@
   </class>
   <class name="BioSample" is-interface="true">
     <attribute name="bioSampleId" type="java.lang.String"/>
+    <reference name="organism" referenced-type="Organism"/>
+    <collection name="dataSets" referenced-type="DataSet"/>
+  </class>
+  <class name="Experiment" is-interface="true">
+    <attribute name="experimentId" type="java.lang.String"/>
+    <reference name="organism" referenced-type="Organism"/>
     <collection name="dataSets" referenced-type="DataSet"/>
   </class>
 </classes>

@@ -22,15 +22,23 @@
     <reference name="bioSample" referenced-type="BioSample"/>
     <reference name="organism" referenced-type="Organism"/>
     <collection name="dataSets" referenced-type="DataSet"/>
+    <collection name="experiments" referenced-type="Experiment" reverse-reference="analyses"/>
   </class>
   <class name="BioProject" is-interface="true">
     <attribute name="bioProjectUniqueId" type="java.lang.String"/>
+    <reference name="organism" referenced-type="Organism"/>
     <collection name="analyses" referenced-type="Analysis" reverse-reference="bioProject"/>
     <collection name="dataSets" referenced-type="DataSet"/>
   </class>
   <class name="BioSample" is-interface="true">
     <attribute name="bioSampleId" type="java.lang.String"/>
+    <reference name="organism" referenced-type="Organism"/>
     <collection name="analyses" referenced-type="Analysis" reverse-reference="bioSample"/>
     <collection name="dataSets" referenced-type="DataSet"/>
+  </class>
+  <class name="Experiment" is-interface="true">
+    <attribute name="experimentId" type="java.lang.String"/>
+    <reference name="organism" referenced-type="Organism"/>
+    <collection name="analyses" referenced-type="Analysis" reverse-reference="experiments"/>
   </class>
 </classes>

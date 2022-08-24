@@ -35,6 +35,7 @@ public abstract class FAANGBioFileConverter extends BioFileConverter
 {
     private HashMap<String,Item> bioProjects = new HashMap<String, Item>();
     private HashMap<String,Item> bioSamples = new HashMap<String, Item>();
+    private HashMap<String,Item> experiments = new HashMap<String, Item>();
     private HashMap<String,Item> ontologies = new HashMap<String, Item>();
     private HashMap<String,Item> ontologyTerms = new HashMap<String, Item>();
     private HashMap<String,Item> publications = new HashMap<String, Item>();
@@ -94,6 +95,7 @@ public abstract class FAANGBioFileConverter extends BioFileConverter
      * Get an Item representation of a BioProject
      *
      * @param projId BioProject id
+     * @return bioproject item
      */
     protected Item getBioProject(String projId) {
         Item bioProject = null;
@@ -112,6 +114,7 @@ public abstract class FAANGBioFileConverter extends BioFileConverter
      * Get an Item representation of a BioSample
      *
      * @param sampleId BioSample id
+     * @return biosample item
      */
     protected Item getBioSample(String sampleId) {
         Item bioSample = null;
@@ -127,10 +130,30 @@ public abstract class FAANGBioFileConverter extends BioFileConverter
     }
 
     /**
+     * Get an Item representation of an experiment
+     *
+     * @param expId experiment id
+     * @return experiment item
+     */
+    protected Item getExperiment(String expId) {
+        Item experiment = null;
+        if (experiments.containsKey(expId)) {
+            experiment = experiments.get(expId);
+        } else {
+            experiment = createItem("Experiment");
+            experiment.setAttribute("experimentId", expId);
+            setOrganismRef(experiment);
+            experiments.put(expId, experiment);
+        }
+        return experiment;
+    }
+
+
+    /**
      * Get an Item representation of a publication
      *
      * @param pubMedId PubMed id
-     * @return
+     * @return publication item
      */
     protected Item getPublication(String pubMedId) throws ObjectStoreException {
         Item publication = null;
@@ -216,6 +239,27 @@ public abstract class FAANGBioFileConverter extends BioFileConverter
      */
     protected void setBioSampleRef(Item item) {
         setBioSampleRef(item, "bioSample");
+    }
+
+    /**
+     * Add to experiment item collection
+     *
+     * @param item item with experiments
+     * @param expKey attributes key for experiment id (same as header column name)
+     */
+    protected void addToExperimentCollection(Item item, String expKey)
+        throws ObjectStoreException {
+        String key = expKey.toLowerCase(); // lowercase for matching with headers 
+        if (attributes.containsKey(key)) {
+            String expIdsStr = attributes.get(key);
+            if (!expIdsStr.isEmpty()) {
+                // Multiple experiment ids comma separated
+                String[] expIds = expIdsStr.split(",");
+                for (int i = 0; i < expIds.length; i++) {
+                    item.addToCollection("experiments", getExperiment(expIds[i]));
+                }
+            }
+        }
     }
 
     /**
@@ -341,6 +385,9 @@ public abstract class FAANGBioFileConverter extends BioFileConverter
         }
         for (String key : bioSamples.keySet()) {
             store(bioSamples.get(key));
+        }
+        for (String key : experiments.keySet()) {
+            store(experiments.get(key));
         }
         for (String key : ontologies.keySet()) {
             store(ontologies.get(key));
