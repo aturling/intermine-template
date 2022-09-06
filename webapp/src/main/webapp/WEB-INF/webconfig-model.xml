@@ -176,7 +176,7 @@
       <fieldconfig fieldExpr="source"/>
       <fieldconfig fieldExpr="biotype"/>
       <fieldconfig fieldExpr="symbol"/>
-      <fieldconfig fieldExpr="name"/>
+      <fieldconfig fieldExpr="description"/>
       <fieldconfig fieldExpr="length" displayer="/model/sequenceShortDisplayerWithField.jsp" />
       <fieldconfig fieldExpr="chromosomeLocation" displayer="/model/chromosomeLocDisplayer.jsp" showInResults="false" />
       <fieldconfig fieldExpr="chromosome.primaryIdentifier" label="Chromosome ID" showInInlineCollection="false" showInSummary="false"/>
