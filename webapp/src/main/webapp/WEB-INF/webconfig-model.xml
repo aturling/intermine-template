@@ -1,6 +1,13 @@
 <webconfig>
   <!--Comment out the classes that aren't used-->
 
+  <class className="org.intermine.model.bio.AliasName">
+    <fields>
+      <fieldconfig fieldExpr="identifier" label="Alias ID"/>
+      <fieldconfig fieldExpr="source"/>
+    </fields>
+  </class>
+
   <class className="org.intermine.model.bio.Analysis">
     <inlinelist>
       <table path="dataSets.name"/>
@@ -27,13 +34,6 @@
   <class className="org.intermine.model.bio.Author">
     <fields>
       <fieldconfig fieldExpr="name"/>
-    </fields>
-  </class>
-
-  <class className="org.intermine.model.bio.AliasName">
-    <fields>
-      <fieldconfig fieldExpr="identifier" label="Alias ID"/>
-      <fieldconfig fieldExpr="source"/>
     </fields>
   </class>
 
