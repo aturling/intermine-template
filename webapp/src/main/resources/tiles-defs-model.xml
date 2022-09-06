@@ -36,13 +36,6 @@
 
 <definition name="friendlyMineLinkDisplayer.tile" path="/model/friendlyMineLinkDisplayer.jsp" controllerUrl="/initFriendlyMineLinkDisplayer.do"/>
 
-<definition name="updates.page" extends="layout.template">
-    <put name="body" value="updates.tile"/>
-    <put name="pageName" value="updates"/>
-</definition>
-
-<definition name="updates.tile" path="/updates.jsp"/>
-
 <definition name="releaseUpdates.page" extends="layout.template">
   <put name="body" value="releaseUpdates.title"/>
   <put name="pageName" value="releaseUpdates"/>
@@ -53,5 +46,4 @@
     <put name="body" value="help.tile"/>
     <put name="pageName" value="Help"/>
 </definition>
-
-<definition name="help.tile" path="/Help.jsp"/>
+<definition name="help.tile" path="/help.jsp"/>

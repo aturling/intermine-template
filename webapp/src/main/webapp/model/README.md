@@ -3,15 +3,10 @@ geneOntologyDisplayer.jsp: Adds ontograph and ECOTerms
 geneStructureDisplayer.jsp: Replaces CDSs with CodingSequences
 
 geneStructureModel.jsp: Adds jbrowse_renderer model to gene report pages
+                        TODO: update organisms, assemblies (if multiple), mine url
+                              Also need to comment and uncomment assembly code snippets if
+                              multiple assemblies.
 
 homologueDisplayer.jsp: Small changes
 
-sequenceFeatureDisplayer.jsp: Comments out "No location information"
-
-Genomic region search: 
-- With Assembly dropdown:
-  * Use genomic_region_search_withAssemblyVersion and rename folder to genomic_region_search
-
-- Without Assembly dropdown:
-  * Use genomic_region_search_noAssemblyVersion and rename folder to genomic_region_search
-
+Genomic region search: Custom search code
