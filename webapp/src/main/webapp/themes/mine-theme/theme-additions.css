@@ -11,6 +11,10 @@ table.im-results-table td.residues {
   overflow-wrap: break-word;
   max-width: 500px;
 }
+div.report-page #header_wrap table td {
+  vertical-align:top;
+  word-break: break-word;
+}
 
 /* sequences in pop-ups are too long */
 .popover table td.residues {
