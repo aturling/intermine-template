@@ -5,8 +5,19 @@
 <c:set var="taxon" value="${reportObject.object.organism.taxonId}"/>
 <c:set var="assembly" value="${reportObject.object.chromosome.assembly}"/>
 <c:set var="chrId" value="${reportObject.object.chromosome.primaryIdentifier}"/>
-<c:set var="jBrowseProp" value="attributelink.JBrowse.Gene.${taxon}.primaryIdentifier.url"/>
-<c:set var="jBrowseUrl" value="${WEB_PROPERTIES[jBrowseProp]}"/>
+<c:choose>
+  <c:when test="${!empty attributelink.JBrowse.Gene.${taxon}.primaryIdentifier.url}">
+    <!-- One assembly per org: -->
+    <c:set var="jBrowseProp" value="attributelink.JBrowse.Gene.${taxon}.primaryIdentifier.url"/>
+  </c:when>
+  <c:otherwise>
+    <!-- More than one assembly per org: -->
+    <c:set var="jBrowseProp" value="jbrowse.link.${taxon}.${assembly}.url"/>
+  </c:otherwise>
+</c:choose>
+<c:if test="${!empty jBrowseProp}">
+  <c:set var="jBrowseUrl" value="${WEB_PROPERTIES[jBrowseProp]}"/>
+</c:if>
 
 <div class="collection-of-collections" id="gene-structure-model" style="height:80px">
 
