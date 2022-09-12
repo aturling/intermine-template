@@ -4,8 +4,8 @@
     <icon-image>model/images/genomics.gif</icon-image>
     <large-image>model/images/genomics.gif</large-image>
     <intro-text>
-      The gene structure and other genome annotation in AquaMine are provided by
-      a variety of curated source databases.  In most cases AquaMine includes
+      The gene structure and other genome annotation in this mine are provided by
+      a variety of curated source databases.  In most cases this includes
       all genome features that have chromosomal locations.
     </intro-text>
     <tile-name>model/genomics.jsp</tile-name>
