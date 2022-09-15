@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!-- This file details any extensions needed to the data model to store data from this source, everything else is automatically generated from the model description so this is all we need to do to add to the model. -->
+
+<classes>
+  <class name="Entity" is-interface="true">
+    <attribute name="name" type="java.lang.String"/>
+    <reference name="organism" referenced-type="Organism"/>
+    <collection name="dataSets" referenced-type="DataSet"/>
+  </class>
+  <class name="POTerm" extends="OntologyTerm" is-interface="true"/>
+  <class name="Sample" extends="Entity" is-interface="true">
+    <attribute name="growthStage" type="java.lang.String"/>
+    <attribute name="libraryLayout" type="java.lang.String"/>
+    <attribute name="organGroup" type="java.lang.String"/>
+    <attribute name="qTellerId" type="java.lang.String"/>
+    <attribute name="sampleName" type="java.lang.String"/>
+    <attribute name="sraBioProjectId" type="java.lang.String"/>
+    <attribute name="sraStudyId" type="java.lang.String"/>
+    <attribute name="tissueDescription" type="java.lang.String"/>
+    <reference name="poName" referenced-type="POTerm"/>
+    <collection name="replicates" referenced-type="Replicate" reverse-reference="sample"/>
+    <collection name="meanExpression" referenced-type="Expression" reverse-reference="sample"/>
+  </class>
+  <class name="Replicate" extends="Entity" is-interface="true">
+    <attribute name="bioSampleDescription" type="java.lang.String"/>
+    <attribute name="replicateNumber" type="java.lang.String"/>
+    <attribute name="sampleReplicateName" type="java.lang.String"/>
+    <attribute name="sraBioSampleId" type="java.lang.String"/>
+    <attribute name="sraExperimentId" type="java.lang.String"/>
+    <attribute name="sraRunId" type="java.lang.String"/>
+    <attribute name="sraSampleId" type="java.lang.String"/>
+    <reference name="sample" referenced-type="Sample" reverse-reference="replicates"/>
+  </class>
+  <class name="Expression" is-interface="true">
+    <reference name="sample" referenced-type="Sample" reverse-reference="meanExpression"/>
+  </class>
+</classes>

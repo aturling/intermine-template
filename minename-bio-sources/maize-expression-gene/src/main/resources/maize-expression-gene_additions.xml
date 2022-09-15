@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!-- This file details any extensions needed to the data model to store data from this source, everything else is automatically generated from the model description so this is all we need to do to add to the model. -->
+
+<classes>
+  <class name="Gene" extends="SequenceFeature" is-interface="true">
+    <collection name="expression" referenced-type="Expression" reverse-reference="gene"/>
+  </class>
+  <class name="Expression" is-interface="true">
+    <attribute name="entityName" type="java.lang.String"/>
+    <attribute name="FPKM" type="java.lang.Float"/>
+    <attribute name="type" type="java.lang.String"/>
+    <reference name="gene" referenced-type="Gene" reverse-reference="expression"/>
+    <reference name="sample" referenced-type="Sample" reverse-reference="meanExpression"/>
+  </class>
+  <class name="Entity" is-interface="true">
+    <attribute name="name" type="java.lang.String"/>
+    <reference name="organism" referenced-type="Organism"/>
+    <collection name="dataSets" referenced-type="DataSet"/>
+  </class>
+  <class name="Sample" extends="Entity" is-interface="true">
+    <collection name="meanExpression" referenced-type="Expression" reverse-reference="sample"/>
+  </class>
+</classes>
