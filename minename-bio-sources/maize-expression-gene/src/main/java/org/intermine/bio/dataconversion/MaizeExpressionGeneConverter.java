@@ -37,7 +37,6 @@ public class MaizeExpressionGeneConverter extends BioFileConverter
     private String entityType;
     private String type;
     private String valueType = "";
-    private String geneSource;
     private String taxonId;
     private String orgRefId;
 
@@ -63,11 +62,6 @@ public class MaizeExpressionGeneConverter extends BioFileConverter
     public void setEntityType(String entityType) {
         System.out.println("Setting entityType as " + entityType);
         this.entityType = entityType;
-    }
-
-    public void setGeneSource(String geneSource) {
-        System.out.println("Setting geneSource as " + geneSource);
-        this.geneSource = geneSource;
     }
 
     public void setTaxonId(String taxonId) {
@@ -144,7 +138,6 @@ public class MaizeExpressionGeneConverter extends BioFileConverter
                     Item expressionItem = expressionItems.get(key);
                     transcriptItem.setAttribute("primaryIdentifier", transcriptId);
                     transcriptItem.setReference("organism", orgRefId);
-                    transcriptItem.setAttribute("source", geneSource);
                     transcriptItem.addToCollection("expression", expressionItem.getIdentifier());
                     expressionItem.setReference("gene", transcriptItem.getIdentifier());
                     transcriptItems.put(transcriptId, transcriptItem);
