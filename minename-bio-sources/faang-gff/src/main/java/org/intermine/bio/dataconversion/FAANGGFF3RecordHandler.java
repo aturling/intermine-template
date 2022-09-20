@@ -26,6 +26,8 @@ public class FAANGGFF3RecordHandler extends BaseGFF3RecordHandler
      */
     public FAANGGFF3RecordHandler (Model model) {
         super(model);
+
+	// No parent-child relationships in FAANG GFF files
     }
 
     /**
