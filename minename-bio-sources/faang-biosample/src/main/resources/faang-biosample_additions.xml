@@ -41,13 +41,11 @@
     <attribute name="physiologicalConditionOwlatolId" type="java.lang.String"/>
     <attribute name="physiologicalConditions" type="java.lang.String"/>
     <attribute name="project" type="java.lang.String"/>
-    <attribute name="purificationProtocol" type="java.lang.String"/>
     <attribute name="releaseDate" type="java.util.Date"/>
     <attribute name="sampleName" type="java.lang.String"/>
     <attribute name="secondaryProject" type="java.lang.String"/>
     <attribute name="sex" type="java.lang.String"/>
     <attribute name="specimenCollectionDate" type="java.util.Date"/>
-    <attribute name="specimenCollectionProtocol" type="java.lang.String"/>
     <attribute name="specimenTag" type="java.lang.String"/>
     <attribute name="strain" type="java.lang.String"/>
     <attribute name="submissionDescription" type="java.lang.String"/>
@@ -67,6 +65,8 @@
     <reference name="ontologyForBiomedicalInvestigations" referenced-type="OBITerm" reverse-reference="samples"/>
     <reference name="phenotypeAndTraitOntology" referenced-type="PATOTerm" reverse-reference="samples"/>
     <reference name="organism" referenced-type="Organism"/>
+    <reference name="purificationProtocol" referenced-type="Protocol"/>
+    <reference name="specimenCollectionProtocol" referenced-type="Protocol"/>
     <collection name="bioSamplePools" referenced-type="BioSample" reverse-reference="componentSampleIds"/>
     <collection name="componentSampleIds" referenced-type="BioSample" reverse-reference="bioSamplePools"/>
     <collection name="dataSets" referenced-type="DataSet"/>
@@ -111,5 +111,9 @@
   </class>
   <class name="UBERONTerm" extends="OntologyTerm" is-interface="true">
     <collection name="samples" referenced-type="BioSample" reverse-reference="uberAnatomyOntology"/>
+  </class>
+  <class name="Protocol" is-interface="true">
+    <attribute name="name" type="java.lang.String"/>
+    <attribute name="url" type="java.lang.String"/>
   </class>
 </classes>

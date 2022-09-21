@@ -52,7 +52,6 @@ public class FAANGBioSampleConverter extends FAANGBioFileConverter
         attributeNames.add("cellType");
         attributeNames.add("cellTypeClId");
         attributeNames.add("chipAntibody");
-        attributeNames.add("description");
         attributeNames.add("descriptionUberonId");
         attributeNames.add("developmentalStage");
         attributeNames.add("developmentalStageEfoId");
@@ -81,14 +80,12 @@ public class FAANGBioSampleConverter extends FAANGBioFileConverter
         attributeNames.add("physiologicalConditionOwlatolId");
         attributeNames.add("physiologicalConditions");
         attributeNames.add("project");
-        attributeNames.add("purificationProtocol");
         attributeNames.add("releaseDate");
         attributeNames.add("sampleName");
         attributeNames.add("secondaryProject");
         attributeNames.add("sex");
         attributeNames.add("sexPatoId");
         attributeNames.add("specimenCollectionDate");
-        attributeNames.add("specimenCollectionProtocol");
         attributeNames.add("specimenTag");
         attributeNames.add("strain");
         attributeNames.add("submissionDescription");
@@ -150,6 +147,15 @@ public class FAANGBioSampleConverter extends FAANGBioFileConverter
 
             // Special cases to be handled separately:
 
+            // Capitalize description for consistency
+	    if (attributes.containsKey("description")) {
+                String description = attributes.get("description");
+                if (StringUtils.isNotEmpty(description)) {
+                    description = StringUtils.capitalize(description);
+                    bioSample.setAttribute("description", description);
+		}
+            }
+
             // Set reference to organism
             setOrganismRef(bioSample);
 
@@ -170,6 +176,10 @@ public class FAANGBioSampleConverter extends FAANGBioFileConverter
             addToOntologyTermCollection(bioSample, "Uber Anatomy Ontology", "uberAnatomyOntology", "DescriptionUberonID", "UBERONTerm");
             addToOntologyTermCollection(bioSample, "Uber Anatomy Ontology", "uberAnatomyOntology", "DevelopmentalStageUberonID", "UBERONTerm");
             addToOntologyTermCollection(bioSample, "Uber Anatomy Ontology", "uberAnatomyOntology", "OrganismPartUberonID", "UBERONTerm");
+
+            // Set references to protocols
+            setProtocolRef(bioSample, "purificationProtocol", "PurificationProtocol", "Purification Protocol");
+	    setProtocolRef(bioSample, "specimenCollectionProtocol", "SpecimenCollectionProtocol", "Specimen Collection Protocol");
 
             // Handle component ids, if present
             String componentsKey = "biosamplecomponents"; // lowercase

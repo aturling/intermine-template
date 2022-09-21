@@ -16,9 +16,23 @@ div.report-page #header_wrap table td {
   word-break: break-word;
 }
 
+/* protocol urls too long */
+table.im-results-table td.Protocol.url {
+  /*overflow: hidden;
+  text-overflow: ellipsis;*/
+  word-break: break-all;
+  max-width: 200px;
+}
+
 /* sequences in pop-ups are too long */
 .popover table td.residues {
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 300px;
+}
+/* protocol urls also too long */
+.popover .Protocol table td.url {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
 }

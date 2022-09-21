@@ -20,6 +20,7 @@ import java.io.Reader;
 
 import org.intermine.dataconversion.ItemWriter;
 import org.intermine.metadata.Model;
+import org.intermine.metadata.StringUtil;
 import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.util.FormattedTextParser;
 import org.intermine.xml.full.Item;
@@ -38,6 +39,7 @@ public abstract class FAANGBioFileConverter extends BioFileConverter
     private HashMap<String,Item> experiments = new HashMap<String, Item>();
     private HashMap<String,Item> ontologies = new HashMap<String, Item>();
     private HashMap<String,Item> ontologyTerms = new HashMap<String, Item>();
+    private HashMap<String,Item> protocols = new HashMap<String, Item>();
     private HashMap<String,Item> publications = new HashMap<String, Item>();
 
     protected ArrayList<String> headerNames = new ArrayList<String>();
@@ -273,7 +275,7 @@ public abstract class FAANGBioFileConverter extends BioFileConverter
         String key = pubMedIdKey.toLowerCase(); // lowercase for matching with headers 
         if (attributes.containsKey(key)) {
             String pubMedId = attributes.get(key);
-            if (!pubMedId.isEmpty()) {
+            if (!pubMedId.isEmpty() && StringUtil.allDigits(pubMedId)) {
                 item.addToCollection("publications", getPublication(pubMedId));
             }
         }
@@ -320,6 +322,25 @@ public abstract class FAANGBioFileConverter extends BioFileConverter
     }
 
     /**
+     * Set reference to protocol in item
+     *
+     * @param item item with protocol reference
+     * @param ref reference field name
+     * @param protocolKey attributes key (same as header column name)
+     * @param name protocol name
+     */
+    protected void setProtocolRef(Item item, String ref, String protocolKey, String name) 
+        throws ObjectStoreException {
+        String key = protocolKey.toLowerCase(); // lowercase for matching with headers
+        if (attributes.containsKey(key)) {
+            String protocolUrl = attributes.get(key);
+            if (StringUtils.isNotEmpty(protocolUrl)) {
+                item.setReference(ref, getProtocol(protocolUrl, name));
+            }
+        }
+    }
+
+    /**
      * Get an Item representation of a subclass of OntologyTerm based on ontologyName
      *
      * @param id ontology term id
@@ -360,6 +381,27 @@ public abstract class FAANGBioFileConverter extends BioFileConverter
     }
 
     /**
+     * Get an Item representation of a Protocol
+     * @param url url
+     * @param name name
+     * @return protocol item
+     */
+    protected Item getProtocol(String url, String name) throws ObjectStoreException {
+        Item protocol = null;
+        // Protocols unique up to name and url (use both for key)
+        String uniqueId = name + ":" + url;
+        if (protocols.containsKey(uniqueId)) {
+            protocol = protocols.get(uniqueId);
+        } else {
+            protocol = createItem("Protocol");
+            protocol.setAttribute("name", name);
+            protocol.setAttribute("url", url);
+            protocols.put(uniqueId, protocol);
+        }
+        return protocol;
+    }
+
+    /**
      * Get formatted field value
      *
      * @param unformattedStr unformatted field value
@@ -395,6 +437,9 @@ public abstract class FAANGBioFileConverter extends BioFileConverter
         for (String key : ontologyTerms.keySet()) {
             store(ontologyTerms.get(key));
         }
+        for (String key : protocols.keySet()) {
+            store(protocols.get(key));
+        }      
         for (String key : publications.keySet()) {
             store(publications.get(key));
         }
