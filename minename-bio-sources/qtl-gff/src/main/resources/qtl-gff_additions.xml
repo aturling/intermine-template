@@ -12,22 +12,24 @@
     <attribute name="trait" type="java.lang.String"/>
     <attribute name="type" type="java.lang.String"/>
     <attribute name="abbreviation" type="java.lang.String"/>
-    <attribute name="additiveEffect" type="java.lang.String"/>
+    <attribute name="additiveEffect" type="java.lang.Float"/>
     <attribute name="bayesValue" type="java.lang.String"/>
     <attribute name="breed" type="java.lang.String"/>
     <attribute name="coordSource" type="java.lang.String"/>
-    <attribute name="dominanceEffect" type="java.lang.String"/>
-    <attribute name="fStat" type="java.lang.String"/>
+    <attribute name="dominanceEffect" type="java.lang.Float"/>
+    <attribute name="flankMarkers" type="java.lang.String"/>
+    <attribute name="fStat" type="java.lang.Float"/>
     <attribute name="lodScore" type="java.lang.String"/>
     <attribute name="lsMeans" type="java.lang.String"/>
-    <attribute name="likelihoodRatio" type="java.lang.String"/>
+    <attribute name="likelihoodRatio" type="java.lang.Float"/>
     <attribute name="mapType" type="java.lang.String"/>
     <attribute name="model" type="java.lang.String"/>
     <attribute name="peakCentimorgan" type="java.lang.String"/>
     <attribute name="pValue" type="java.lang.String"/>
     <attribute name="significance" type="java.lang.String"/>
     <attribute name="testBase" type="java.lang.String"/>
-    <attribute name="flankMarkers" type="java.lang.String"/>
+    <attribute name="tissue" type="java.lang.String"/>
+    <attribute name="variance" type="java.lang.Float"/>
     <!--Comment these out if these ontologies are not loaded-->
     <reference name="clinicalMeasurementOntology" referenced-type="CMOTerm"/>
     <reference name="livestockProductTraitOntology" referenced-type="LPTTerm"/>

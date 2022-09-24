@@ -16,6 +16,7 @@ import java.util.HashMap;
 
 import org.intermine.bio.io.gff3.GFF3Record;
 import org.intermine.metadata.Model;
+import org.intermine.metadata.StringUtil;
 import org.intermine.xml.full.Item;
 import org.apache.commons.lang.StringUtils;
 
@@ -29,22 +30,20 @@ public class QTLGFF3RecordHandler extends GFF3RecordHandler
     private HashMap<String, Item> sequenceAlterationItems = new HashMap<String, Item>();
     private HashMap<String, Item> ontologyItems = new HashMap<String, Item>();
     private HashMap<String, Item> ontologyTermItems = new HashMap<String, Item>();
-    // Map of attribute name -> field name for QTL fields to store
+    // Map of attribute name -> field name for QTL fields to store (strings)
     private static final HashMap<String, String> attributesToSet = new HashMap<String, String>();
+    // Map of attribute name -> field name for QTL fields to store (floats, handled separately)
+    private static final HashMap<String, String> floatAttrsToSet = new HashMap<String, String>();
     // Map of ontology abbreviation (as appears in attribute list) -> Ontology name
     private static final HashMap<String, String> ontologiesToSet = new HashMap<String, String>(); 
 
     static {
         // Attribute name -> corresponding QTL field name
         attributesToSet.put("Abbrev", "abbreviation");
-        attributesToSet.put("Additive_Effect", "additiveEffect");
         attributesToSet.put("Bayes-value", "bayesValue");
         attributesToSet.put("breed", "breed");
         attributesToSet.put("Coord_src", "coordSource");
-        attributesToSet.put("Dominance_Effect", "dominanceEffect");
-        attributesToSet.put("F-Stat", "fStat");
         attributesToSet.put("ID", "primaryIdentifier");
-        attributesToSet.put("Likelihood_Ratio", "likelihoodRatio");
         attributesToSet.put("LOD-score", "lodScore");
         attributesToSet.put("LS-means", "lsMeans");
         attributesToSet.put("Map_Type", "mapType");
@@ -52,10 +51,17 @@ public class QTLGFF3RecordHandler extends GFF3RecordHandler
         attributesToSet.put("Name", "name");
         attributesToSet.put("P-value", "pValue");
         attributesToSet.put("QTL_ID", "qtlId");
-        attributesToSet.put("Significance", "significance");
         attributesToSet.put("Test_Base", "testBase");
-        attributesToSet.put("Trait", "trait");
+        attributesToSet.put("Tissue", "tissue");
+	attributesToSet.put("Trait", "trait");
         attributesToSet.put("trait_ID", "traitId");
+
+	// Float attributes
+	floatAttrsToSet.put("Additive_Effect", "additiveEffect");
+	floatAttrsToSet.put("Dominance_Effect", "dominanceEffect");
+	floatAttrsToSet.put("F-Stat", "fStat");
+	floatAttrsToSet.put("Likelihood_Ratio", "likelihoodRatio");
+	floatAttrsToSet.put("Variance", "variance");
 
         // Ontology abbreviation -> Ontology name
         ontologiesToSet.put("CMO", "Clinical Measurement Ontology");
@@ -85,15 +91,40 @@ public class QTLGFF3RecordHandler extends GFF3RecordHandler
                 String fieldName = e.getValue();
                 if (record.getAttributes().get(attrName) != null) {
                     String fieldValue = record.getAttributes().get(attrName).iterator().next();
-                    feature.setAttribute(fieldName, fieldValue);
+		    if (fieldNotEmpty(fieldValue)) {
+                        feature.setAttribute(fieldName, fieldValue);
+		    }
                 }
+            }
+            // Special case: float fields
+	    for (Entry<String, String> e: floatAttrsToSet.entrySet()) {
+                String attrName = e.getKey();
+                String fieldName = e.getValue();
+                if (record.getAttributes().get(attrName) != null) {
+                    String fieldValue = record.getAttributes().get(attrName).iterator().next();
+                    // Additional formatting may be required for floats:
+                    fieldValue = formatFloatField(fieldValue);
+                    if (fieldNotEmpty(fieldValue)) {
+                        feature.setAttribute(fieldName, fieldValue);
+                    }
+                }
+            }
+
+	    // Special case: Capitalize significance
+	    if (record.getAttributes().get("Significance") != null) {
+	        String significance = record.getAttributes().get("Significance").iterator().next();
+		if (fieldNotEmpty(significance)) {
+		    feature.setAttribute("significance", StringUtils.capitalize(significance));
+		}
             }
 
             // Special case: Publications
             if (record.getAttributes().get("PUBMED_ID") != null) {
                 String pubMedId = record.getAttributes().get("PUBMED_ID").iterator().next();
-                Item publication = getPublication(pubMedId);
-                feature.addToCollection("publications", publication.getIdentifier());
+		if (StringUtil.allDigits(pubMedId)) {
+                    Item publication = getPublication(pubMedId);
+                    feature.addToCollection("publications", publication.getIdentifier());
+		}
             }
 
             // Special case: QTL type (replace underscores with spaces)
@@ -215,5 +246,32 @@ public class QTLGFF3RecordHandler extends GFF3RecordHandler
             sequenceAlterationItems.put(identifier, sequenceAlteration);
         }
         return sequenceAlteration;
+    }
+
+    /**
+     * Return true if field has a nonempty value
+     */
+    private boolean fieldNotEmpty(String fieldValue) {
+        // Consider "-" to be empty / no value
+        if ("-".equals(fieldValue)) {
+            return false;
+        }
+
+        return StringUtils.isNotEmpty(fieldValue);
+    }
+
+    private String formatFloatField(String fieldValue) {
+        // Don't store if begins with '<' or '>'
+        // (Only applies to a couple of values out of many, otherwise
+        // value should be stored as string instead e.g. p-values)
+        if (StringUtils.startsWith(fieldValue, "<") || StringUtils.startsWith(fieldValue, ">")) {
+            return "";
+        }
+	String formattedValue = fieldValue;
+	// Use correct hyphen character so negative numbers can be properly stored
+	formattedValue = formattedValue.replace("−", "-");
+	// After the above changes, remove all non-numeric characters (leave ., -, E)
+        formattedValue = formattedValue.replaceAll("[^0-9eE.-]", "");
+	return formattedValue;
     }
 }
