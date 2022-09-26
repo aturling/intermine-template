@@ -1,9 +1,9 @@
 /* In "RESULTS TABLES" section:
 -------------------------------*/
 
-/* add horizontal scrollbar to large tables */
+/* add horizontal scrollbar to large tables if needed */
 div.results.collection-table {
-  overflow-x: scroll;
+  overflow-x: auto;
 }
 
 /* force wrapping of sequence table cells */
