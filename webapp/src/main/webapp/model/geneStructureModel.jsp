@@ -7,14 +7,16 @@
 <c:set var="chrId" value="${reportObject.object.chromosome.primaryIdentifier}"/>
 <c:set var="propKeyTaxon" value="attributelink.JBrowse.Gene.${taxon}.primaryIdentifier.url"/>
 <c:set var="propKeyAssembly" value="jbrowse.link.${taxon}.${assembly}.url"/>
+<c:set var="jBrowsePropTaxon" value="${WEB_PROPERTIES[propKeyTaxon]}"/>
+<c:set var="jBrowsePropAssembly" value="${WEB_PROPERTIES[propKeyAssembly]}"/>
 <c:choose>
   <c:when test="${!empty jBrowsePropTaxon}">
     <!-- One assembly per org: -->
-    <c:set var="jBrowseUrl" value="${WEB_PROPERTIES[propKeyTaxon]}"/>
+    <c:set var="jBrowseUrl" value="${jBrowsePropTaxon}"/>
   </c:when>
   <c:otherwise>
     <!-- More than one assembly per org: -->
-    <c:set var="jBrowseUrl" value="${WEB_PROPERTIES[propKeyAssembly]}"/>
+    <c:set var="jBrowseUrl" value="${jBrowsePropAssembly}"/>
   </c:otherwise>
 </c:choose>
 
@@ -61,6 +63,7 @@
 var mineUrl = '${mineUrl}';
 var pid = '<c:out value="${gene.primaryIdentifier}"/>';
 var jBrowseUrl = '${jBrowseUrl}';
+//console.log("JBrowse url is " + jBrowseUrl);
 
 // Require bare bones jbrowse components without using the main browser object
 require({
