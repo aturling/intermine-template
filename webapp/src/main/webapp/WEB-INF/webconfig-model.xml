@@ -205,6 +205,15 @@
     </fields>
   </class>
 
+  <class className="org.intermine.model.bio.Interaction">
+    <fields>
+      <fieldconfig fieldExpr="participant1.symbol"/>
+      <fieldconfig fieldExpr="participant2.symbol"/>
+      <fieldconfig fieldExpr="details.type" />
+      <fieldconfig fieldExpr="details.relationshipType"/>
+    </fields>
+  </class>
+
   <class className="org.intermine.model.bio.Location">
     <fields>
       <fieldconfig fieldExpr="feature.primaryIdentifier" showInSummary="false"/>
