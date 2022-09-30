@@ -40,6 +40,7 @@ public class FAANGBioProjectConverter extends FAANGBioFileConverter
         // Attribute names that can be directly stored from input file,
         // no further processing needed:
         attributeNames.add("assayType");
+        attributeNames.add("bioProjectId");
         attributeNames.add("category");
         attributeNames.add("organismName");
         attributeNames.add("project");
