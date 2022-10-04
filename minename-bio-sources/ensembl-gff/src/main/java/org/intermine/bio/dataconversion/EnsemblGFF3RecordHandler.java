@@ -23,12 +23,6 @@ import org.intermine.xml.full.Item;
 
 public class EnsemblGFF3RecordHandler extends BaseGFF3RecordHandler
 {
-    protected Map<String,String> aliasToRefId = new HashMap<String,String>();
-    protected Map<String,String> geneToRefId = new HashMap<String,String>();
-    protected Map<String,String> xRefToRefId = new HashMap<String,String>();
-
-    private static final String ENC = "UTF-8";
-
     /**
      * Create a new EnsemblGFF3RecordHandler for the given data model.
      * @param model the model for which items will be created
