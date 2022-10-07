@@ -17,8 +17,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
+import org.apache.commons.lang.StringUtils;
 import org.intermine.dataconversion.ItemWriter;
 import org.intermine.metadata.Model;
+import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.xml.full.Item;
 import org.intermine.util.FormattedTextParser;
 
@@ -29,10 +31,11 @@ import org.intermine.util.FormattedTextParser;
 public class CrossReferencesConverter extends BioFileConverter
 {
     private static final Logger LOG = Logger.getLogger(CrossReferencesConverter.class);
-    private static final String DATASET_TITLE = "Gene ID Cross References (Ensembl <=> RefSeq) data set";
-    private static final String DATA_SOURCE_NAME = "AquaMine";
     protected Map<String, Item> geneItemMap = new HashMap<String, Item>();
-    protected Map<String, Item> dataSourceItemMap = new HashMap<String, Item>();
+    private String dataSourceName = null;
+    private String dataSetTitle = null;
+    private Item dataSource = null;
+    private Item dataSet = null;
     private String taxonId = null;
     private String organismReferenceId = null;
 
@@ -42,7 +45,7 @@ public class CrossReferencesConverter extends BioFileConverter
      * @param model the Model
      */
     public CrossReferencesConverter(ItemWriter writer, Model model) {
-        super(writer, model, DATA_SOURCE_NAME, DATASET_TITLE);
+        super(writer, model);
     }
 
     /**
@@ -51,6 +54,22 @@ public class CrossReferencesConverter extends BioFileConverter
      */
     public void setTaxonId(String taxonId) {
         this.taxonId = taxonId;
+    }
+
+    /**
+     * Set the data source name.
+     * @param dataSourceName name of datasource for items created
+     */
+    public void setDataSourceName(String dataSourceName) {
+        this.dataSourceName = dataSourceName;
+    }
+
+    /**
+     * Set the data set title.
+     * @param dataSetTitle the title of the DataSets
+     */
+    public void setDataSetTitle(String dataSetTitle) {
+        this.dataSetTitle = dataSetTitle;
     }
 
     /**
@@ -83,7 +102,7 @@ public class CrossReferencesConverter extends BioFileConverter
                 // create xref linking gene1 (as subject) and gene2 (as target)
                 Item xrefItem = createItem("CrossReference");
                 xrefItem.setAttribute("identifier", targetPrimaryIdentifier);
-                xrefItem.setReference("source", getDataSourceRefId(targetSource));
+                xrefItem.setReference("source", getDataSourceRefId()); // DataSource
                 xrefItem.setReference("subject", geneItem1.getIdentifier());
                 xrefItem.setReference("target", geneItem2.getIdentifier());
                 storeItem(xrefItem);
@@ -95,16 +114,16 @@ public class CrossReferencesConverter extends BioFileConverter
      * Store a given item
      * @param item
      */
-    protected void storeItem(Item item) {
+    protected void storeItem(Item item) throws ObjectStoreException {
         try {
             store(item);
-        } catch (Exception e) {
-            System.out.println("Error while storing item: " + item);
-            System.out.println("Exception stacktrace: " + e);
+        } catch (ObjectStoreException e) {
+            throw new RuntimeException("Error while storing item: " + item, e);
         }
     }
 
-    protected Item getGene(String primaryIdentifier, String source) {
+    private Item getGene(String primaryIdentifier, String source) 
+        throws ObjectStoreException {
         Item geneItem = null;
         if (geneItemMap.containsKey(primaryIdentifier)) {
             geneItem = geneItemMap.get(primaryIdentifier);
@@ -113,28 +132,50 @@ public class CrossReferencesConverter extends BioFileConverter
             geneItem.setAttribute("primaryIdentifier", primaryIdentifier);
             geneItem.setAttribute("source", source);
             geneItem.setReference("organism", organismReferenceId);
+            geneItem.addToCollection("dataSets", getDataSet());
             geneItemMap.put(primaryIdentifier, geneItem);
         }
         return geneItem;
     }
 
-    protected String getDataSourceRefId(String dataSourceName) {
-        Item dataSourceItem = null;
-        if (dataSourceItemMap.containsKey(dataSourceName)) {
-            dataSourceItem = dataSourceItemMap.get(dataSourceName);
-        } else {
-            dataSourceItem = createItem("DataSource");
-            dataSourceItem.setAttribute("name", dataSourceName);
-            dataSourceItemMap.put(dataSourceName, dataSourceItem);
+    private String getDataSourceRefId() {
+        if (dataSource == null) {
+            dataSource = createItem("DataSource");
+            if (StringUtils.isEmpty(dataSourceName)) {
+                throw new RuntimeException("Data source name not set in project.xml");
+            }
+            dataSource.setAttribute("name", dataSourceName);
+            try {
+                store(dataSource);
+            } catch (ObjectStoreException e) {
+                throw new RuntimeException("failed to store DataSource with name: " + dataSourceName, e);
+            }
         }
-        return dataSourceItem.getIdentifier();
+        return dataSource.getIdentifier();
+    }
+
+    private Item getDataSet() throws ObjectStoreException {
+        if (dataSet == null) {
+            dataSet = createItem("DataSet");
+            if (StringUtils.isEmpty(dataSetTitle)) {
+                throw new RuntimeException("Data set title not set in project.xml");
+            }
+            dataSet.setAttribute("name", dataSetTitle);
+            dataSet.setReference("dataSource", getDataSourceRefId());
+            try {
+                store(dataSet);
+            } catch (ObjectStoreException e) {
+                throw new RuntimeException("failed to store DataSet with name: " + dataSetTitle, e);
+            }
+        }
+        return dataSet;
     }
 
     /**
      * Store all items in a given Map
      * @param itemMap
      */
-    protected void storeAllItems(Map<String, Item> itemMap) {
+    protected void storeAllItems(Map<String, Item> itemMap) throws ObjectStoreException {
         for (String key : itemMap.keySet()) {
             storeItem(itemMap.get(key));
         }
@@ -146,7 +187,6 @@ public class CrossReferencesConverter extends BioFileConverter
      */
     @Override
     public void close() throws Exception {
-        storeAllItems(dataSourceItemMap);
         storeAllItems(geneItemMap);
     }
 }
