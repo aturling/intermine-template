@@ -25,7 +25,7 @@ import org.intermine.xml.full.Item;
 public class ReactomeGrameneConverter extends KeggPathwayConverter
 {
     private static final String DATASET_TITLE = "Reactome Gramene data set";
-    private static final String DATA_SOURCE_NAME = "Reactome Gramene";
+    private static final String DATA_SOURCE_NAME = "PlantReactome";
     protected static final Logger LOG = Logger.getLogger(ReactomeGrameneConverter.class);
     private static final String PROP_FILE = "reactome-gramene_config.properties";
 
