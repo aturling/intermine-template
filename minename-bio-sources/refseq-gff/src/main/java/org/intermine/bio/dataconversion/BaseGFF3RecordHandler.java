@@ -55,8 +55,9 @@ public class BaseGFF3RecordHandler extends GFF3RecordHandler
         Item feature = getFeature();
         String clsName = feature.getClassName();
 
-        // Always set feature source
+        // Always set feature source and name
         setFeatureSource(record);
+        setFeatureName(record);
     }
 
     /**
@@ -80,6 +81,15 @@ public class BaseGFF3RecordHandler extends GFF3RecordHandler
      */
     protected void setFeatureBiotype(GFF3Record record, String biotypeKey) {
         setFeatureAttribute(record, biotypeKey, "biotype");
+    }
+
+    /**
+     * Set feature name attribute, if present.
+     * @param record
+     * @param symbolKey
+     */
+    protected void setFeatureName(GFF3Record record) {
+        setFeatureAttribute(record, "Name", "name");
     }
 
     /**
