@@ -491,6 +491,31 @@
     </fields>
   </class>
 
+  <class className="org.intermine.model.bio.Syntelog">
+    <fields>
+      <fieldconfig fieldExpr="gene.primaryIdentifier" showInResults="false" showInInlineCollection="false"/>
+      <fieldconfig fieldExpr="syntelog.primaryIdentifier"/>
+      <fieldconfig fieldExpr="syntelog.source"/>
+      <fieldconfig fieldExpr="syntelog.organism.name"/>
+    </fields>
+  </class>
+
+  <class className="org.intermine.model.bio.SyntelogGroup">
+    <inlinelist>
+      <table path="dataSets.name"/>
+    </inlinelist>
+    <headerconfig>
+      <titles>
+        <title mainTitles="primaryIdentifier"/>
+      </titles>
+    </headerconfig>
+    <fields>
+      <fieldconfig fieldExpr="primaryIdentifier" label="PanGene ID"/>
+      <fieldconfig fieldExpr="genes.primaryIdentifier" showInResults="false" showInInlineCollection="false" showInSummary="false"/>
+      <fieldconfig fieldExpr="genes.source" showInResults="false" showInInlineCollection="false" showInSummary="false"/>
+    </fields>
+  </class>
+
   <class className="org.intermine.model.bio.Transcript">
     <fields>
       <fieldconfig fieldExpr="primaryIdentifier"/>
