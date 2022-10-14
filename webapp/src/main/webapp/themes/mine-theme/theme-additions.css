@@ -30,9 +30,10 @@ table.im-results-table td.Protocol.url {
   text-overflow: ellipsis;
   max-width: 300px;
 }
-/* protocol urls also too long */
-.popover .Protocol table td.url {
+/* some urls in pop-ups too long */
+.popover table td.url {
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 200px;
+  word-break: keep-all;
 }
