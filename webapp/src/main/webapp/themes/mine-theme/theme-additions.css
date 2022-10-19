@@ -37,3 +37,8 @@ table.im-results-table td.Protocol.url {
   max-width: 200px;
   word-break: keep-all;
 }
+
+/* In "NAVIGATION" section:
+-------------------------------*/
+
+#submenu {  margin: -2px 0px 0px -2px; }
