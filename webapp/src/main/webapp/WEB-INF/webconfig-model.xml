@@ -319,6 +319,22 @@
     </fields>
   </class>
 
+  <class className="org.intermine.model.bio.PanGeneGroup">
+    <inlinelist>
+      <table path="dataSets.name"/>
+    </inlinelist>
+    <headerconfig>
+      <titles>
+        <title mainTitles="primaryIdentifier"/>
+      </titles>
+    </headerconfig>
+    <fields>
+      <fieldconfig fieldExpr="primaryIdentifier" label="PanGene ID"/>
+      <fieldconfig fieldExpr="genes.primaryIdentifier" showInResults="false" showInInlineCollection="false" showInSummary="false"/>
+      <fieldconfig fieldExpr="genes.source" showInResults="false" showInInlineCollection="false" showInSummary="false"/>
+    </fields>
+  </class>
+
   <class className="org.intermine.model.bio.Pathway">
     <inlinelist>
       <table path="dataSets.name"/>
@@ -497,22 +513,6 @@
       <fieldconfig fieldExpr="syntelog.primaryIdentifier"/>
       <fieldconfig fieldExpr="syntelog.source"/>
       <fieldconfig fieldExpr="syntelog.organism.name"/>
-    </fields>
-  </class>
-
-  <class className="org.intermine.model.bio.SyntelogGroup">
-    <inlinelist>
-      <table path="dataSets.name"/>
-    </inlinelist>
-    <headerconfig>
-      <titles>
-        <title mainTitles="primaryIdentifier"/>
-      </titles>
-    </headerconfig>
-    <fields>
-      <fieldconfig fieldExpr="primaryIdentifier" label="PanGene ID"/>
-      <fieldconfig fieldExpr="genes.primaryIdentifier" showInResults="false" showInInlineCollection="false" showInSummary="false"/>
-      <fieldconfig fieldExpr="genes.source" showInResults="false" showInInlineCollection="false" showInSummary="false"/>
     </fields>
   </class>
 
