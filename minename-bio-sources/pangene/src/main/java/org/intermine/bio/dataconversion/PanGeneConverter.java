@@ -104,7 +104,7 @@ public class PanGeneConverter extends BioFileConverter
         }
 
         // Add group to PanGeneGroup
-        Item group = createItem("SyntelogGroup");
+        Item group = createItem("PanGeneGroup");
         group.setAttribute("primaryIdentifier", groupId);
 
         // Iterate through gene list twice to generate all n*(n-1) pairs and add syntelogs to database.
@@ -132,7 +132,7 @@ public class PanGeneConverter extends BioFileConverter
         syntelog.setReference("gene", gene1);
         syntelog.setReference("syntelog", gene2);
         syntelog.setAttribute("panGeneId", groupId);
-        syntelog.setReference("syntelogGroup", group);
+        syntelog.setReference("panGeneGroup", group);
         store(syntelog);
     }
 
