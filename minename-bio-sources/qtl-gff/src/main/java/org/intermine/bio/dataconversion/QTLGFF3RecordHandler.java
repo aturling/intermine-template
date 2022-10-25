@@ -146,19 +146,21 @@ public class QTLGFF3RecordHandler extends GFF3RecordHandler
                 }
             }
 
-            // Special case: Flank marker
-            if (record.getAttributes().get("FlankMarker") != null) {
-                List<String> markers = record.getAttributes().get("FlankMarker");
-                feature.setAttribute("flankMarkers", StringUtils.join(markers, ", "));
-                ArrayList<String> sequenceAlterations = new ArrayList<String>();
-                for (String marker : markers) {
-                    if (marker.startsWith("rs")) {
-                        Item sequenceAlteration = getSequenceAlteration(marker);
-                        sequenceAlterations.add(sequenceAlteration.getIdentifier());
+            // Special case: Flank marker (if applicable)
+            if (converter.getLoadSequenceAlterations()) {
+                if (record.getAttributes().get("FlankMarker") != null) {
+                    List<String> markers = record.getAttributes().get("FlankMarker");
+                    feature.setAttribute("flankMarkers", StringUtils.join(markers, ", "));
+                    ArrayList<String> sequenceAlterations = new ArrayList<String>();
+                    for (String marker : markers) {
+                        if (marker.startsWith("rs")) {
+                            Item sequenceAlteration = getSequenceAlteration(marker);
+                            sequenceAlterations.add(sequenceAlteration.getIdentifier());
+                        }
                     }
-                }
-                for (int i = 0; i < sequenceAlterations.size(); i++) {
-                    feature.addToCollection("snpsAsFlankMarkers", sequenceAlterations.get(i));
+                    for (int i = 0; i < sequenceAlterations.size(); i++) {
+                        feature.addToCollection("snpsAsFlankMarkers", sequenceAlterations.get(i));
+                    }
                 }
             }
         }
