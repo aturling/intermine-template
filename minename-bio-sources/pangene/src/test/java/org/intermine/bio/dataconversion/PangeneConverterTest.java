@@ -10,13 +10,13 @@ package org.intermine.bio.dataconversion;
  *
  */
 
-public class PanGeneConverterTest extends ItemsTestCase
+public class PangeneConverterTest extends ItemsTestCase
 {
     Model model = Model.getInstanceByName("genomic");
-    PanGeneConverter converter;
+    PangeneConverter converter;
     MockItemWriter itemWriter;
 
-    public PanGeneConverterTest(String arg) {
+    public PangeneConverterTest(String arg) {
         super(arg);
     }
 

@@ -35,9 +35,9 @@ import org.intermine.xml.full.Item;
  * 
  * @author
  */
-public class PanGeneConverter extends BioFileConverter
+public class PangeneConverter extends BioFileConverter
 {
-    private static final String DATASET_TITLE = "MaizeGDB-NAM-PanGene data set";
+    private static final String DATASET_TITLE = "MaizeGDB-NAM-Pangene data set";
     private static final String DATA_SOURCE_NAME = "MaizeGDB";
     private static final int NUM_COLS = 9; // expected number of columns in input file
 
@@ -51,7 +51,7 @@ public class PanGeneConverter extends BioFileConverter
      * @param writer the ItemWriter used to handle the resultant items
      * @param model the Model
      */
-    public PanGeneConverter(ItemWriter writer, Model model) {
+    public PangeneConverter(ItemWriter writer, Model model) {
         super(writer, model, DATA_SOURCE_NAME, DATASET_TITLE);
     }
 
@@ -77,7 +77,7 @@ public class PanGeneConverter extends BioFileConverter
             // at a different group ID, process previous group
             if (previousGroupId != null && !groupId.equals(previousGroupId)) {
                 // Use previous group ID since groupId now contains ID of next group
-                processPanGeneGroup(previousGroupId, geneIdsInGroup);
+                processPangeneGroup(previousGroupId, geneIdsInGroup);
                 geneIdsInGroup = new HashSet<String>();
             }
 
@@ -90,12 +90,12 @@ public class PanGeneConverter extends BioFileConverter
             previousGroupId = groupId;
         }
         // parse the last group of the file
-        processPanGeneGroup(groupId, geneIdsInGroup);
+        processPangeneGroup(groupId, geneIdsInGroup);
     }
 
     // Generate all of the n*(n-1) pairs (with symmetry) of the group of size n and
     // add to the Syntelog table as we go.
-    private void processPanGeneGroup(String groupId, Set<String> geneIdsInGroup)
+    private void processPangeneGroup(String groupId, Set<String> geneIdsInGroup)
         throws ObjectStoreException {
 
         // Check size: if less than 1, nothing to do (no syntelogs in this cluster)
@@ -103,8 +103,8 @@ public class PanGeneConverter extends BioFileConverter
             return;
         }
 
-        // Add group to PanGeneGroup
-        Item group = createItem("PanGeneGroup");
+        // Add group to PangeneGroup
+        Item group = createItem("PangeneGroup");
         group.setAttribute("primaryIdentifier", groupId);
 
         // Iterate through gene list twice to generate all n*(n-1) pairs and add syntelogs to database.
@@ -131,8 +131,8 @@ public class PanGeneConverter extends BioFileConverter
         Item syntelog = createItem("Syntelog");
         syntelog.setReference("gene", gene1);
         syntelog.setReference("syntelog", gene2);
-        syntelog.setAttribute("panGeneId", groupId);
-        syntelog.setReference("panGeneGroup", group);
+        syntelog.setAttribute("pangeneId", groupId);
+        syntelog.setReference("pangeneGroup", group);
         store(syntelog);
     }
 

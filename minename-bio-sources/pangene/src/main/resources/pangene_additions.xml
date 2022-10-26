@@ -3,18 +3,18 @@
 
 <classes>
   <class name="Gene" is-interface="true">
-    <collection name="panGeneGroups" referenced-type="PanGeneGroup" reverse-reference="genes"/>
-    <collection name="panGeneSyntelogs" referenced-type="Syntelog" reverse-reference="gene"/>
+    <collection name="pangeneGroups" referenced-type="PangeneGroup" reverse-reference="genes"/>
+    <collection name="pangeneSyntelogs" referenced-type="Syntelog" reverse-reference="gene"/>
   </class>
-  <class name="PanGeneGroup" is-interface="true">
+  <class name="PangeneGroup" is-interface="true">
     <attribute name="primaryIdentifier" type="java.lang.String"/>
     <collection name="dataSets" referenced-type="DataSet"/>
-    <collection name="genes" referenced-type="Gene" reverse-reference="panGeneGroups"/>
+    <collection name="genes" referenced-type="Gene" reverse-reference="pangeneGroups"/>
   </class>
   <class name="Syntelog" is-interface="true">
-    <attribute name="panGeneId" type="java.lang.String"/>
-    <reference name="panGeneGroup" referenced-type="PanGeneGroup"/>
-    <reference name="gene" referenced-type="Gene" reverse-reference="panGeneSyntelogs"/>
+    <attribute name="pangeneId" type="java.lang.String"/>
+    <reference name="pangeneGroup" referenced-type="PangeneGroup"/>
+    <reference name="gene" referenced-type="Gene" reverse-reference="pangeneSyntelogs"/>
     <reference name="syntelog" referenced-type="Gene"/>
     <collection name="dataSets" referenced-type="DataSet"/>
   </class>

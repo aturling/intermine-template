@@ -319,7 +319,7 @@
     </fields>
   </class>
 
-  <class className="org.intermine.model.bio.PanGeneGroup">
+  <class className="org.intermine.model.bio.PangeneGroup">
     <inlinelist>
       <table path="dataSets.name"/>
     </inlinelist>
@@ -329,7 +329,7 @@
       </titles>
     </headerconfig>
     <fields>
-      <fieldconfig fieldExpr="primaryIdentifier" label="PanGene ID"/>
+      <fieldconfig fieldExpr="primaryIdentifier" label="Pangene ID"/>
       <fieldconfig fieldExpr="genes.primaryIdentifier" showInResults="false" showInInlineCollection="false" showInSummary="false"/>
       <fieldconfig fieldExpr="genes.source" showInResults="false" showInInlineCollection="false" showInSummary="false"/>
     </fields>
