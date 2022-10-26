@@ -56,7 +56,7 @@ public class OrthodbClustersConverter extends BioFileConverter
     private static final String EVIDENCE_CODE_ABBR = "AA";
     private static final String EVIDENCE_CODE_NAME = "Amino acid sequence comparison";
 
-    private static final int NUM_COLS = 9; // expected number of columns in input file
+    private static final int NUM_COLS = 7; // expected minimum number of columns in input file
 
     private Properties props = new Properties();
     private Map<String, String> config = new HashMap<String, String>();
@@ -64,6 +64,7 @@ public class OrthodbClustersConverter extends BioFileConverter
 
     private String clusterId = null;
     private String lastCommonAncestor = null;
+    private boolean loadOrthoDBClusterIds = false;
 
     // Keep track of newly created Genes
     private HashMap<String,String> geneIdToRef = new HashMap<String, String>();
@@ -76,6 +77,19 @@ public class OrthodbClustersConverter extends BioFileConverter
     public OrthodbClustersConverter(ItemWriter writer, Model model) {
         super(writer, model);
         readConfig();
+    }
+
+    /**
+     * Whether to set OrthoDB cluster id as a separate field
+     * @param dataSourceName name of datasource for items created
+     */
+    public void setLoadOrthoDBClusterIds(String loadOrthoDBClusterIds) {
+        System.out.println("Setting loadOrthoDBClusterIds to " + loadOrthoDBClusterIds);
+        if ("true".equalsIgnoreCase(loadOrthoDBClusterIds)) {
+            this.loadOrthoDBClusterIds = true;
+        } else {
+            this.loadOrthoDBClusterIds = false;
+        }
     }
 
     /**
@@ -124,7 +138,8 @@ public class OrthodbClustersConverter extends BioFileConverter
         while (lineIter.hasNext()) {
             String[] bits = lineIter.next();
             if (bits.length < NUM_COLS) {
-                throw new RuntimeException("Expected " + NUM_COLS + " columns, row has only " + bits.length + " columns.");
+                System.out.println("Row: " + StringUtils.join(bits, ", "));
+                throw new RuntimeException("Expected at least " + NUM_COLS + " columns, row has only " + bits.length + " columns.");
             }
             // ignore header (Level is an integer)
             if (bits[0] != null && bits[0].startsWith("OD")) {
@@ -189,15 +204,17 @@ public class OrthodbClustersConverter extends BioFileConverter
     private void processHomologueCluster(String clusterId, String lastCommonAncestor, Set<GeneHolder> genesInCluster)
         throws ObjectStoreException {
 
-        // Check size: if less than 1, nothing to do (no homologues in this cluster)
-        if (genesInCluster.size() < 1) {
+        // Check size: if less than 2, nothing to do (no homologue pairs in this cluster)
+        if (genesInCluster.size() < 2) {
             return;
         }
 
-        // New in AquaMine: Add cluster to Cluster table
         Item cluster = createItem("OrthologueCluster");
         cluster.setAttribute("primaryIdentifier", clusterId);
         cluster.setAttribute("lastCommonAncestor", lastCommonAncestor);
+        if (loadOrthoDBClusterIds) {
+            cluster.setAttribute("orthoDbCluster", clusterId);
+        }
         cluster.addToCollection("dataSets", getDataSet());    
 
         // Iterate through gene list twice to generate all n*(n-1) pairs and add homologues to database.
@@ -239,6 +256,9 @@ public class OrthodbClustersConverter extends BioFileConverter
         homologue.addToCollection("evidence", getEvidence());
         homologue.setAttribute("type", type);
         homologue.setAttribute("clusterId", clusterId);
+        if (loadOrthoDBClusterIds) {
+            homologue.setAttribute("orthoDbCluster", clusterId);
+        }
         homologue.setAttribute("lastCommonAncestor", lastCommonAncestor);
         homologue.addToCollection("dataSets", getDataSet());
         homologue.setReference("orthologueCluster", cluster);
