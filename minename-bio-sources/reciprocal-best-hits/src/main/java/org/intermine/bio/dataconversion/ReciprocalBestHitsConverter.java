@@ -30,7 +30,7 @@ import org.intermine.util.FormattedTextParser;
  */
 public class ReciprocalBestHitsConverter extends BioFileConverter
 {
-    private static final String DATASET_TITLE = "Gene reciprocal best hits data set";
+    private static final String DATASET_TITLE = "Drosophila reciprocal best hits data set";
     private static final String DATA_SOURCE_NAME = "HGD";
 
     private static final Logger LOG = Logger.getLogger(ReciprocalBestHitsConverter.class);
