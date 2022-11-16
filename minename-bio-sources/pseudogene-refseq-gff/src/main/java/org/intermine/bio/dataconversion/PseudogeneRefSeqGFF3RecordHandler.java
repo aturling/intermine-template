@@ -31,6 +31,8 @@ public class PseudogeneRefSeqGFF3RecordHandler extends PseudogeneRefSeqBaseGFF3R
         // relationship: pseudogenic_exon <-> pseudogenic_transcript <-> pseudogene
         refsAndCollections.put("PseudogenicTranscript", "gene");
         refsAndCollections.put("PseudogenicExon", "transcripts");
+        refsAndCollections.put("PseudogenicRRNA", "gene");
+        refsAndCollections.put("PseudogenicTRNA", "gene");
     }
 
     /**

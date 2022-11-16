@@ -14,4 +14,6 @@
     <reference name="gene" referenced-type="Pseudogene" reverse-reference="exons"/>
     <collection name="transcripts" referenced-type="PseudogenicTranscript" reverse-reference="exons"/>
   </class>
+  <class name="PseudogenicRRNA" extends="PseudogenicTranscript" is-interface="true"/>
+  <class name="PseudogenicTRNA" extends="PseudogenicTranscript" is-interface="true"/>  
 </classes>
