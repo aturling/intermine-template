@@ -26,7 +26,7 @@
       <fieldconfig fieldExpr="annotationType"/>
       <fieldconfig fieldExpr="experimentAccession"/>
       <fieldconfig fieldExpr="experimentType"/>
-      <fieldconfig fieldExpr="projectId"/>
+      <fieldconfig fieldExpr="projectId" label="BioProject ID"/>
       <fieldconfig fieldExpr="organism.shortName"/>
     </fields>
   </class>
@@ -145,6 +145,28 @@
       <fieldconfig fieldExpr="url" doNotTruncate="true"/>
     </fields>
     <tabledisplayer src="/model/dataSourceShort.jsp"/>
+  </class>
+
+  <class className="org.intermine.model.bio.Experiment">
+    <inlinelist>
+      <table path="dataSets.name"/>
+    </inlinelist>
+    <headerconfig>
+      <titles>
+        <title mainTitles="experimentId" numberOfMainTitlesToShow="1" subTitles="*organism.shortName*"/>
+      </titles>
+    </headerconfig>
+    <fields>
+      <fieldconfig fieldExpr="experimentId" label="SRA Experiment Accession"/>
+      <fieldconfig fieldExpr="project"/>
+      <fieldconfig fieldExpr="run" label="SRA Run Accession"/>
+      <fieldconfig fieldExpr="tissue"/>
+      <fieldconfig fieldExpr="btoName"/>
+      <fieldconfig fieldExpr="projectId" label="BioProject ID" showInSummary="false"/>
+      <fieldconfig fieldExpr="bioProject.bioProjectUniqueId"/>
+      <fieldconfig fieldExpr="bioProject.title"/>
+      <fieldconfig fieldExpr="bioSample.bioSampleId"/>
+    </fields>
   </class>
 
   <class className="org.intermine.model.bio.Expression">
@@ -491,6 +513,7 @@
   <class className="org.intermine.model.bio.SequenceFeature">
     <fields>
       <fieldconfig fieldExpr="primaryIdentifier"/>
+      <fieldconfig fieldExpr="name"/>
       <fieldconfig fieldExpr="length" displayer="/model/sequenceShortDisplayerWithField.jsp"/>
       <fieldconfig fieldExpr="chromosomeLocation" displayer="/model/chromosomeLocDisplayer.jsp" showInResults="false"/>
       <fieldconfig fieldExpr="chromosome.primaryIdentifier" showInInlineCollection="false" showInSummary="false"/>
