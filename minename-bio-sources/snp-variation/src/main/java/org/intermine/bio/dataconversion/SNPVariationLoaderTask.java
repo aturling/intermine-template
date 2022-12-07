@@ -107,6 +107,7 @@ public class SNPVariationLoaderTask extends FileDirectDataLoaderTask
     private Map<Transcript, HashSet<SequenceAlteration>> transcriptToSequenceAlterationMap = new HashMap<Transcript, HashSet<SequenceAlteration>>();
     private Map<String, SOTerm> createdSotermMap = new HashMap<String, SOTerm>();
     private Map<String, Gene> createdGeneMap = new HashMap<String, Gene>();
+    private Map<String, AliasName> createdAliasNameMap = new HashMap<String, AliasName>();
     private Map<String, Chromosome> createdChromosomeMap = new HashMap<String, Chromosome>();
     private Map<String, Transcript> createdTranscriptMap = new HashMap<String, Transcript>();
     private Map<String, ConsequenceType> consequenceTypeMap = new HashMap<String, ConsequenceType>();
@@ -470,16 +471,7 @@ public class SNPVariationLoaderTask extends FileDirectDataLoaderTask
             String[] eachAlias = aliases[i].split(":");
             String ssId = eachAlias[0];
             String ssIdSource = eachAlias[1];
-            AliasName alias = getDirectDataLoader().createObject(AliasName.class);
-            imoTracker.put(alias.getId(), alias);
-            alias.setIdentifier(ssId);
-            alias.setSource(ssIdSource);
-            alias.setOrganism(getOrganism());
-            alias.addDataSets(getDataSet());
-            // set AliasName -> feature reference
-            alias.setFeatures(new HashSet<SequenceFeature>(Arrays.asList((SequenceFeature) saFeature)));
-            getDirectDataLoader().store(alias);
-            imoTracker.remove(alias.getId());
+            AliasName alias = getAliasName(ssId, ssIdSource);
             setOfSsIdObjects.add(alias);
         }
         return setOfSsIdObjects;
@@ -758,6 +750,30 @@ public class SNPVariationLoaderTask extends FileDirectDataLoaderTask
             createdChromosomeMap.put(identifier, chr);
         }
         return chr;
+    }
+
+    /** For a given identifier + source, returns an AliasName entity
+     * @param identifier
+     * @param source
+     * @return
+     * @throws ObjectStoreException
+     */
+    private AliasName getAliasName(String identifier, String source) throws ObjectStoreException {
+        AliasName alias;
+        if (createdAliasNameMap.containsKey(identifier)) {
+            alias = createdAliasNameMap.get(identifier);
+        } else {
+            alias = getDirectDataLoader().createObject(AliasName.class);
+            imoTracker.put(alias.getId(), alias);
+            alias.setIdentifier(identifier);
+            alias.setSource(source);
+            alias.setOrganism(getOrganism());
+            alias.addDataSets(getDataSet());
+            getDirectDataLoader().store(alias);
+            imoTracker.remove(alias.getId());
+            createdAliasNameMap.put(identifier, alias);
+        }
+        return alias;
     }
 
     /**
