@@ -361,6 +361,7 @@ public class SNPVariationLoaderTask extends FileDirectDataLoaderTask
         snp.setPrimaryIdentifier(id);
         imoTracker.put(snp.getId(), snp);
         snp.setName(saName);
+        snp.setSource(geneSource);
         snp.setSequenceOntologyTerm(getSoTerm(soTerm));
         snp.setOrganism(getOrganism());
         if (saClassName.equals("SNV")) {

@@ -85,6 +85,9 @@ public class QTLGFF3RecordHandler extends GFF3RecordHandler
         Item feature = getFeature();
         String clsName = feature.getClassName();
         if (clsName.equals("QTL")) {
+            // Set QTL source
+            feature.setAttribute("source", record.getSource());
+
             // Store attributes, if present
             for (Entry<String, String> e: attributesToSet.entrySet()) {
                 String attrName = e.getKey();
@@ -96,6 +99,7 @@ public class QTLGFF3RecordHandler extends GFF3RecordHandler
 		    }
                 }
             }
+
             // Special case: float fields
 	    for (Entry<String, String> e: floatAttrsToSet.entrySet()) {
                 String attrName = e.getKey();
