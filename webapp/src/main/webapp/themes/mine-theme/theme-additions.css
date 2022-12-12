@@ -30,6 +30,12 @@ table.im-results-table td.Protocol.url {
   text-overflow: ellipsis;
   max-width: 300px;
 }
+/* other analysis fields also too long (FAANGMine only) */
+.popover .Analysis table td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}
 /* some urls in pop-ups too long */
 .popover table td.url {
   overflow: hidden;
