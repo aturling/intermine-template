@@ -138,7 +138,7 @@ function (cookie,dom,domConstruct,domStyle,domClass,Browser,HTMLFeatures,NCList,
 
        if (jBrowseUrl) {
           var jBrowseBaseUrl = jBrowseUrl.substr(0, jBrowseUrl.indexOf('?'));
-          var tracks = jBrowseUrl.substr(jBrowseUrl.indexOf('&tracks=')+8, jBrowseUrl.length);
+          var tracks = jBrowseUrl.substr(jBrowseUrl.indexOf('&tracks='), jBrowseUrl.length);
           trackConfig.onClick = {
               "label": "Feature name {name}\nFeature start {start}\nFeature end {end}",
               "url": jBrowseBaseUrl + "?loc={seq}:{start}..{end}" + tracks,
