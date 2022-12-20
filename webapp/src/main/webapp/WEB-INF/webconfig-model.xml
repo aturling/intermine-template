@@ -169,6 +169,22 @@
     </fields>
   </class>
 
+  <!--FAANGMine Expressions-->
+  <class className="org.intermine.model.bio.Expression">
+    <headerconfig>
+      <titles>
+        <title mainTitles="experiment|gene.primaryIdentifier" numberOfMainTitlesToShow="1" subTitles="*organism.shortName*"/>
+      </titles>
+    </headerconfig>
+    <fields>
+      <fieldconfig fieldExpr="experiment"/>
+      <fieldconfig fieldExpr="FPKM" showInSummary="false"/>
+      <fieldconfig fieldExpr="TPM" showInSummary="false"/>
+      <fieldconfig fieldExpr="gene.primaryIdentifier" label="Gene ID"/>
+    </fields>
+  </class>
+
+  <!--MaizeMine Expressions-->
   <class className="org.intermine.model.bio.Expression">
     <headerconfig>
       <titles>
@@ -506,7 +522,6 @@
       <fieldconfig fieldExpr="chromosomeLocation.start" showInInlineCollection="false" showInSummary="false" label="Chromosome Location Start"/>
       <fieldconfig fieldExpr="chromosomeLocation.end" showInInlineCollection="false" showInSummary="false" label="Chromsome Location End"/>
       <fieldconfig fieldExpr="chromosome.assembly" label="Assembly"/>
-      <fieldconfig fieldExpr="aliases.identifier" label="Alias ID"/>
     </fields>
   </class>
 
