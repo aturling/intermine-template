@@ -89,13 +89,19 @@ public class CrossReferencesConverter extends BioFileConverter
             String subjectSource = subjectInfo[1];
 
             Item geneItem1 = getGene(subjectPrimaryIdentifier, subjectSource);
+
+            // Load type, if present
+            String type = null;
+            if (line.length > 2) {
+                type = line[2];
+            }
  
             String[] targetEntryList = line[1].trim().split(",");
             for (String targetEntry : targetEntryList) {
                 String[] targetInfo = targetEntry.split(":");
                 String targetPrimaryIdentifier = targetInfo[0];
                 String targetSource = targetInfo[1];
-                LOG.info("Subject: " + subjectPrimaryIdentifier + " <> Target: " + targetPrimaryIdentifier);
+                //LOG.info("Subject: " + subjectPrimaryIdentifier + " <> Target: " + targetPrimaryIdentifier);
 
                 Item geneItem2 = getGene(targetPrimaryIdentifier, targetSource);
 
@@ -105,6 +111,9 @@ public class CrossReferencesConverter extends BioFileConverter
                 xrefItem.setReference("source", getDataSourceRefId()); // DataSource
                 xrefItem.setReference("subject", geneItem1.getIdentifier());
                 xrefItem.setReference("target", geneItem2.getIdentifier());
+                if (type != null) {
+                    xrefItem.setAttribute("type", type);
+                }
                 storeItem(xrefItem);
             }
         }
