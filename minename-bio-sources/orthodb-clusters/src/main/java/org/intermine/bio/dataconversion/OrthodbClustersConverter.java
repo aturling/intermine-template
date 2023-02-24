@@ -64,6 +64,7 @@ public class OrthodbClustersConverter extends BioFileConverter
 
     private String clusterId = null;
     private String lastCommonAncestor = null;
+    private String homologueSource = null;
     private boolean loadOrthoDBClusterIds = false;
 
     // Keep track of newly created Genes
@@ -106,6 +107,9 @@ public class OrthodbClustersConverter extends BioFileConverter
      */
     public void setDataSetTitle(String dataSetTitle) {
         this.dataSetTitle = dataSetTitle;
+
+        // Also set homologue source from data set title
+        this.homologueSource = dataSetTitle.replace(" data set", "");
     }
 
     /**
@@ -212,6 +216,7 @@ public class OrthodbClustersConverter extends BioFileConverter
         Item cluster = createItem("OrthologueCluster");
         cluster.setAttribute("primaryIdentifier", clusterId);
         cluster.setAttribute("lastCommonAncestor", lastCommonAncestor);
+        cluster.setAttribute("source", homologueSource);
         if (loadOrthoDBClusterIds) {
             cluster.setAttribute("orthoDbCluster", clusterId);
         }
@@ -260,6 +265,7 @@ public class OrthodbClustersConverter extends BioFileConverter
             homologue.setAttribute("orthoDbCluster", clusterId);
         }
         homologue.setAttribute("lastCommonAncestor", lastCommonAncestor);
+        homologue.setAttribute("source", homologueSource);
         homologue.addToCollection("dataSets", getDataSet());
         homologue.setReference("orthologueCluster", cluster);
         store(homologue);

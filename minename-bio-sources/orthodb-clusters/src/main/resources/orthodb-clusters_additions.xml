@@ -9,6 +9,7 @@
     <attribute name="clusterId" type="java.lang.String"/>
     <attribute name="orthoDbCluster" type="java.lang.String"/>
     <attribute name="lastCommonAncestor" type="java.lang.String"/>
+    <attribute name="source" type="java.lang.String"/>
     <reference name="orthologueCluster" referenced-type="OrthologueCluster"/>
     <reference name="gene" referenced-type="Gene" reverse-reference="homologues"/>
     <reference name="homologue" referenced-type="Gene"/>
@@ -20,6 +21,7 @@
     <attribute name="primaryIdentifier" type="java.lang.String"/>
     <attribute name="lastCommonAncestor" type="java.lang.String"/>
     <attribute name="orthoDbCluster" type="java.lang.String"/>
+    <attribute name="source" type="java.lang.String"/>
     <collection name="dataSets" referenced-type="DataSet"/>
     <collection name="genes" referenced-type="Gene" reverse-reference="orthologueClusters"/>
   </class>
