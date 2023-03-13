@@ -638,7 +638,7 @@
                                             goAnnotation.ontologyTerm.parents.identifier != go:0003674,
                                             goAnnotation.ontologyTerm.parents.identifier != go:0005575"
                                typeClass="Gene"
-                               views="secondaryIdentifier,symbol,primaryIdentifier,organism.name,
+                               views="primaryIdentifier,symbol,organism.name,
                                      goAnnotation.ontologyTerm.identifier, goAnnotation.ontologyTerm.name,
                                      goAnnotation.ontologyTerm.parents.identifier,goAnnotation.ontologyTerm.parents.name"
                                externalLink="http://amigo.geneontology.org/amigo/term/"
@@ -654,7 +654,7 @@
                                enrichIdentifier="publications.pubMedId"
                                constraints="organism.name=[list],primaryIdentifier != null"
                                typeClass="Gene"
-                               views="secondaryIdentifier, symbol, organism.name,
+                               views="primaryIdentifier, symbol, organism.name,
                                      publications.title, publications.firstAuthor,
                                      publications.journal, publications.year, publications.pubMedId"
                                externalLink="https://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&amp;db=PubMed&amp;dopt=Abstract&amp;list_uids="/>
@@ -672,6 +672,6 @@
                                enrichIdentifier="pathways.identifier"
                                constraints="pathways.dataSets.name=[DataSet],organism.taxonId=[list], primaryIdentifier != null"
                                typeClass="Gene"
-                               views="secondaryIdentifier, symbol, organism.name, pathways.identifier, pathways.name, pathways.dataSets.name"/>
+                               views="primaryIdentifier, symbol, organism.name, pathways.identifier, pathways.name, pathways.dataSets.name"/>
   </widgets>
 </webconfig>
