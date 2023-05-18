@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<!-- This file details any extensions needed to the data model to store data from this source, everything else is automatically generated from the model description so this is all we need to do to add to the model. -->
+
+<classes>
+  <!--Remove classes that don't apply to this mine release-->
+  <class name="CGeneSegment" extends="MRNA" is-interface="true"/>
+  <class name="DGeneSegment" extends="MRNA" is-interface="true"/>
+  <class name="DuplicateEntity" is-interface="true">
+    <attribute name="geneIdentifier" type="java.lang.String"/>
+    <attribute name="chromosome" type="java.lang.String"/>
+    <attribute name="start" type="java.lang.Integer"/>
+    <attribute name="end" type="java.lang.Integer"/>
+    <attribute name="strand" type="java.lang.Integer"/>
+    <attribute name="proteinIdentifier" type="java.lang.String"/>
+    <attribute name="transcriptIdentifier" type="java.lang.String"/>
+    <reference name="organism" referenced-type="Organism"/>
+  </class>
+  <class name="Gene" extends="SequenceFeature" is-interface="true">
+    <collection name="duplicateEntities" referenced-type="DuplicateEntity"/>
+  </class>
+  <class name="JGeneSegment" extends="MRNA" is-interface="true"/>
+  <class name="MiRNA" extends="NcRNA" is-interface="true">
+    <reference name="transcript" referenced-type="PrimaryTranscript" reverse-reference="miRNAs"/>
+  </class>
+  <class name="MRNA" extends="Transcript" is-interface="true"/>
+  <class name="NcRNA" extends="Transcript" is-interface="true">
+    <attribute name="mirbaseIdentifier" type="java.lang.String"/>
+  </class>
+  <class name="PrimaryTranscript" extends="Transcript" is-interface="true">
+    <attribute name="mirbaseIdentifier" type="java.lang.String"/>
+    <collection name="miRNAs" referenced-type="MiRNA" reverse-reference="transcript"/>
+  </class>
+  <class name="SequenceFeature" extends="BioEntity" is-interface="true">
+    <!--"exception" is a reserved word in database-->
+    <attribute name="exceptionNote" type="java.lang.String"/>
+    <attribute name="note" type="java.lang.String"/>
+  </class>
+  <class name="VGeneSegment" extends="MRNA" is-interface="true"/>
+  <!--New: include pseudogenes-->
+  <class name="TranscribedPseudogene" extends="SequenceFeature" is-interface="true">
+    <collection name="transcripts" referenced-type="PseudogenicTranscript" reverse-reference="gene"/>
+  </class>
+  <class name="NontranscribedPseudogene" extends="SequenceFeature" is-interface="true">
+    <collection name="exons" referenced-type="NontranscribedPseudogenicExon" reverse-reference="gene"/>
+  </class>
+  <class name="PseudogenicTranscript" extends="SequenceFeature" is-interface="true">
+    <reference name="gene" referenced-type="TranscribedPseudogene" reverse-reference="transcripts"/>
+    <collection name="exons" referenced-type="TranscribedPseudogenicExon" reverse-reference="transcripts"/>
+  </class>
+  <class name="TranscribedPseudogenicExon" extends="SequenceFeature" is-interface="true">
+    <collection name="transcripts" referenced-type="PseudogenicTranscript" reverse-reference="exons"/>
+  </class>
+  <class name="NontranscribedPseudogenicExon" extends="SequenceFeature" is-interface="true">
+    <reference name="gene" referenced-type="NontranscribedPseudogene" reverse-reference="exons"/>
+  </class>
+  <class name="PseudogenicRRNA" extends="PseudogenicTranscript" is-interface="true"/>
+  <class name="PseudogenicTRNA" extends="PseudogenicTranscript" is-interface="true"/>
+</classes>

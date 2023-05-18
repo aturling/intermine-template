@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!-- This file details any extensions needed to the data model to store data from this source, everything else is automatically generated from the model description so this is all we need to do to add to the model. -->
+
+<classes>
+  <!--Comment out classes that don't apply to this mine release-->
+  <class name="CDS" is-interface="true">
+    <attribute name="proteinIdentifier" type="java.lang.String"/>
+  </class>
+  <class name="CGeneSegment" extends="MRNA" is-interface="true"/>
+  <class name="DGeneSegment" extends="MRNA" is-interface="true"/>
+  <class name="JGeneSegment" extends="MRNA" is-interface="true"/>
+  <class name="MRNA" extends="Transcript" is-interface="true"/>
+  <class name="NcRNA" extends="Transcript" is-interface="true"/>
+  <class name="SRNA" extends="NcRNA" is-interface="true"/>
+  <class name="VGeneSegment" extends="MRNA" is-interface="true"/>
+  <!--New: include pseudogenes-->
+  <class name="TranscribedPseudogene" extends="SequenceFeature" is-interface="true">
+    <collection name="transcripts" referenced-type="PseudogenicTranscript" reverse-reference="gene"/>
+  </class>
+  <class name="NontranscribedPseudogene" extends="SequenceFeature" is-interface="true">
+    <collection name="exons" referenced-type="NontranscribedPseudogenicExon" reverse-reference="gene"/>
+  </class>
+  <class name="PseudogenicTranscript" extends="SequenceFeature" is-interface="true">
+    <reference name="gene" referenced-type="TranscribedPseudogene" reverse-reference="transcripts"/>
+    <collection name="exons" referenced-type="TranscribedPseudogenicExon" reverse-reference="transcripts"/>
+  </class>
+  <class name="TranscribedPseudogenicExon" extends="SequenceFeature" is-interface="true">
+    <collection name="transcripts" referenced-type="PseudogenicTranscript" reverse-reference="exons"/>
+  </class>
+  <class name="NontranscribedPseudogenicExon" extends="SequenceFeature" is-interface="true">
+    <reference name="gene" referenced-type="NontranscribedPseudogene" reverse-reference="exons"/>
+  </class>
+</classes>
