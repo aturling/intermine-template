@@ -4,6 +4,7 @@
 <classes>
   <!--Comment out classes that don't apply to this mine release-->
   <class name="CGeneSegment" extends="MRNA" is-interface="true"/>
+  <class name="DGeneSegment" extends="MRNA" is-interface="true"/>
   <class name="DuplicateEntity" is-interface="true">
     <attribute name="geneIdentifier" type="java.lang.String"/>
     <attribute name="chromosome" type="java.lang.String"/>
@@ -17,6 +18,7 @@
   <class name="Gene" extends="SequenceFeature" is-interface="true">
     <collection name="duplicateEntities" referenced-type="DuplicateEntity"/>
   </class>
+  <class name="JGeneSegment" extends="MRNA" is-interface="true"/>
   <class name="MiRNA" extends="NcRNA" is-interface="true">
     <reference name="transcript" referenced-type="PrimaryTranscript" reverse-reference="miRNAs"/>
   </class>

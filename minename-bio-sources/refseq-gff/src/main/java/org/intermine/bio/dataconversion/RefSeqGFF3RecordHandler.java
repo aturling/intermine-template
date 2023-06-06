@@ -40,8 +40,11 @@ public class RefSeqGFF3RecordHandler extends BaseGFF3RecordHandler
         // Comment out lines that don't apply to this mine release.
         refsAndCollections.put("AntisenseRNA", "gene");
         refsAndCollections.put("CGeneSegment", "gene");
+        refsAndCollections.put("DGeneSegment", "gene");
         // DLoop has no parent
         refsAndCollections.put("GuideRNA", "gene");
+        // Insulator has no parent
+        refsAndCollections.put("JGeneSegment", "gene");
         refsAndCollections.put("LncRNA", "gene");
         refsAndCollections.put("MiRNA", "transcript");
         refsAndCollections.put("MRNA", "gene");
@@ -51,12 +54,16 @@ public class RefSeqGFF3RecordHandler extends BaseGFF3RecordHandler
         refsAndCollections.put("RNaseMRPRNA", "gene");
         refsAndCollections.put("RNasePRNA", "gene");
         refsAndCollections.put("RRNA", "gene");
+        refsAndCollections.put("ScRNA", "gene");
         refsAndCollections.put("SnoRNA", "gene");
         refsAndCollections.put("SnRNA", "gene");
         refsAndCollections.put("SRPRNA", "gene");
+        // TandemRepeat has no parent
         refsAndCollections.put("TelomeraseRNA", "gene");
         refsAndCollections.put("TRNA", "gene");
+        refsAndCollections.put("VaultRNA", "gene");
         refsAndCollections.put("VGeneSegment", "gene");
+        refsAndCollections.put("YRNA", "gene");
     }
 
     /**

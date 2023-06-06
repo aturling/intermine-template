@@ -43,14 +43,20 @@ public class EnsemblGFF3RecordHandler extends BaseGFF3RecordHandler
         refsAndCollections.put("MiRNA", "gene");
         refsAndCollections.put("MRNA", "gene");
         refsAndCollections.put("NcRNA", "gene");
+        refsAndCollections.put("PreMiRNA", "gene");
+        refsAndCollections.put("RNaseMRPRNA", "gene");
+        refsAndCollections.put("RNasePRNA", "gene");
         refsAndCollections.put("RRNA", "gene");
         refsAndCollections.put("Ribozyme", "gene");
         refsAndCollections.put("ScaRNA", "gene");
         refsAndCollections.put("ScRNA", "gene");
         refsAndCollections.put("SnoRNA", "gene");
         refsAndCollections.put("SnRNA", "gene");
+        refsAndCollections.put("SRPRNA", "gene");
         refsAndCollections.put("SRNA", "gene");
+        refsAndCollections.put("TransposableElement", "gene");
         refsAndCollections.put("TRNA", "gene");
+        refsAndCollections.put("UnconfirmedTranscript", "gene");
         refsAndCollections.put("VaultRNA", "gene");
         refsAndCollections.put("VGeneSegment", "gene");
         refsAndCollections.put("YRNA", "gene");
@@ -80,7 +86,8 @@ public class EnsemblGFF3RecordHandler extends BaseGFF3RecordHandler
         setFeatureAttribute(record, "protein_id", "proteinIdentifier");
 
         // Extra processing for genes
-        if (clsName.equals("Gene"))  {
+        // TODO: General check if inherits from Gene
+        if (clsName.equals("Gene") || clsName.equals("TransposableElementGene"))  {
             // Set description for gene only
             setFeatureDescription(record);
 

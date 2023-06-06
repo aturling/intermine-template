@@ -57,9 +57,9 @@ public class EnsemblGFF3RecordHandler extends BaseGFF3RecordHandler
         refsAndCollections.put("SnRNA", "gene");
         refsAndCollections.put("SRPRNA", "gene");
         refsAndCollections.put("TRNA", "gene");
+        refsAndCollections.put("UnconfirmedTranscript", "gene");
         refsAndCollections.put("VGeneSegment", "gene");
         refsAndCollections.put("YRNA", "gene");
-        // TransposableElementGene and UnconfirmedTranscript parent cases handled above, inherit from Gene/Transcript
     }
 
     /**
@@ -86,7 +86,8 @@ public class EnsemblGFF3RecordHandler extends BaseGFF3RecordHandler
         setFeatureAttribute(record, "protein_id", "proteinIdentifier");
 
         // Extra processing according to class
-        if (clsName.equals("Gene") || clsName.equals("TranscribedPseudogene") || clsName.equals("NontranscribedPseudogene")) {
+        if (clsName.equals("Gene") || clsName.equals("TranscribedPseudogene") || clsName.equals("NontranscribedPseudogene")
+            || clsName.equals("TransposableElementGene")) {
             // Set description for gene only
             setFeatureDescription(record);
 

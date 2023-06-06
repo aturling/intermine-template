@@ -11,6 +11,7 @@
   <class name="JGeneSegment" extends="MRNA" is-interface="true"/>
   <class name="MRNA" extends="Transcript" is-interface="true"/>
   <class name="NcRNA" extends="Transcript" is-interface="true"/>
+  <class name="PreMiRNA" extends="NcRNA" is-interface="true"/>
   <class name="SRNA" extends="NcRNA" is-interface="true"/>
   <class name="VGeneSegment" extends="MRNA" is-interface="true"/>
   <!--New: include pseudogenes-->
