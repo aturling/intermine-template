@@ -10,13 +10,13 @@ package org.intermine.bio.dataconversion;
  *
  */
 
-public class FaangExpressionConverterTest extends ItemsTestCase
+public class GeneExpressionConverterTest extends ItemsTestCase
 {
     Model model = Model.getInstanceByName("genomic");
-    FaangExpressionConverter converter;
+    GeneExpressionConverter converter;
     MockItemWriter itemWriter;
 
-    public FaangExpressionConverterTest(String arg) {
+    public GeneExpressionConverterTest(String arg) {
         super(arg);
     }
 

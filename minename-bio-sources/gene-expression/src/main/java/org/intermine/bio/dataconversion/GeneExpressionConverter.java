@@ -27,11 +27,11 @@ import org.intermine.xml.full.Item;
 
 
 /**
- * Converter to load FAANG expression data
+ * Converter to load Gene expression data
  *
  * @author
  */
-public class FAANGExpressionConverter extends BioFileConverter
+public class GeneExpressionConverter extends BioFileConverter
 {
     private static final String DATASET_TITLE = "Gene RNASeq expression data set";
     private static final String DATA_SOURCE_NAME = "NCBI SRA";
@@ -49,7 +49,7 @@ public class FAANGExpressionConverter extends BioFileConverter
      * @param writer the ItemWriter used to handle the resultant items
      * @param model the Model
      */
-    public FAANGExpressionConverter(ItemWriter writer, Model model) {
+    public GeneExpressionConverter(ItemWriter writer, Model model) {
         super(writer, model, DATA_SOURCE_NAME, DATASET_TITLE);
     }
 
