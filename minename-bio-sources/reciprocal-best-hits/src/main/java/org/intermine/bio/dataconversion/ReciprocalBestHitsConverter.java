@@ -30,11 +30,31 @@ import org.intermine.util.FormattedTextParser;
  */
 public class ReciprocalBestHitsConverter extends BioFileConverter
 {
-    private static final String DATASET_TITLE = "Drosophila reciprocal best hits data set";
-    private static final String DATA_SOURCE_NAME = "HGD";
+    private String dataSourceName = null;
+    private String dataSetTitle = null;
+    private Item dataSetItem = null;
+    private Item dataSourceItem = null;
 
     private static final Logger LOG = Logger.getLogger(ReciprocalBestHitsConverter.class);
     protected Map<String, Item> geneItemMap = new HashMap<String, Item>();
+
+    /**
+     * Sets the data set title.
+     *
+     * @param dataSetTitle data set title
+     */
+    public void setDataSetTitle(String dataSetTitle) {
+        this.dataSetTitle = dataSetTitle;
+    }
+
+    /**
+     * Sets the data source name.
+     *
+     * @param dataSourceName data source name
+     */
+    public void setDataSourceName(String dataSourceName) {
+        this.dataSourceName = dataSourceName;
+    }
 
     /**
      * Constructor
@@ -42,7 +62,7 @@ public class ReciprocalBestHitsConverter extends BioFileConverter
      * @param model the Model
      */
     public ReciprocalBestHitsConverter(ItemWriter writer, Model model) {
-        super(writer, model, DATA_SOURCE_NAME, DATASET_TITLE);
+        super(writer, model);
     }
 
     /**
@@ -75,6 +95,7 @@ public class ReciprocalBestHitsConverter extends BioFileConverter
             rbhItem.setAttribute("identifier", rbhPrimaryIdentifier);
             rbhItem.setReference("subject", geneItem1.getIdentifier());
             rbhItem.setReference("reciprocalBestHit", geneItem2.getIdentifier());
+            rbhItem.addToCollection("dataSets", getDataSet());
             storeItem(rbhItem);
         }
     }
@@ -100,11 +121,46 @@ public class ReciprocalBestHitsConverter extends BioFileConverter
             geneItem = createItem("Gene");
             geneItem.setAttribute("primaryIdentifier", primaryIdentifier);
             geneItem.setReference("organism", getOrganism(taxonId));
+            geneItem.addToCollection("dataSets", getDataSet());
             geneItemMap.put(primaryIdentifier, geneItem);
         }
         return geneItem;
     }
 
+    /**
+     * Returns the current DataSource item
+     * @return
+     * @throws ObjectStoreException
+     */
+    private Item getDataSource() throws ObjectStoreException {
+        if (dataSourceItem == null) {
+            if (StringUtils.isEmpty(dataSourceName)) {
+                throw new RuntimeException("Data source name not set in project.xml");
+            }
+            dataSourceItem = createItem("DataSource");
+            dataSourceItem.setAttribute("name", dataSourceName);
+            storeItem(dataSourceItem);
+        }
+        return dataSourceItem;
+    }
+
+    /**
+     * Returns the current DataSet item
+     * @return
+     * @throws ObjectStoreException
+     */
+    private Item getDataSet() throws ObjectStoreException {
+        if (dataSetItem == null) {
+            if (StringUtils.isEmpty(dataSetTitle)) {
+                throw new RuntimeException("Data set title not set in project.xml");
+            }
+            dataSetItem = createItem("DataSet"); 
+            dataSetItem.setAttribute("name", dataSetTitle);
+            dataSetItem.setReference("dataSource", getDataSource());
+            storeItem(dataSetItem);
+        }
+        return dataSetItem;
+    }
 
     /**
      * Store all items in a given Map

@@ -10,5 +10,6 @@
     <reference name="reciprocalBestHit" referenced-type="Gene"/>
     <reference name="source" referenced-type="DataSource"/>
     <reference name="subject" referenced-type="Gene" reverse-reference="reciprocalBestHit"/>
+    <collection name="dataSets" referenced-type="DataSet"/>
   </class>
 </classes>
