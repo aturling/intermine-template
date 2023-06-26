@@ -147,6 +147,26 @@
     <tabledisplayer src="/model/dataSourceShort.jsp"/>
   </class>
 
+  <!--AquaMine Experiment-->
+  <class className="org.intermine.model.bio.Experiment">
+    <inlinelist>
+      <table path="dataSets.name"/>
+    </inlinelist>
+    <headerconfig>
+      <titles>
+        <title mainTitles="experimentId" numberOfMainTitlesToShow="1" subTitles="*organism.shortName*"/>
+      </titles>
+    </headerconfig>
+    <fields>
+      <fieldconfig fieldExpr="experimentId" label="SRA Experiment Accession"/>
+      <fieldconfig fieldExpr="bioProject"/>
+      <fieldconfig fieldExpr="bioSample"/>
+      <fieldconfig fieldExpr="run" label="SRA Run Accession"/>
+      <fieldconfig fieldExpr="tissue"/>
+    </fields>
+  </class>
+
+  <!--FAANGMine Experiment-->
   <class className="org.intermine.model.bio.Experiment">
     <inlinelist>
       <table path="dataSets.name"/>
@@ -169,7 +189,7 @@
     </fields>
   </class>
 
-  <!--FAANGMine Expressions-->
+  <!--AquaMine/FAANGMine Expressions-->
   <class className="org.intermine.model.bio.Expression">
     <headerconfig>
       <titles>
