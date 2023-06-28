@@ -288,7 +288,6 @@ public class SNPVariationLoaderTask extends FileDirectDataLoaderTask
         ArrayList<String> infoElements = new ArrayList<String>(Arrays.asList(StringUtil.split(info, ";")));
 
         Chromosome chromosome = getChromosome(chromosomeIdentifier);
-        chromosome.setAssembly(assemblyVersion);
 
         String type = getKeyValuePair(infoElements, "TSA=").get(1);
         ArrayList<String> aliases = getKeyValuePair(infoElements, "alias=");
@@ -743,6 +742,7 @@ public class SNPVariationLoaderTask extends FileDirectDataLoaderTask
             chr = getDirectDataLoader().createObject(Chromosome.class);
             imoTracker.put(chr.getId(), chr);
             chr.setPrimaryIdentifier(identifier);
+            chr.setAssembly(assemblyVersion);
             chr.setOrganism(getOrganism());
             chr.addDataSets(getDataSet());
             chr.setSequenceOntologyTerm(getSoTerm("chromosome"));
