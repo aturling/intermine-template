@@ -13,6 +13,14 @@
     <aspect-source name="Ensembl" url="http://www.ensembl.org/index.html"/>
   </aspect>
 
+  <aspect name="Expression">
+    <subtitle>Expression</subtitle>
+    <intro-text>
+      Gene expression
+    </intro-text>
+    <aspect-source name="Expression"/>
+  </aspect>
+
   <aspect name="Alias and DBxref">
     <subtitle>Alias and DBxref</subtitle>
     <icon-image>model/images/</icon-image>
