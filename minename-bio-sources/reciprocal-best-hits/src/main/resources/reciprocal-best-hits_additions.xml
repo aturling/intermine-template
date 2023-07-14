@@ -3,13 +3,13 @@
 
 <classes>
   <class name="Gene" is-interface="true">
-    <collection name="reciprocalBestHit" referenced-type="ReciprocalBestHit" reverse-reference="subject"/>
+    <collection name="reciprocalBestHits" referenced-type="ReciprocalBestHit" reverse-reference="subject"/>
   </class>
   <class name="ReciprocalBestHit" is-interface="true">
     <attribute name="identifier" type="java.lang.String"/>
     <reference name="reciprocalBestHit" referenced-type="Gene"/>
     <reference name="source" referenced-type="DataSource"/>
-    <reference name="subject" referenced-type="Gene" reverse-reference="reciprocalBestHit"/>
+    <reference name="subject" referenced-type="Gene" reverse-reference="reciprocalBestHits"/>
     <collection name="dataSets" referenced-type="DataSet"/>
   </class>
 </classes>
