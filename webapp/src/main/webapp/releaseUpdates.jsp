@@ -35,7 +35,7 @@
       <div id="release-updates">
         <div id="new-release-note">
           <p>This is the first public release of Minename. Please see the data sources page for a full list of data and their versions.</p>
-          <p>If you have any questions, please see our docs and youtube videos. Please do not hesitate to contact us should you require any further assistance. For all types of help and feedback email <c:out value="${WEB_PROPERTIES['feedback.destination']}"/> .</p>
+          <p>If you have any questions, please see our docs and youtube videos. Please do not hesitate to contact us should you require any further assistance. For all types of help and feedback email <c:out value="${WEB_PROPERTIES['feedback.destination.public']}"/> .</p>
         </div>
         <br/>
         <div class="note_header">
