@@ -20,18 +20,22 @@ import org.apache.log4j.Logger;
 import org.apache.commons.lang.StringUtils;
 import org.intermine.dataconversion.ItemWriter;
 import org.intermine.metadata.Model;
+import org.intermine.metadata.TypeUtil;
+import org.intermine.model.bio.BioEntity;
 import org.intermine.objectstore.ObjectStoreException;
 import org.intermine.xml.full.Item;
 import org.intermine.util.FormattedTextParser;
 
 /**
- * A Converter that loads cross references, across gene sets, for Gene entity. 
+ * A Converter that loads cross references, across data sets, for BioEntity (e.g., Gene) entity. 
  * @author
  */
 public class CrossReferencesConverter extends BioFileConverter
 {
     private static final Logger LOG = Logger.getLogger(CrossReferencesConverter.class);
-    protected Map<String, Item> geneItemMap = new HashMap<String, Item>();
+    protected Map<String, Item> itemMap = new HashMap<String, Item>();
+    private String className = "Gene";             // e.g., "Gene" or "org.intermine.model.bio.Gene"
+    private String unqualifiedClassName = "Gene";  // e.g., "Gene"
     private String dataSourceName = null;
     private String dataSetTitle = null;
     private Item dataSource = null;
@@ -57,6 +61,15 @@ public class CrossReferencesConverter extends BioFileConverter
     }
 
     /**
+     * The class name to use for objects created during load.
+     * Default is Gene
+     * @param className the class name
+     */
+    public void setClassName(String className) {
+        this.className = className;
+    }
+
+    /**
      * Set the data source name.
      * @param dataSourceName name of datasource for items created
      */
@@ -78,6 +91,15 @@ public class CrossReferencesConverter extends BioFileConverter
      * {@inheritDoc}
      */
     public void process(Reader reader) throws Exception {
+        // Check class name
+        Class<?> cls = getModel().getClassDescriptorByName(className).getType();
+        if (!BioEntity.class.isAssignableFrom(cls)) {
+            throw new RuntimeException("className must be a valid class in the model"
+                        + " that extends BioEntity, but was: " + className);
+        }
+        // Need unqualified class name to use createItem()
+        unqualifiedClassName = TypeUtil.unqualifiedName(className);
+
         File currentFile = getCurrentFile();
         organismReferenceId = getOrganism(taxonId);
         Iterator<String[]> lineIter = FormattedTextParser.parseTabDelimitedReader(reader);
@@ -88,7 +110,7 @@ public class CrossReferencesConverter extends BioFileConverter
             String subjectPrimaryIdentifier = subjectInfo[0];
             String subjectSource = subjectInfo[1];
 
-            Item geneItem1 = getGene(subjectPrimaryIdentifier, subjectSource);
+            Item item1 = getBioEntity(subjectPrimaryIdentifier, subjectSource);
 
             // Load type, if present
             String type = null;
@@ -103,14 +125,14 @@ public class CrossReferencesConverter extends BioFileConverter
                 String targetSource = targetInfo[1];
                 //LOG.info("Subject: " + subjectPrimaryIdentifier + " <> Target: " + targetPrimaryIdentifier);
 
-                Item geneItem2 = getGene(targetPrimaryIdentifier, targetSource);
+                Item item2 = getBioEntity(targetPrimaryIdentifier, targetSource);
 
-                // create xref linking gene1 (as subject) and gene2 (as target)
+                // create xref linking item1 (as subject) and item2 (as target)
                 Item xrefItem = createItem("CrossReference");
                 xrefItem.setAttribute("identifier", targetPrimaryIdentifier);
                 xrefItem.setReference("source", getDataSourceRefId()); // DataSource
-                xrefItem.setReference("subject", geneItem1.getIdentifier());
-                xrefItem.setReference("target", geneItem2.getIdentifier());
+                xrefItem.setReference("subject", item1.getIdentifier());
+                xrefItem.setReference("target", item2.getIdentifier());
                 if (type != null) {
                     xrefItem.setAttribute("type", type);
                 }
@@ -131,20 +153,20 @@ public class CrossReferencesConverter extends BioFileConverter
         }
     }
 
-    private Item getGene(String primaryIdentifier, String source) 
+    private Item getBioEntity(String identifier, String source) 
         throws ObjectStoreException {
-        Item geneItem = null;
-        if (geneItemMap.containsKey(primaryIdentifier)) {
-            geneItem = geneItemMap.get(primaryIdentifier);
+        Item bioItem = null;
+        if (itemMap.containsKey(identifier)) {
+            bioItem = itemMap.get(identifier);
         } else {
-            geneItem = createItem("Gene");
-            geneItem.setAttribute("primaryIdentifier", primaryIdentifier);
-            geneItem.setAttribute("source", source);
-            geneItem.setReference("organism", organismReferenceId);
-            geneItem.addToCollection("dataSets", getDataSet());
-            geneItemMap.put(primaryIdentifier, geneItem);
+            bioItem = createItem(unqualifiedClassName);  // extends BioEntity
+            bioItem.setAttribute("primaryIdentifier", identifier);
+            bioItem.setAttribute("source", source);
+            bioItem.setReference("organism", organismReferenceId);
+            bioItem.addToCollection("dataSets", getDataSet());
+            itemMap.put(identifier, bioItem);
         }
-        return geneItem;
+        return bioItem;
     }
 
     private String getDataSourceRefId() {
@@ -196,6 +218,6 @@ public class CrossReferencesConverter extends BioFileConverter
      */
     @Override
     public void close() throws Exception {
-        storeAllItems(geneItemMap);
+        storeAllItems(itemMap);
     }
 }
