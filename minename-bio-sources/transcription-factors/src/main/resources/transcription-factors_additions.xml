@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!-- This file details any extensions needed to the data model to store data from this source, everything else is automatically generated from the model description so this is all we need to do to add to the model. -->
+
+<classes>
+  <class name="TranscriptionFactor" is-interface="true">
+    <attribute name="clone" type="java.lang.String"/>
+    <attribute name="family" type="java.lang.String"/>
+    <attribute name="geneName" type="java.lang.String"/>
+    <attribute name="tfName" type="java.lang.String"/>
+    <reference name="gene" referenced-type="Gene"/>
+    <collection name="dataSets" referenced-type="DataSet"/>
+  </class>
+</classes>
