@@ -588,6 +588,20 @@
     </fields>
   </class>
 
+  <!--MaizeMine Transcription Factors-->
+  <class className="org.intermine.model.bio.TranscriptionFactor">
+    <headerconfig>
+      <titles>
+        <title mainTitles="tfName" subTitles="*gene.organism.shortName*"/>
+      </titles>
+    </headerconfig>
+    <fields>
+      <fieldconfig fieldExpr="tfName"/>
+      <fieldconfig fieldExpr="geneName"/>
+      <fieldconfig fieldExpr="gene.primaryIdentifier" label="Gene ID" showInInlineCollection="false"/>
+    </fields>
+  </class>
+
 <!-- exporters -->
   <tableExportConfig id="sequence" className="org.intermine.bio.web.export.SequenceHttpExporter"/>
   <tableExportConfig id="gff3" className="org.intermine.bio.web.export.GFF3HttpExporter"/>
