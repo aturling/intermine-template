@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!-- This file details any extensions needed to the data model to store data from this source, everything else is automatically generated from the model description so this is all we need to do to add to the model. -->
+
+<classes>
+<!--Comment out classes if not loaded-->
+  <class name="Image" is-interface="true">
+    <attribute name="primaryIdentifier" type="java.lang.String"/>
+    <attribute name="url" type="java.lang.String"/>
+    <collection name="features" referenced-type="TransposableElementInsertionSite" reverse-reference="images"/>
+  </class>
+  <class name="TransposableElementInsertionSite" extends="SequenceFeature" is-interface="true">
+    <attribute name="geneticBackground" type="java.lang.String"/>
+    <attribute name="stock" type="java.lang.String"/>
+    <attribute name="taggedGene" type="java.lang.String"/>
+    <collection name="images" referenced-type="Image" reverse-reference="features"/>
+  </class>
+</classes>
