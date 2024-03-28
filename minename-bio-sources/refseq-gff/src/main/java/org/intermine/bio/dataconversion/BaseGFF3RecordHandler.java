@@ -1,7 +1,7 @@
 package org.intermine.bio.dataconversion;
 
 /*
- * Copyright (C) 2002-2022 FlyMine
+ * Copyright (C) 2002-2024 FlyMine
  *
  * This code may be freely distributed and modified under the
  * terms of the GNU Lesser General Public Licence.  This should
@@ -58,6 +58,15 @@ public class BaseGFF3RecordHandler extends GFF3RecordHandler
         // Always set feature source and name
         setFeatureSource(record);
         setFeatureName(record);
+
+        // Handle aliases, if present
+        if (record.getAliases() != null) {
+            List<String> aliases = record.getAliases();
+            Iterator<String> aliasesIterator = aliases.iterator();
+            while (aliasesIterator.hasNext()) {
+                setAliasName(aliasesIterator.next());
+            }
+        }
     }
 
     /**
@@ -148,6 +157,40 @@ public class BaseGFF3RecordHandler extends GFF3RecordHandler
                 feature.setAttribute("status", ft);
             }
         }
+    }
+
+    /**
+     * Handle database aliases, if present.
+     * @param alias
+     */
+    protected void setAliasName(String alias) {
+        Item feature = getFeature();
+        List<String> splitVal = new ArrayList<String>(Arrays.asList(StringUtil.split(alias, ":")));
+        if (splitVal.size() != 2) {
+            throw new RuntimeException("Ambiguous aliasName: " + splitVal + '\n' 
+                + "Expected aliasName format is '<ALIAS_ID>:<ALIAS_SOURCE>'");
+        }
+        String aliasPrimaryIdentifier = splitVal.get(0);
+        String aliasSource = splitVal.get(1);
+        String aliasRef;
+        if (aliasToRefId.containsKey(aliasPrimaryIdentifier)) {
+            // AliasName has already been seen
+            aliasRef = aliasToRefId.get(aliasPrimaryIdentifier);
+        } else {
+            // Create new AliasName item
+            Item aliasItem = converter.createItem("AliasName");
+            aliasItem.setAttribute("identifier", aliasPrimaryIdentifier);
+            aliasItem.setAttribute("source", aliasSource);
+            aliasItem.setReference("organism", getOrganism());
+            aliasRef = aliasItem.getIdentifier();
+            aliasToRefId.put(aliasPrimaryIdentifier, aliasRef);
+            try {
+                converter.store(aliasItem);
+            } catch (Exception e) {
+                System.out.println("Exception while storing aliasItem:" + aliasItem + "\n" + e);
+            }
+        }
+        feature.addToCollection("aliases", aliasRef);
     }
 
     /**
