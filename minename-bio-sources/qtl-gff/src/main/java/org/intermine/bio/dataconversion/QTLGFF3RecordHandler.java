@@ -24,9 +24,8 @@ import org.apache.commons.lang.StringUtils;
  * A converter/retriever for the QTL-GFF dataset via GFF files.
  */
 
-public class QTLGFF3RecordHandler extends GFF3RecordHandler
+public class QTLGFF3RecordHandler extends BaseGFF3RecordHandler
 {
-    private HashMap<String, Item> publicationItems = new HashMap<String, Item>();
     private HashMap<String, Item> sequenceAlterationItems = new HashMap<String, Item>();
     private HashMap<String, Item> ontologyItems = new HashMap<String, Item>();
     private HashMap<String, Item> ontologyTermItems = new HashMap<String, Item>();
@@ -48,8 +47,6 @@ public class QTLGFF3RecordHandler extends GFF3RecordHandler
         attributesToSet.put("LS-means", "lsMeans");
         attributesToSet.put("Map_Type", "mapType");
         attributesToSet.put("Model", "model");
-        attributesToSet.put("Name", "name");
-        attributesToSet.put("P-value", "pValue");
         attributesToSet.put("QTL_ID", "qtlId");
         attributesToSet.put("Test_Base", "testBase");
         attributesToSet.put("Tissue", "tissue");
@@ -61,6 +58,8 @@ public class QTLGFF3RecordHandler extends GFF3RecordHandler
 	floatAttrsToSet.put("Dominance_Effect", "dominanceEffect");
 	floatAttrsToSet.put("F-Stat", "fStat");
 	floatAttrsToSet.put("Likelihood_Ratio", "likelihoodRatio");
+        floatAttrsToSet.put("P-value", "pValue");
+        floatAttrsToSet.put("rSquared", "rSquared");
 	floatAttrsToSet.put("Variance", "variance");
 
         // Ontology abbreviation -> Ontology name
@@ -82,12 +81,11 @@ public class QTLGFF3RecordHandler extends GFF3RecordHandler
      */
     @Override
     public void process(GFF3Record record) {
+        super.process(record);
+
         Item feature = getFeature();
         String clsName = feature.getClassName();
         if (clsName.equals("QTL")) {
-            // Set QTL source
-            feature.setAttribute("source", record.getSource());
-
             // Store attributes, if present
             for (Entry<String, String> e: attributesToSet.entrySet()) {
                 String attrName = e.getKey();
@@ -107,8 +105,11 @@ public class QTLGFF3RecordHandler extends GFF3RecordHandler
                 if (record.getAttributes().get(attrName) != null) {
                     String fieldValue = record.getAttributes().get(attrName).iterator().next();
                     // Additional formatting may be required for floats:
+                    System.out.println("Setting " + fieldName + ", original value: " + fieldValue);
                     fieldValue = formatFloatField(fieldValue);
+                    System.out.println("Formatted value: " + fieldValue);
                     if (fieldNotEmpty(fieldValue)) {
+                        System.out.println("field not empty, storing");
                         feature.setAttribute(fieldName, fieldValue);
                     }
                 }
@@ -119,15 +120,6 @@ public class QTLGFF3RecordHandler extends GFF3RecordHandler
 	        String significance = record.getAttributes().get("Significance").iterator().next();
 		if (fieldNotEmpty(significance)) {
 		    feature.setAttribute("significance", StringUtils.capitalize(significance));
-		}
-            }
-
-            // Special case: Publications
-            if (record.getAttributes().get("PUBMED_ID") != null) {
-                String pubMedId = record.getAttributes().get("PUBMED_ID").iterator().next();
-		if (StringUtil.allDigits(pubMedId)) {
-                    Item publication = getPublication(pubMedId);
-                    feature.addToCollection("publications", publication.getIdentifier());
 		}
             }
 
@@ -154,16 +146,19 @@ public class QTLGFF3RecordHandler extends GFF3RecordHandler
             if (converter.getLoadSequenceAlterations()) {
                 if (record.getAttributes().get("FlankMarker") != null) {
                     List<String> markers = record.getAttributes().get("FlankMarker");
-                    feature.setAttribute("flankMarkers", StringUtils.join(markers, ", "));
-                    ArrayList<String> sequenceAlterations = new ArrayList<String>();
-                    for (String marker : markers) {
-                        if (marker.startsWith("rs")) {
-                            Item sequenceAlteration = getSequenceAlteration(marker);
-                            sequenceAlterations.add(sequenceAlteration.getIdentifier());
+                    String flankMarkersStr = StringUtils.join(markers, ", ");
+                    if (fieldNotEmpty(flankMarkersStr)) {
+                        feature.setAttribute("flankMarkers", flankMarkersStr);
+                        ArrayList<String> sequenceAlterations = new ArrayList<String>();
+                        for (String marker : markers) {
+                            if (marker.startsWith("rs")) {
+                                Item sequenceAlteration = getSequenceAlteration(marker);
+                                sequenceAlterations.add(sequenceAlteration.getIdentifier());
+                            }
                         }
-                    }
-                    for (int i = 0; i < sequenceAlterations.size(); i++) {
-                        feature.addToCollection("snpsAsFlankMarkers", sequenceAlterations.get(i));
+                        for (int i = 0; i < sequenceAlterations.size(); i++) {
+                            feature.addToCollection("snpsAsFlankMarkers", sequenceAlterations.get(i));
+                        }
                     }
                 }
             }
@@ -218,24 +213,6 @@ public class QTLGFF3RecordHandler extends GFF3RecordHandler
     }
 
     /**
-     * Get an Item representation of a Publication
-     * @param pubMedId
-     * @return
-     */
-    private Item getPublication(String pubMedId) {
-        Item publication = null;
-        if (publicationItems.containsKey(pubMedId)) {
-            publication = publicationItems.get(pubMedId);
-        } else {
-            publication = converter.createItem("Publication");
-            publication.setAttribute("pubMedId", pubMedId);
-            addItem(publication);
-            publicationItems.put(pubMedId, publication);
-        }
-        return publication;
-    }
-
-    /**
      * Get an Item representation of a SequenceAlteration
      * @param identifier
      * @return
@@ -252,32 +229,5 @@ public class QTLGFF3RecordHandler extends GFF3RecordHandler
             sequenceAlterationItems.put(identifier, sequenceAlteration);
         }
         return sequenceAlteration;
-    }
-
-    /**
-     * Return true if field has a nonempty value
-     */
-    private boolean fieldNotEmpty(String fieldValue) {
-        // Consider "-" to be empty / no value
-        if ("-".equals(fieldValue)) {
-            return false;
-        }
-
-        return StringUtils.isNotEmpty(fieldValue);
-    }
-
-    private String formatFloatField(String fieldValue) {
-        // Don't store if begins with '<' or '>'
-        // (Only applies to a couple of values out of many, otherwise
-        // value should be stored as string instead e.g. p-values)
-        if (StringUtils.startsWith(fieldValue, "<") || StringUtils.startsWith(fieldValue, ">")) {
-            return "";
-        }
-	String formattedValue = fieldValue;
-	// Use correct hyphen character so negative numbers can be properly stored
-	formattedValue = formattedValue.replace("−", "-");
-	// After the above changes, remove all non-numeric characters (leave ., -, E)
-        formattedValue = formattedValue.replaceAll("[^0-9eE.-]", "");
-	return formattedValue;
     }
 }

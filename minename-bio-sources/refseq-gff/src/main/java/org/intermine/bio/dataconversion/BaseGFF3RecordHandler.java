@@ -36,6 +36,7 @@ public class BaseGFF3RecordHandler extends GFF3RecordHandler
     protected Map<String,String> crossRefToRefId = new HashMap<String,String>();
     protected Map<String,String> geneToRefId = new HashMap<String,String>();
     protected Map<String,String> crossRefSourceIdentifierToDatabaseIdentifierMap = new HashMap<String,String>();
+    protected HashMap<String, Item> publicationItems = new HashMap<String, Item>();
 
     private static final String ENC = "UTF-8";
 
@@ -65,6 +66,15 @@ public class BaseGFF3RecordHandler extends GFF3RecordHandler
             Iterator<String> aliasesIterator = aliases.iterator();
             while (aliasesIterator.hasNext()) {
                 setAliasName(aliasesIterator.next());
+            }
+        }
+
+        // Handle publications, if present
+        if (record.getAttributes().get("PUBMED_ID") != null) {
+            String pubMedId = record.getAttributes().get("PUBMED_ID").iterator().next();
+            if (StringUtil.allDigits(pubMedId)) {
+                Item publication = getPublication(pubMedId);
+                feature.addToCollection("publications", publication.getIdentifier());
             }
         }
     }
@@ -227,6 +237,24 @@ public class BaseGFF3RecordHandler extends GFF3RecordHandler
     }
 
     /**
+     * Get an Item representation of a Publication
+     * @param pubMedId
+     * @return
+     */
+    protected Item getPublication(String pubMedId) {
+        Item publication = null;
+        if (publicationItems.containsKey(pubMedId)) {
+            publication = publicationItems.get(pubMedId);
+        } else {
+            publication = converter.createItem("Publication");
+            publication.setAttribute("pubMedId", pubMedId);
+            addItem(publication);
+            publicationItems.put(pubMedId, publication);
+        }
+        return publication;
+    }
+
+    /**
      * Create duplicate entities.
      * @param record
      */
@@ -278,5 +306,31 @@ public class BaseGFF3RecordHandler extends GFF3RecordHandler
                 feature.addToCollection("duplicateEntities", duplicateEntityItemRefId);
             }
         }
+    }
+
+    /**
+     * Return true if field has a nonempty value
+     */
+    protected boolean fieldNotEmpty(String fieldValue) {
+        // Consider "-", "None", "NA", or "N/A" to be empty / no value
+        if ("-".equals(fieldValue) || "None".equals(fieldValue) || "NA".equals(fieldValue) || "N/A".equals(fieldValue)) {
+            return false;
+        }
+
+        return StringUtils.isNotEmpty(fieldValue);
+    }
+
+    protected String formatFloatField(String fieldValue) {
+        // Don't store if begins with '<' or '>'
+        // (Only applies to a couple of values out of many
+        if (StringUtils.startsWith(fieldValue, "<") || StringUtils.startsWith(fieldValue, ">")) {
+            return "";
+        }
+        String formattedValue = fieldValue;
+        // Use correct hyphen character so negative numbers can be properly stored
+        formattedValue = formattedValue.replace("−", "-");
+        // After the above changes, remove all non-numeric characters (leave ., -, E)
+        formattedValue = formattedValue.replaceAll("[^0-9eE.-]", "");
+        return formattedValue;
     }
 }

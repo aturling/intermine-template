@@ -30,7 +30,7 @@ import org.apache.commons.lang.StringUtils;
 public class TranscriptionFactorsConverter extends BioFileConverter
 {
     //
-    private static final String DATASET_TITLE = "Grassius Transcription Factors data set";
+    private static final String DATASET_TITLE = "Grassius Transcription Factor data set";
     private static final String DATA_SOURCE_NAME = "Grassius";
     private static final int NUM_COLS = 5; // expected number of columns in input file
     private String taxonId = null;

@@ -29,13 +29,24 @@ public class MaizeCommunityGFF3RecordHandler extends MaizeGFF3RecordHandler
 {
     // Map of attribute name -> field name for feature fields to store (strings)
     private static final HashMap<String, String> attributesToSet = new HashMap<String, String>();
+    // Map of attribute name -> field name for feature fields to store (floats, handled separately)
+    private static final HashMap<String, String> floatAttrsToSet = new HashMap<String, String>();
     private HashMap<String, Item> imageItems = new HashMap<String, Item>();
 
     static {
         // Attribute name -> corresponding feature field name
+        attributesToSet.put("From", "from");
+        attributesToSet.put("B73v3_SNP", "B73v3SNP");
         attributesToSet.put("GeneticBackground", "geneticBackground");
         attributesToSet.put("Stock", "stock");
         attributesToSet.put("TaggedGene", "taggedGene");
+
+        // Float attributes
+        floatAttrsToSet.put("foldChange", "foldChange");
+        floatAttrsToSet.put("intQuartWidth", "intQuartWidth");
+        floatAttrsToSet.put("-log10pvalue", "negativeLog10pValue");
+        floatAttrsToSet.put("-log10qvalue", "negativeLog10qValue");
+        floatAttrsToSet.put("summitToPeakStart", "summitToPeakStart");
     }
 
     /**
@@ -56,31 +67,45 @@ public class MaizeCommunityGFF3RecordHandler extends MaizeGFF3RecordHandler
         Item feature = getFeature();
         String clsName = feature.getClassName();
 
-        if (clsName.equals("TransposableElementInsertionSite")) {
-            // Store attributes, if present
-            for (Entry<String, String> e: attributesToSet.entrySet()) {
-                String attrName = e.getKey();
-                String fieldName = e.getValue();
-                if (record.getAttributes().get(attrName) != null) {
-                    String fieldValue = record.getAttributes().get(attrName).iterator().next();
-                    if (fieldNotEmpty(fieldValue)) {
-                        feature.setAttribute(fieldName, fieldValue);
-                    }
+        // Store attributes, if present
+        for (Entry<String, String> e: attributesToSet.entrySet()) {
+            String attrName = e.getKey();
+            String fieldName = e.getValue();
+            if (record.getAttributes().get(attrName) != null) {
+                String fieldValue = record.getAttributes().get(attrName).iterator().next();
+                if (fieldNotEmpty(fieldValue)) {
+                    feature.setAttribute(fieldName, fieldValue);
                 }
             }
+        }
 
-            // Special case: images
-            if (record.getAttributes().get("Image") != null) {
-                List<String> images = record.getAttributes().get("Image");
-                for (String image : images) {
-                    if (fieldNotEmpty(image)) {
-                        Item imageItem = getImage(image);
-                        feature.addToCollection("images", imageItem.getIdentifier());
-                    }
+        // Special case: float/integer fields
+        for (Entry<String, String> e: floatAttrsToSet.entrySet()) {
+            String attrName = e.getKey();
+            String fieldName = e.getValue();
+            if (record.getAttributes().get(attrName) != null) {
+                String fieldValue = record.getAttributes().get(attrName).iterator().next();
+                // Additional formatting may be required for floats:
+                // (assumes that integers will be formatted correctly in input file)
+                fieldValue = formatFloatField(fieldValue);
+                if (fieldNotEmpty(fieldValue)) {
+                    feature.setAttribute(fieldName, fieldValue);
+                }
+            }
+        }
+
+        // Special case: images
+        if (record.getAttributes().get("Image") != null) {
+            List<String> images = record.getAttributes().get("Image");
+            for (String image : images) {
+                if (fieldNotEmpty(image)) {
+                    Item imageItem = getImage(image);
+                    feature.addToCollection("images", imageItem.getIdentifier());
                 }
             }
         }
     }
+
 
     /**
      * Get an Item representation of an Image
@@ -105,19 +130,5 @@ public class MaizeCommunityGFF3RecordHandler extends MaizeGFF3RecordHandler
             imageItems.put(imageId, imageItem);
         }
         return imageItem;
-    }
-
-    /**
-     * Return true if field has a nonempty value
-     */
-    private boolean fieldNotEmpty(String fieldValue) {
-        // Consider "-" or "None" to be empty / no value
-        if ("-".equals(fieldValue)) {
-            return false;
-        } else if ("None".equals(fieldValue)) {
-            return false;
-        }
-
-        return StringUtils.isNotEmpty(fieldValue);
     }
 }

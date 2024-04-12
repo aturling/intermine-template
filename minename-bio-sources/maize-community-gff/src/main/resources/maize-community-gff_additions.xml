@@ -3,12 +3,25 @@
 
 <classes>
 <!--Comment out classes if not loaded-->
+  <class name="GeneticMarker" extends="SequenceFeature" is-interface="true">
+    <attribute name="B73v3SNP" type="java.lang.String"/>
+  </class>
   <class name="Image" is-interface="true">
     <attribute name="primaryIdentifier" type="java.lang.String"/>
     <attribute name="url" type="java.lang.String"/>
     <collection name="features" referenced-type="TransposableElementInsertionSite" reverse-reference="images"/>
   </class>
+  <class name="OpenChromatinRegion" extends="SequenceFeature" is-interface="true">
+    <attribute name="foldChange" type="java.lang.Float"/>
+    <attribute name="negativeLog10pValue" type="java.lang.Float"/>
+    <attribute name="negativeLog10qValue" type="java.lang.Float"/>
+    <attribute name="summitToPeakStart" type="java.lang.Integer"/>
+  </class>
+  <class name="TSS" extends="SequenceFeature" is-interface="true">
+    <attribute name="intQuartWidth" type="java.lang.Integer"/>
+  </class>
   <class name="TransposableElementInsertionSite" extends="SequenceFeature" is-interface="true">
+    <attribute name="from" type="java.lang.String"/>
     <attribute name="geneticBackground" type="java.lang.String"/>
     <attribute name="stock" type="java.lang.String"/>
     <attribute name="taggedGene" type="java.lang.String"/>

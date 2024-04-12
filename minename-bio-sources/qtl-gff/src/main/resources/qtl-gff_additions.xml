@@ -25,7 +25,8 @@
     <attribute name="mapType" type="java.lang.String"/>
     <attribute name="model" type="java.lang.String"/>
     <attribute name="peakCentimorgan" type="java.lang.String"/>
-    <attribute name="pValue" type="java.lang.String"/>
+    <attribute name="pValue" type="java.lang.Float"/>
+    <attribute name="rSquared" type="java.lang.Float"/>
     <attribute name="significance" type="java.lang.String"/>
     <attribute name="testBase" type="java.lang.String"/>
     <attribute name="tissue" type="java.lang.String"/>
