@@ -143,12 +143,13 @@ public class QTLGFF3RecordHandler extends BaseGFF3RecordHandler
             }
 
             // Special case: Flank marker (if applicable)
-            if (converter.getLoadSequenceAlterations()) {
-                if (record.getAttributes().get("FlankMarker") != null) {
-                    List<String> markers = record.getAttributes().get("FlankMarker");
-                    String flankMarkersStr = StringUtils.join(markers, ", ");
-                    if (fieldNotEmpty(flankMarkersStr)) {
-                        feature.setAttribute("flankMarkers", flankMarkersStr);
+            if (record.getAttributes().get("FlankMarker") != null) {
+                List<String> markers = record.getAttributes().get("FlankMarker");
+                String flankMarkersStr = StringUtils.join(markers, ", ");
+                if (fieldNotEmpty(flankMarkersStr)) {
+                    feature.setAttribute("flankMarkers", flankMarkersStr);
+                    // If loadSequenceAlterations is true, also load SequenceAlteration items for rs IDs
+                    if (converter.getLoadSequenceAlterations()) {
                         ArrayList<String> sequenceAlterations = new ArrayList<String>();
                         for (String marker : markers) {
                             if (marker.startsWith("rs")) {

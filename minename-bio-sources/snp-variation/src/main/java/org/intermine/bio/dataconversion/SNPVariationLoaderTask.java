@@ -39,7 +39,6 @@ import org.intermine.model.bio.Deletion;
 import org.intermine.model.bio.Delins;
 import org.intermine.model.bio.Indel;
 import org.intermine.model.bio.Insertion;
-import org.intermine.model.bio.Gene;
 import org.intermine.model.bio.Location;
 import org.intermine.model.bio.MNV;
 import org.intermine.model.bio.Ontology;
@@ -85,8 +84,7 @@ public class SNPVariationLoaderTask extends FileDirectDataLoaderTask
         "FILTER",
         "INFO"
     };
-    private static final String VARIANT_ANNOTATION_SOURCE = "Ensembl VEP";
-    private static final ArrayList<String> FUNCTION_CLASS_TO_IGNORE = new ArrayList<String>(Arrays.asList("downstream_gene_variant", "upstream_gene_variant", "intergenic_variant", "intron_variant"));
+    //private static final ArrayList<String> FUNCTION_CLASS_TO_IGNORE = new ArrayList<String>(Arrays.asList("downstream_gene_variant", "upstream_gene_variant", "intergenic_variant", "intron_variant"));
 
     private String taxonId = null;
     private String assemblyVersion = null;
@@ -97,16 +95,15 @@ public class SNPVariationLoaderTask extends FileDirectDataLoaderTask
     private DataSource dataSource = null;
     private Ontology ontology = null;
     private String geneSource = null;
+    private String snpSource = null;
 
     private HashSet<Transcript> transcriptSet = new HashSet<Transcript>();
     private HashSet<Consequence> consequenceSet = new HashSet<Consequence>();
-    private HashSet<String> previousGeneSet = new HashSet<String>();
     private HashSet<String> seenSet = new HashSet<String>();
 
     private Map<String, Consequence> consequences = new HashMap<String, Consequence>();
     private Map<Transcript, HashSet<SequenceAlteration>> transcriptToSequenceAlterationMap = new HashMap<Transcript, HashSet<SequenceAlteration>>();
     private Map<String, SOTerm> createdSotermMap = new HashMap<String, SOTerm>();
-    private Map<String, Gene> createdGeneMap = new HashMap<String, Gene>();
     private Map<String, AliasName> createdAliasNameMap = new HashMap<String, AliasName>();
     private Map<String, Chromosome> createdChromosomeMap = new HashMap<String, Chromosome>();
     private Map<String, Transcript> createdTranscriptMap = new HashMap<String, Transcript>();
@@ -153,11 +150,21 @@ public class SNPVariationLoaderTask extends FileDirectDataLoaderTask
     }
 
     /**
-     * Set the gene source for genes.
+     * Set the source for genes/transcripts/etc. that get
+     * created during loading.
      * @param geneSource gene source
      */
     public void setGeneSource(String geneSource) {
         this.geneSource = geneSource;
+    }
+
+    /**
+     * Set the source for SNPs. (Usually same as geneSource,
+     * but not always.)
+     * @param geneSource gene source
+     */
+    public void setSnpSource(String snpSource) {
+        this.snpSource = snpSource;
     }
 
     /**
@@ -360,7 +367,7 @@ public class SNPVariationLoaderTask extends FileDirectDataLoaderTask
         snp.setPrimaryIdentifier(id);
         imoTracker.put(snp.getId(), snp);
         snp.setName(saName);
-        snp.setSource(geneSource);
+        snp.setSource(snpSource);
         snp.setSequenceOntologyTerm(getSoTerm(soTerm));
         snp.setOrganism(getOrganism());
         if (saClassName.equals("SNV")) {
