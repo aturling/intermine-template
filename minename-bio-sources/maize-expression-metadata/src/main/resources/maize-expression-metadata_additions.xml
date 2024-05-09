@@ -11,6 +11,7 @@
   <class name="Sample" extends="Entity" is-interface="true">
     <attribute name="growthStage" type="java.lang.String"/>
     <attribute name="libraryLayout" type="java.lang.String"/>
+    <attribute name="namLine" type="java.lang.String"/>
     <attribute name="organGroup" type="java.lang.String"/>
     <attribute name="qTellerId" type="java.lang.String"/>
     <attribute name="sampleName" type="java.lang.String"/>
@@ -23,6 +24,7 @@
   </class>
   <class name="Replicate" extends="Entity" is-interface="true">
     <attribute name="bioSampleDescription" type="java.lang.String"/>
+    <attribute name="libraryName" type="java.lang.String"/>
     <attribute name="replicateNumber" type="java.lang.String"/>
     <attribute name="sampleReplicateName" type="java.lang.String"/>
     <attribute name="sraBioSampleId" type="java.lang.String"/>
