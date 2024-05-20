@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -68,6 +69,10 @@ public class MaizeExpressionMetadataConverter extends BioFileConverter
         Iterator<String[]> lineIter = FormattedTextParser.parseTabDelimitedReader(reader);
         while(lineIter.hasNext()) {
             String[] line = lineIter.next();
+            if (Pattern.matches("Sample_Rep_ID", line[0])) {
+                // skipping header
+                continue;
+            }
             String sampleReplicateName = line[0];
             String sampleName = line[1];
             String sraBioSampleId = line[2];
