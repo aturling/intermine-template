@@ -16,8 +16,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
-import java.net.URLDecoder;
-import java.io.UnsupportedEncodingException;
 
 import org.apache.commons.lang.StringUtils;
 import org.intermine.bio.io.gff3.GFF3Record;
@@ -37,8 +35,6 @@ public class BaseGFF3RecordHandler extends GFF3RecordHandler
     protected Map<String,String> geneToRefId = new HashMap<String,String>();
     protected Map<String,String> crossRefSourceIdentifierToDatabaseIdentifierMap = new HashMap<String,String>();
     protected HashMap<String, Item> publicationItems = new HashMap<String, Item>();
-
-    private static final String ENC = "UTF-8";
 
     /**
      * Create a new BaseGFF3RecordHandler for the given data model.
@@ -138,11 +134,7 @@ public class BaseGFF3RecordHandler extends GFF3RecordHandler
      * @param description
      */
     protected void setItemDescription(Item item, String description) {
-        try {
-            item.setAttribute("description", URLDecoder.decode(URLDecoder.decode(description, ENC), ENC));
-        } catch (UnsupportedEncodingException e) {
-            System.out.println("WARNING: unsupported encoding " + ENC);
-        }
+        item.setAttribute("description", description);
     }
 
     /**
