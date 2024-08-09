@@ -48,3 +48,11 @@ table.im-results-table td.Protocol.url {
 -------------------------------*/
 
 #submenu {  margin: -2px 0px 0px -2px; }
+
+/* Above "FOOTER" section:
+-------------------------------*/
+
+/* list view */
+/* comment out below if we have bag displayers */
+/* otherwise we hide the empty gray box */
+.bagDetails-page #convertList { display: none; }
