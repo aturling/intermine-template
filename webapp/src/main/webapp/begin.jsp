@@ -90,6 +90,7 @@
             <h3><c:out value="${WEB_PROPERTIES['begin.thirdBox.title']}" /></h3>
           </c:otherwise>
         </c:choose>
+        <br />
         <c:choose>
           <c:when test="${!isNewUser && !empty (WEB_PROPERTIES['begin.thirdBox.visitedDescription'])}">
             <p><c:out value="${WEB_PROPERTIES['begin.thirdBox.visitedDescription']}" escapeXml="false" /></p>
