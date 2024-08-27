@@ -105,11 +105,8 @@ public class QTLGFF3RecordHandler extends BaseGFF3RecordHandler
                 if (record.getAttributes().get(attrName) != null) {
                     String fieldValue = record.getAttributes().get(attrName).iterator().next();
                     // Additional formatting may be required for floats:
-                    System.out.println("Setting " + fieldName + ", original value: " + fieldValue);
                     fieldValue = formatFloatField(fieldValue);
-                    System.out.println("Formatted value: " + fieldValue);
                     if (fieldNotEmpty(fieldValue)) {
-                        System.out.println("field not empty, storing");
                         feature.setAttribute(fieldName, fieldValue);
                     }
                 }
