@@ -82,7 +82,7 @@ public class OrthodbClustersConverter extends BioFileConverter
 
     /**
      * Whether to set OrthoDB cluster id as a separate field
-     * @param dataSourceName name of datasource for items created
+     * @param loadOrthoDBClusterIds
      */
     public void setLoadOrthoDBClusterIds(String loadOrthoDBClusterIds) {
         System.out.println("Setting loadOrthoDBClusterIds to " + loadOrthoDBClusterIds);
