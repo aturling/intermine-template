@@ -133,6 +133,7 @@ public class GpluseReactionsConverter extends BioFileConverter
             reaction = getReaction(identifier);
         }
         reaction.setAttribute("name", name);
+        reaction.setAttribute("subsystem", subsystem);
         if (StringUtils.isNotEmpty(description)) {
             reaction.setAttribute("description", description);
         }
