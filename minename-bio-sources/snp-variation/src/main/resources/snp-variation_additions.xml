@@ -23,6 +23,7 @@
         <attribute name="snpId" type="java.lang.String"/>
         <attribute name="transcriptIdentifier" type="java.lang.String"/>
         <reference name="transcript" referenced-type="Transcript"/>
+        <reference name="pseudogenicTranscript" referenced-type="PseudogenicTranscript"/>
         <reference name="variant" referenced-type="SequenceAlteration" reverse-reference="consequences"/>
         <collection name="consequenceTypes" referenced-type="ConsequenceType"/>
     </class>
@@ -39,6 +40,7 @@
         <collection name="aliases" referenced-type="AliasName" reverse-reference="features"/>
         <collection name="consequences" referenced-type="Consequence" reverse-reference="variant"/>
         <collection name="transcripts" referenced-type="Transcript" reverse-reference="sequenceAlterations"/>
+        <collection name="pseudogenicTranscripts" referenced-type="PseudogenicTranscript" reverse-reference="sequenceAlterations"/>
     </class>
     <class name="Deletion" extends="SequenceAlteration" is-interface="true"/>
     <class name="Indel" extends="SequenceAlteration" is-interface="true"/>
@@ -53,5 +55,8 @@
     </class>
     <class name="Transcript" extends="SequenceFeature" is-interface="true">
         <collection name="sequenceAlterations" referenced-type="SequenceAlteration" reverse-reference="transcripts"/>
+    </class>
+    <class name="PseudogenicTranscript" extends="SequenceFeature" is-interface="true">
+        <collection name="sequenceAlterations" referenced-type="SequenceAlteration" reverse-reference="pseudogenicTranscripts"/>
     </class>
 </classes>
