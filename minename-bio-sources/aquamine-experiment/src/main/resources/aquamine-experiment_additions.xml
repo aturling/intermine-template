@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!-- This file details any extensions needed to the data model to store data from this source, everything else is automatically generated from the model description so this is all we need to do to add to the model. -->
+
+<classes>
+  <class name="Experiment" is-interface="true">
+    <attribute name="experimentId" type="java.lang.String"/>
+    <attribute name="bioProject" type="java.lang.String"/>
+    <attribute name="bioSample" type="java.lang.String"/>
+    <attribute name="libraryName" type="java.lang.String"/>
+    <attribute name="libraryLayout" type="java.lang.String"/>
+    <attribute name="librarySelection" type="java.lang.String"/>
+    <attribute name="libraryStrategy" type="java.lang.String"/>
+    <attribute name="librarySource" type="java.lang.String"/>
+    <attribute name="model" type="java.lang.String"/>
+    <attribute name="organismName" type="java.lang.String"/>
+    <attribute name="platform" type="java.lang.String"/>
+    <attribute name="run" type="java.lang.String"/>
+    <attribute name="sample" type="java.lang.String"/>
+    <attribute name="sampleName" type="java.lang.String"/>
+    <attribute name="sraStudy" type="java.lang.String"/>
+    <attribute name="tissue" type="java.lang.String"/>
+    <reference name="organism" referenced-type="Organism"/>
+    <collection name="dataSets" referenced-type="DataSet"/>
+  </class>
+</classes>
