@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!-- This file details any extensions needed to the data model to store data from this source, everything else is automatically generated from the model description so this is all we need to do to add to the model. -->
+
+<classes>
+  <class name="BTOTerm" extends="OntologyTerm" is-interface="true">
+    <collection name="samples" referenced-type="ExpressionMetadata" reverse-reference="brendaTissueOntology"/>
+  </class>
+  <class name="CLTerm" extends="OntologyTerm" is-interface="true">
+    <collection name="samples" referenced-type="ExpressionMetadata" reverse-reference="cellOntology"/>
+  </class>
+  <class name="LBOTerm" extends="OntologyTerm" is-interface="true">
+    <collection name="samples" referenced-type="ExpressionMetadata" reverse-reference="livestockBreedOntology"/>
+  </class>
+  <class name="UBERONTerm" extends="OntologyTerm" is-interface="true">
+    <collection name="samples" referenced-type="ExpressionMetadata" reverse-reference="uberAnatomyOntology"/>
+  </class>
+  <class name="ExpressionMetadata" is-interface="true">
+    <attribute name="experimentId" type="java.lang.String"/>
+    <attribute name="animalAgeAtCollection" type="java.lang.String"/>
+    <attribute name="averageReadLength" type="java.lang.Integer"/>  
+    <attribute name="bioProject" type="java.lang.String"/>
+    <attribute name="bioSample" type="java.lang.String"/>
+    <attribute name="breed" type="java.lang.String"/>
+    <attribute name="btoName" type="java.lang.String"/>
+    <attribute name="cellType" type="java.lang.String"/>
+    <attribute name="description" type="java.lang.String"/>
+    <attribute name="developmentalStage" type="java.lang.String"/>
+    <attribute name="fastedStatus" type="java.lang.String"/>
+    <attribute name="gestationalAgeAtSampleCollection" type="java.lang.String"/>
+    <attribute name="healthStatusAtCollection" type="java.lang.String"/>
+    <attribute name="libraryLayout" type="java.lang.String"/>
+    <attribute name="libraryName" type="java.lang.String"/>
+    <attribute name="librarySelection" type="java.lang.String"/>
+    <attribute name="librarySource" type="java.lang.String"/>
+    <attribute name="libraryStrategy" type="java.lang.String"/>
+    <attribute name="model" type="java.lang.String"/>
+    <attribute name="name" type="java.lang.String"/>
+    <attribute name="organismName" type="java.lang.String"/>
+    <attribute name="organismPart" type="java.lang.String"/>
+    <attribute name="organismPartUberonName" type="java.lang.String"/>
+    <attribute name="platform" type="java.lang.String"/>
+    <attribute name="releaseDate" type="java.lang.String"/>
+    <attribute name="run" type="java.lang.String"/>
+    <attribute name="sampleName" type="java.lang.String"/>
+    <attribute name="sex" type="java.lang.String"/>
+    <attribute name="sraSampleAccession" type="java.lang.String"/>
+    <attribute name="sraStudyAccession" type="java.lang.String"/>
+    <attribute name="submissionDescription" type="java.lang.String"/>
+    <attribute name="submissionTitle" type="java.lang.String"/>
+    <reference name="brendaTissueOntology" referenced-type="BTOTerm" reverse-reference="samples"/>
+    <reference name="cellOntology" referenced-type="CLTerm" reverse-reference="samples"/>
+    <reference name="livestockBreedOntology" referenced-type="LBOTerm" reverse-reference="samples"/>
+    <reference name="uberAnatomyOntology" referenced-type="UBERONTerm" reverse-reference="samples"/>
+    <reference name="organism" referenced-type="Organism"/>
+    <collection name="dataSets" referenced-type="DataSet"/>
+  </class>
+</classes>
