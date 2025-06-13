@@ -121,9 +121,9 @@
     </headerconfig>
     <fields>
       <fieldconfig fieldExpr="identifier"/>
-      <fieldconfig fieldExpr="target.primaryIdentifier" label="Target Gene ID"/>
+      <fieldconfig fieldExpr="target.primaryIdentifier" label="Target ID"/>
       <fieldconfig fieldExpr="target.source" label="Target source"/>
-      <fieldconfig fieldExpr="subject.primaryIdentifier" label="Subject Gene ID"/>
+      <fieldconfig fieldExpr="subject.primaryIdentifier" label="Subject ID"/>
       <fieldconfig fieldExpr="subject.source" label="Subject source"/>
       <fieldconfig fieldExpr="target.organism.name" label="Organism"/>
     </fields>
@@ -189,7 +189,7 @@
     </fields>
   </class>
 
-  <!--AquaMine/FAANGMine Expressions-->
+  <!--AquaMine/BovineMine/FAANGMine Expressions-->
   <class className="org.intermine.model.bio.Expression">
     <headerconfig>
       <titles>
@@ -216,6 +216,25 @@
       <fieldconfig fieldExpr="type"/>
       <fieldconfig fieldExpr="FPKM" showInSummary="false"/>
       <fieldconfig fieldExpr="gene.primaryIdentifier" label="Gene ID"/>
+    </fields>
+  </class>
+
+  <!-- BovineMine Expression Metadata -->
+  <class className="org.intermine.model.bio.ExpressionMetadata">
+    <inlinelist>
+      <table path="dataSets.name"/>
+    </inlinelist>
+    <headerconfig>
+      <titles>
+        <title mainTitles="experiment|gene.primaryIdentifier" numberOfMainTitlesToShow="1" subTitles="*organism.shortName*"/>
+      </titles>
+    </headerconfig>
+    <fields>
+      <fieldconfig fieldExpr="experimentId"/>
+      <fieldconfig fieldExpr="bioProject"/>
+      <fieldconfig fieldExpr="bioSample"/>
+      <fieldconfig fieldExpr="sraSampleAccession"/>
+      <fieldconfig fieldExpr="run" label="SRA Run Accession"/>
     </fields>
   </class>
 
@@ -311,6 +330,14 @@
       <fieldconfig fieldExpr="ontologyTerm.identifier" label="Ontology Term Identifier"/>
       <fieldconfig fieldExpr="ontologyTerm.name" label="Ontology Term Name"/>
       <fieldconfig fieldExpr="ontologyTerm.description" label="Ontology Term Description"/>
+    </fields>
+  </class>
+
+  <class className="org.intermine.model.bio.OntologyEvidence">
+    <fields>
+      <fieldconfig fieldExpr="code.code"/>
+      <fieldconfig fieldExpr="code.name"/>
+      <fieldconfig fieldExpr="code.url"/>
     </fields>
   </class>
 
@@ -699,7 +726,7 @@
                                description="Pathways enriched for genes in this list"
                                label="Pathways"
                                filterLabel="DataSet"
-                               filters="KEGG pathways data set"
+                               filters="KEGG pathways data set,Reactome pathways data set"
                                startClass="Gene"
                                startClassDisplay="primaryIdentifier"
                                enrich="pathways.name"
