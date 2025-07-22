@@ -43,14 +43,16 @@ public class QTLGFF3RecordHandler extends BaseGFF3RecordHandler
         attributesToSet.put("breed", "breed");
         attributesToSet.put("Coord_src", "coordSource");
         attributesToSet.put("ID", "primaryIdentifier");
-        attributesToSet.put("LOD-score", "lodScore");
         attributesToSet.put("LS-means", "lsMeans");
         attributesToSet.put("Map_Type", "mapType");
+        attributesToSet.put("Marker_Type", "markerType");
         attributesToSet.put("Model", "model");
         attributesToSet.put("QTL_ID", "qtlId");
         attributesToSet.put("Test_Base", "testBase");
         attributesToSet.put("Tissue", "tissue");
-	attributesToSet.put("Trait", "trait");
+	attributesToSet.put("BaseTrait", "trait");
+        attributesToSet.put("TraitReprtNM", "traitReprtNM");
+        attributesToSet.put("TraitVariant", "traitVariant");
         attributesToSet.put("trait_ID", "traitId");
 
 	// Float attributes
@@ -58,6 +60,7 @@ public class QTLGFF3RecordHandler extends BaseGFF3RecordHandler
 	floatAttrsToSet.put("Dominance_Effect", "dominanceEffect");
 	floatAttrsToSet.put("F-Stat", "fStat");
 	floatAttrsToSet.put("Likelihood_Ratio", "likelihoodRatio");
+        floatAttrsToSet.put("LOD-score", "lodScore");
         floatAttrsToSet.put("P-value", "pValue");
         floatAttrsToSet.put("rSquared", "rSquared");
 	floatAttrsToSet.put("Variance", "variance");
