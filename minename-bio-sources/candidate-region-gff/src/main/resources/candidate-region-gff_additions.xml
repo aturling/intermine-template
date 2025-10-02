@@ -6,9 +6,11 @@
     <attribute name="breed" type="java.lang.String"/>
     <attribute name="breedClass" type="java.lang.String"/>
     <attribute name="breedOrigin" type="java.lang.String"/>
-    <attribute name="nSNP" type="java.lang.Integer"/>
+    <attribute name="population" type="java.lang.String"/>
+    <attribute name="url" type="java.lang.String"/>
     <attribute name="statTest" type="java.lang.String"/>
     <attribute name="statValue" type="java.lang.Float"/>
+    <attribute name="targetBreeds" type="java.lang.Integer"/>
     <collection name="overlappingGenes" referenced-type="Gene"/>
   </class>
 </classes>

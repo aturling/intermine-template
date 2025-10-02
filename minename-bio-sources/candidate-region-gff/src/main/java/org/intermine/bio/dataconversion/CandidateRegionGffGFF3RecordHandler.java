@@ -26,7 +26,19 @@ import org.apache.commons.lang.StringUtils;
 
 public class CandidateRegionGffGFF3RecordHandler extends BaseGFF3RecordHandler
 {
+    private static final HashMap<String, String> attributesToSet = new HashMap<String, String>();
     private HashMap<String, Item> geneItems = new HashMap<String, Item>();
+
+    static {
+        // Multi-value fields:
+        // Attribute name -> corresponding feature field name
+        attributesToSet.put("breed", "breed");
+        attributesToSet.put("breed_class", "breedClass");
+        attributesToSet.put("breed_origin", "breedOrigin");
+        attributesToSet.put("population", "population");
+        attributesToSet.put("stat_test", "statTest");
+        attributesToSet.put("target_breeds", "targetBreeds");
+    }
 
     /**
      * Create a new CandidateRegionGffGFF3RecordHandler for the given data model.
@@ -45,11 +57,19 @@ public class CandidateRegionGffGFF3RecordHandler extends BaseGFF3RecordHandler
 
         Item feature = getFeature();
         String clsName = feature.getClassName();
+        String pubUrl = null;
 
-        setFeatureAttribute(record, "breed", "breed");
-        setFeatureAttribute(record, "breed_class", "breedClass");
-        setFeatureAttribute(record, "breed_origin", "breedOrigin");
-        setFeatureAttribute(record, "stat_test", "statTest");
+        // Multi-value fields - store as comma separated strings
+        for (Entry<String, String> e: attributesToSet.entrySet()) {
+            String attrName = e.getKey();
+            String fieldName = e.getValue();
+            if (record.getAttributes().get(attrName) != null) {
+                String fieldValue = String.join(", ", record.getAttributes().get(attrName));
+                if (fieldNotEmpty(fieldValue)) {
+                    feature.setAttribute(fieldName, fieldValue);
+                }
+            }
+        }
 
         // Statistics value (float)
         if (record.getAttributes().get("stat_value") != null) {
@@ -59,6 +79,22 @@ public class CandidateRegionGffGFF3RecordHandler extends BaseGFF3RecordHandler
             if (fieldNotEmpty(fieldValue)) {
                 feature.setAttribute("statValue", fieldValue);
             }
+        }
+
+        // Publication url
+        // Some pubs don't have PubMed ID, only DOI so won't have publication item
+        // Add url string for convenience
+        if (record.getAttributes().get("PUBMED_ID") != null) {
+            String pubMedId = record.getAttributes().get("PUBMED_ID").iterator().next();
+            pubUrl = "https://www.ncbi.nlm.nih.gov/pubmed/" + pubMedId;
+        }
+        if (record.getAttributes().get("DOI") != null) {
+            String doi =  record.getAttributes().get("DOI").iterator().next();
+            doi = StringUtils.removeStart(doi, "DOI:"); // remove "DOI:" prefix 
+            pubUrl = "https://doi.org/" + doi;
+        }
+        if (pubUrl != null) {
+            feature.setAttribute("url", pubUrl);
         }
 
         // Overlapping genes
