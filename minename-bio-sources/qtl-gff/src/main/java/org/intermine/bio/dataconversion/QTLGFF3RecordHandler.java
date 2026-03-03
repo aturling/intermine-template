@@ -94,7 +94,9 @@ public class QTLGFF3RecordHandler extends BaseGFF3RecordHandler
                 String attrName = e.getKey();
                 String fieldName = e.getValue();
                 if (record.getAttributes().get(attrName) != null) {
-                    String fieldValue = record.getAttributes().get(attrName).iterator().next();
+                    //String fieldValue = record.getAttributes().get(attrName).iterator().next();
+                    // some fields are comma separated:
+                    String fieldValue = String.join(", ", record.getAttributes().get(attrName));
 		    if (fieldNotEmpty(fieldValue)) {
                         feature.setAttribute(fieldName, fieldValue);
 		    }
