@@ -86,6 +86,8 @@ public class SNPVariationLoaderTask extends FileDirectDataLoaderTask
         "INFO"
     };
     //private static final ArrayList<String> FUNCTION_CLASS_TO_IGNORE = new ArrayList<String>(Arrays.asList("downstream_gene_variant", "upstream_gene_variant", "intergenic_variant", "intron_variant"));
+    // Set per mine - we usually don't ignore any but had to ignore some in FAANGMine because there were too many Consequences in db
+    private static final ArrayList<String> FUNCTION_CLASS_TO_IGNORE = new ArrayList<String>(Arrays.asList("intergenic_variant"));
 
     private String taxonId = null;
     private String assemblyVersion = null;
@@ -97,6 +99,7 @@ public class SNPVariationLoaderTask extends FileDirectDataLoaderTask
     private Ontology ontology = null;
     private String geneSource = null;
     private String snpSource = null;
+    private String doNotComputeOverlaps = null; // setting this to anything other than null will exclude Location from computing overlaps postprocess
 
     private HashSet<Transcript> transcriptSet = new HashSet<Transcript>();
     private HashSet<PseudogenicTranscript> pseudogenicTranscriptSet = new HashSet<PseudogenicTranscript>();
@@ -169,6 +172,16 @@ public class SNPVariationLoaderTask extends FileDirectDataLoaderTask
      */
     public void setSnpSource(String snpSource) {
         this.snpSource = snpSource;
+    }
+
+    /**
+     * Set the value of Location.doNotComputeOverlaps.
+     * @param doNotComputeOverlaps doNotComputeOverlaps
+     */
+    public void setDoNotComputeOverlaps(String doNotComputeOverlaps) {
+        this.doNotComputeOverlaps = doNotComputeOverlaps;
+        System.out.println("Setting doNotComputeOverlaps = " + doNotComputeOverlaps);
+        LOG.info("Setting doNotComputeOverlaps = " + doNotComputeOverlaps);
     }
 
     /**
@@ -576,15 +589,6 @@ public class SNPVariationLoaderTask extends FileDirectDataLoaderTask
             HashSet<ConsequenceType> consequenceTypeSet = new HashSet<ConsequenceType>();
             String[] csqInfo = csqs[i].split("\\|");
 
-            //if (FUNCTION_CLASS_TO_IGNORE.contains(annotationInfo[3])) {
-            //    continue;
-            //} else {
-            //    String[] consequenceTypes = annotationInfo[3].split("\\|");
-            //    for (String consequenceType : consequenceTypes) {
-            //        consequenceTypeSet.add(getConsequence(consequenceType));
-            //    }
-            //}
-
             Consequence consequence = getDirectDataLoader().createObject(Consequence.class);
             imoTracker.put(consequence.getId(), consequence);
             consequence.setSnpId(saFeature.getPrimaryIdentifier());
@@ -594,6 +598,11 @@ public class SNPVariationLoaderTask extends FileDirectDataLoaderTask
             consequence.setConsequenceTypes(consequenceTypeSet);
 
             if (csqInfo.length > 1) {
+                // Don't create consequences of certain types, e.g., intergenic_variant
+                if (FUNCTION_CLASS_TO_IGNORE.contains(csqInfo[1])) {
+                    continue;
+                }
+
                 // No longer setting alternate codon - removed from model
                 //consequence.setAlternateCodon(csqInfo[0]);
                 consequence.setAlternateAllele(csqInfo[0]);
@@ -665,8 +674,11 @@ public class SNPVariationLoaderTask extends FileDirectDataLoaderTask
         }
 
         location.setStrand(strand);
-        // Annotating Location entity such that it is not considered when computing overlaps during post-process
-        location.setDoNotComputeOverlaps("Y");
+        // If doNotComputeOverlaps is set, annotate Location entity such that it is not considered 
+        // when computing overlaps during post-process
+        if (doNotComputeOverlaps != null) { 
+            location.setDoNotComputeOverlaps(doNotComputeOverlaps);
+        }
         getDirectDataLoader().store(location);
         imoTracker.remove(location.getId());
         return location;
