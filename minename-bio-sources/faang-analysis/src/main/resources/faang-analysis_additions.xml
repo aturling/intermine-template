@@ -19,9 +19,10 @@
     <attribute name="peakWidth" type="java.lang.String"/>
     <attribute name="specimenTag" type="java.lang.String"/>
     <reference name="bioProject" referenced-type="BioProject" reverse-reference="analyses"/>
-    <reference name="bioSample" referenced-type="BioSample"/>
+    <!--reference name="bioSample" referenced-type="BioSample"/-->
     <reference name="organism" referenced-type="Organism"/>
     <collection name="dataSets" referenced-type="DataSet"/>
+    <collection name="bioSamples" referenced-type="BioSample" reverse-reference="analyses"/>
     <collection name="experiments" referenced-type="Experiment" reverse-reference="analyses"/>
   </class>
   <class name="BioProject" is-interface="true">
@@ -33,7 +34,7 @@
   <class name="BioSample" is-interface="true">
     <attribute name="bioSampleId" type="java.lang.String"/>
     <reference name="organism" referenced-type="Organism"/>
-    <collection name="analyses" referenced-type="Analysis" reverse-reference="bioSample"/>
+    <collection name="analyses" referenced-type="Analysis" reverse-reference="bioSamples"/>
     <collection name="dataSets" referenced-type="DataSet"/>
   </class>
   <class name="Experiment" is-interface="true">

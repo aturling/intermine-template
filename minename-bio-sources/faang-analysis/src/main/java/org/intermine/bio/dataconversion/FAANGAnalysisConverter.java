@@ -122,7 +122,9 @@ public class FAANGAnalysisConverter extends FAANGBioFileConverter
             }
 
             // Set biosample reference
-            setBioSampleRef(analysis);
+            //setBioSampleRef(analysis);
+            // Add to biosamples collection
+            addToBioSampleCollection(analysis, "Biosample");
 
             // Add to experiments collection
             addToExperimentCollection(analysis, "ExperimentAccession");

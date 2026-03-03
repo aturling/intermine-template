@@ -265,6 +265,27 @@ public abstract class FAANGBioFileConverter extends BioFileConverter
     }
 
     /**
+     * Add to biosample item collection
+     *
+     * @param item item with biosamples
+     * @param bioSampleKey attributes key for biosample id (same as header column name)
+     */
+    protected void addToBioSampleCollection(Item item, String bioSampleKey)
+        throws ObjectStoreException {
+        String key = bioSampleKey.toLowerCase(); // lowercase for matching with headers 
+        if (attributes.containsKey(key)) {
+            String bioSampleIdsStr = attributes.get(key);
+            if (!bioSampleIdsStr.isEmpty()) {
+                // Multiple biosample ids comma separated
+                String[] bioSampleIds = bioSampleIdsStr.split(",");
+                for (int i = 0; i < bioSampleIds.length; i++) {
+                    item.addToCollection("bioSamples", getBioSample(bioSampleIds[i]));
+                }
+            }
+        }
+    }
+
+    /**
      * Add to publication item collection, if pub exists
      *
      * @param item item with publication

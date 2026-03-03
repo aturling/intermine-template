@@ -5,7 +5,7 @@
   <class name="BioSample" is-interface="true">
     <attribute name="bioSampleId" type="java.lang.String"/>
     <attribute name="animalAgeAtCollection" type="java.lang.String"/>
-    <attribute name="bioSampleType" type="java.lang.String"/>
+    <!--attribute name="bioSampleType" type="java.lang.String"/-->
     <attribute name="breed" type="java.lang.String"/>
     <attribute name="breedLboId" type="java.lang.String"/>
     <attribute name="breedOrphanetId" type="java.lang.String"/>
@@ -67,8 +67,8 @@
     <reference name="organism" referenced-type="Organism"/>
     <reference name="purificationProtocol" referenced-type="Protocol"/>
     <reference name="specimenCollectionProtocol" referenced-type="Protocol"/>
-    <collection name="bioSamplePools" referenced-type="BioSample" reverse-reference="componentSampleIds"/>
-    <collection name="componentSampleIds" referenced-type="BioSample" reverse-reference="bioSamplePools"/>
+    <!--collection name="bioSamplePools" referenced-type="BioSample" reverse-reference="componentSampleIds"/-->
+    <!--collection name="componentSampleIds" referenced-type="BioSample" reverse-reference="bioSamplePools"/-->
     <collection name="dataSets" referenced-type="DataSet"/>
     <collection name="orphanetRareDiseaseOntology" referenced-type="OrphanetTerm" reverse-reference="samples"/>
     <collection name="uberAnatomyOntology" referenced-type="UBERONTerm" reverse-reference="samples"/>

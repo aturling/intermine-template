@@ -37,7 +37,7 @@ public class FAANGBioSampleConverter extends FAANGBioFileConverter
 {
     private static final String DATASET_TITLE = "BioSample metadata data set";
     private static final String DATA_SOURCE_NAME = "NCBI and EBI";
-    private static final int NUM_COLS = 54; // expected number of columns in tsv input file
+    private static final int NUM_COLS = 52; // expected number of columns in tsv input file
     
     static {
         // Attribute names that can be directly stored from input file,
@@ -48,7 +48,7 @@ public class FAANGBioSampleConverter extends FAANGBioFileConverter
         attributeNames.add("breedOrphanetId");
         attributeNames.add("btoId");
         attributeNames.add("btoName");
-        attributeNames.add("bioSampleType");
+        //attributeNames.add("bioSampleType");
         attributeNames.add("cellType");
         attributeNames.add("cellTypeClId");
         attributeNames.add("chipAntibody");
@@ -182,6 +182,8 @@ public class FAANGBioSampleConverter extends FAANGBioFileConverter
 	    setProtocolRef(bioSample, "specimenCollectionProtocol", "SpecimenCollectionProtocol", "Specimen Collection Protocol");
 
             // Handle component ids, if present
+            // No longer using as of v1.4
+            /*
             String componentsKey = "biosamplecomponents"; // lowercase
             if (attributes.containsKey(componentsKey)) {
                 String componentIds = attributes.get(componentsKey);
@@ -194,7 +196,7 @@ public class FAANGBioSampleConverter extends FAANGBioFileConverter
                         bioSample.addToCollection("componentSampleIds", sampleComponent);
                     }
                 }
-            }
+            }*/
         }
     }
 }
