@@ -12,16 +12,9 @@
     <!-- contact -->
     <c:if test="${pageName != 'contact'}">
         <div id="contactFormDivButton">
-            <im:vspacer height="11" />
             <div class="contactButton">
-                <a href="#" onclick="showContactForm();return false">
-                    <b><fmt:message key="feedback.title"/></b>
-                </a>
+              <b>Questions? Comments? Email us at <c:out value="${WEB_PROPERTIES['feedback.destination.public']}"/></b>
             </div>
-        </div>
-        <div id="contactFormDiv" style="display:none;">
-            <im:vspacer height="11" />
-            <tiles:get name="contactForm" />
         </div>
     </c:if>
     <br/>
