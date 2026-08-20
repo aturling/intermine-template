@@ -31,7 +31,7 @@ import org.apache.commons.lang.StringUtils;
  *
  * @author
  */
-public class BovineExpressionConverter extends BioFileConverter
+public class BovineExpressionMetadataConverter extends BioFileConverter
 {
     //
     private static final String DATASET_TITLE = "BovineMine Expression metadata data set";
@@ -86,7 +86,7 @@ public class BovineExpressionConverter extends BioFileConverter
      * @param writer the ItemWriter used to handle the resultant items
      * @param model the Model
      */
-    public BovineExpressionConverter(ItemWriter writer, Model model) {
+    public BovineExpressionMetadataConverter(ItemWriter writer, Model model) {
         super(writer, model, DATA_SOURCE_NAME, DATASET_TITLE);
     }
 

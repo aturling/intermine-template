@@ -39,7 +39,7 @@
     <attribute name="organismPart" type="java.lang.String"/>
     <attribute name="organismPartUberonName" type="java.lang.String"/>
     <attribute name="platform" type="java.lang.String"/>
-    <attribute name="releaseDate" type="java.lang.String"/>
+    <attribute name="releaseDate" type="java.util.Date"/>
     <attribute name="run" type="java.lang.String"/>
     <attribute name="sampleName" type="java.lang.String"/>
     <attribute name="sex" type="java.lang.String"/>

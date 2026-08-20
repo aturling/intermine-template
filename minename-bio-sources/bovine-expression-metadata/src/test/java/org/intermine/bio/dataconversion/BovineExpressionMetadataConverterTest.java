@@ -10,13 +10,13 @@ package org.intermine.bio.dataconversion;
  *
  */
 
-public class BovineExpressionConverterTest extends ItemsTestCase
+public class BovineExpressionMetadataConverterTest extends ItemsTestCase
 {
     Model model = Model.getInstanceByName("genomic");
-    BovineExpressionConverter converter;
+    BovineExpressionMetadataConverter converter;
     MockItemWriter itemWriter;
 
-    public BovineExpressionConverterTest(String arg) {
+    public BovineExpressionMetadataConverterTest(String arg) {
         super(arg);
     }
 
