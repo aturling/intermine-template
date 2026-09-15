@@ -84,8 +84,11 @@ public class BaseGFF3RecordHandler extends GFF3RecordHandler
     protected void setFeatureAttribute(GFF3Record record, String attributeKey, String attributeName) {
         Item feature = getFeature();
         if (record.getAttributes().get(attributeKey) != null) {
-            String attributeValue = record.getAttributes().get(attributeKey).iterator().next();
-            feature.setAttribute(attributeName, attributeValue);
+            // some fields are comma separated:
+            String attributeValue = String.join(", ", record.getAttributes().get(attributeKey));
+            if (fieldNotEmpty(attributeValue)) {
+                feature.setAttribute(attributeName, attributeValue);
+            }
         }
     }
 
