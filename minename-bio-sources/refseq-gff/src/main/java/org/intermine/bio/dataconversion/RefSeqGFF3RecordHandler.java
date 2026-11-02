@@ -82,9 +82,10 @@ public class RefSeqGFF3RecordHandler extends BaseGFF3RecordHandler
         setFeatureDescription(record);
         setFeatureBiotype(record, "transcript_biotype");
 
-        // Set note, exception if present
+        // Set note, exception, gene synonym if present
         setFeatureAttribute(record, "Note", "note");
         setFeatureAttribute(record, "exception", "exceptionNote");
+	setFeatureAttribute(record, "gene_synonym", "geneSynonym");
   
         // Set status (ambiguous/frameshift cases only)
         // setFeatureStatus(record);

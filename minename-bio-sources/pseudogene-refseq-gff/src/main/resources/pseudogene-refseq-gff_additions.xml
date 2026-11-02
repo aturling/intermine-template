@@ -3,6 +3,7 @@
 
 <classes>
   <class name="Pseudogene" extends="SequenceFeature" is-interface="true">
+    <attribute name="geneSynonym" type="java.lang.String"/>      
     <collection name="exons" referenced-type="PseudogenicExon" reverse-reference="gene"/>
     <collection name="transcripts" referenced-type="PseudogenicTranscript" reverse-reference="gene"/>
   </class>

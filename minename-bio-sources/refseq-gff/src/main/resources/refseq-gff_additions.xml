@@ -16,6 +16,7 @@
     <reference name="organism" referenced-type="Organism"/>
   </class>
   <class name="Gene" extends="SequenceFeature" is-interface="true">
+    <attribute name="geneSynonym" type="java.lang.String"/>
     <collection name="duplicateEntities" referenced-type="DuplicateEntity"/>
   </class>
   <class name="JGeneSegment" extends="MRNA" is-interface="true"/>
