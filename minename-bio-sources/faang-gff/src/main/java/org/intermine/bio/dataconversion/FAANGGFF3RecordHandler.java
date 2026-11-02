@@ -10,6 +10,11 @@ package org.intermine.bio.dataconversion;
  *
  */
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.HashMap;
+
 import org.intermine.bio.io.gff3.GFF3Record;
 import org.intermine.metadata.Model;
 import org.intermine.xml.full.Item;
@@ -20,6 +25,8 @@ import org.intermine.xml.full.Item;
 
 public class FAANGGFF3RecordHandler extends BaseGFF3RecordHandler
 {
+    private HashMap<String, Item> analysisItems = new HashMap<String, Item>();
+    
     /**
      * Create a new FAANGGFF3RecordHandler for the given data model.
      * @param model the model for which items will be created
@@ -36,5 +43,32 @@ public class FAANGGFF3RecordHandler extends BaseGFF3RecordHandler
     @Override
     public void process(GFF3Record record) {
         super.process(record);
+
+        Item feature = getFeature();
+
+	// Set reference to Analysis (via source field)
+	String analysisSrc = record.getSource();
+        Item analysis = getAnalysis(analysisSrc);
+        feature.setReference("analysis", analysis.getIdentifier());	
+    }
+
+    /**
+     * Get an Item representation of an Analysis item
+     *
+     * @param analysisSrc Analysis source
+     * @return Analysis item
+     */
+    protected Item getAnalysis(String analysisSrc) {
+        Item analysis = null;
+        if (analysisItems.containsKey(analysisSrc)) {
+            analysis = analysisItems.get(analysisSrc);
+        } else {
+            analysis = converter.createItem("Analysis");
+            analysis.setAttribute("source", analysisSrc);
+	    analysis.setReference("organism", getOrganism());
+	    addItem(analysis);
+            analysisItems.put(analysisSrc, analysis);
+        }
+        return analysis;
     }
 }
